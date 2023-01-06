@@ -23,7 +23,7 @@ public class BaseController extends com.yali.vilivili.controller.base.CommonOprC
         or.setResult(true)
                 .setHttpStatus(HttpStatus.OK.value())
                 .setCode(String.valueOf(HttpStatus.OK.value()))
-                .setMsg(StringUtils.EMPTY);
+                .setMsg("操作成功");
         return or;
     }
 

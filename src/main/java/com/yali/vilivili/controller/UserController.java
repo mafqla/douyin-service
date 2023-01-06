@@ -23,15 +23,15 @@ import java.util.List;
  */
 @RestController
 @Api(value = "用户管理", tags = {"用户管理"})
-@RequestMapping("/user")
+@RequestMapping(value = "/user")
 public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
 
-    @ApiOperation(value = "添加用户")
-    @PostMapping("/add")
-    public ResponseEntity addUser(@Valid updateAndSaveUserRO ro) {
+    @ApiOperation(value = "更新和保存用户")
+    @PostMapping("/updateAndSaveUser")
+    public ResponseEntity<OR<Void>> updateAndSaveUser(@Valid updateAndSaveUserRO ro) {
         userService.updateAndSaveUser(ro);
         return process(this::successResult);
     }

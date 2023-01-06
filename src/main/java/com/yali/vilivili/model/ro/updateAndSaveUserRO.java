@@ -30,7 +30,7 @@ public class updateAndSaveUserRO {
      * 用户密码
      */
     @NotBlank(message = "密码不能为空")
-    @Pattern(regexp = "^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{11,}$", message = "密码不符合要求")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$", message = "密码必须是6-16位数字和字母组合")
     @ApiModelProperty(name = "password", value = "用户密码", required = true)
     private String password;
 

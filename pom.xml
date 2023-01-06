@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.62</version>
+            <version>1.2.67_noneautotype2</version>
         </dependency>
 
         <!--获取浏览器信息-->
@@ -48,6 +48,11 @@
             <version>1.20</version>
         </dependency>
 
+        <!--spring-security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>
@@ -72,18 +77,7 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <!--bravo-->
-        <dependency>
-            <groupId>com.dragonsoftbravo.tools</groupId>
-            <artifactId>dbc-lib</artifactId>
-            <version>0.2.111.a20220421</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dbc.osplan</groupId>
-            <artifactId>excelblade</artifactId>
-            <version>0.8.1a-POI4</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
@@ -103,24 +97,6 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>bravo</id>
-            <name>bravo</name>
-            <url>https://maven.csmc-cloud.com/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-
-        <pluginRepository>
-            <id>bravo</id>
-            <name>bravo</name>
-            <url>https://maven.csmc-cloud.com/nexus/content/groups/public/</url>
-
-        </pluginRepository>
-
-    </pluginRepositories>
     <build>
         <plugins>
             <plugin>
