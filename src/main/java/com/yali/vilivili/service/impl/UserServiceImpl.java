@@ -47,8 +47,11 @@ public class UserServiceImpl implements UserService {
         //判断用户邮箱是否存在
         User isEmail = userRepository.findByEmail(ro.getEmail());
         if (Objects.nonNull(isEmail)) {
-            BeanUtils.copyProperties(ro, isEmail);
             isEmail.setUpdateTime(new Date());
+            isEmail.setUserAvatar(ro.getUser_avatar());
+            isEmail.setEmail(ro.getEmail());
+            isEmail.setPassword(BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt()));
+            isEmail.setUIp(ro.getU_ip());
             isEmail.setUIp(ipAddress);
             userRepository.save(isEmail);
         } else {
