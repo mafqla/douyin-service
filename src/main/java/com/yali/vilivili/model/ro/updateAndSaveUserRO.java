@@ -54,7 +54,7 @@ public class updateAndSaveUserRO {
      * 用户是否有效
      */
     @ApiModelProperty(name = "isValid", value = "用户是否有效", required = false)
-    private int isValid;
+    private byte isValid;
 
     /**
      * 用户ip
@@ -78,5 +78,5 @@ public class updateAndSaveUserRO {
      * 用户类型
      */
     @ApiModelProperty(name = "type", value = "用户类型", required = false)
-    private int type;
+    private byte type;
 }
