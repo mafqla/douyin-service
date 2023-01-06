@@ -1,8 +1,8 @@
 package com.yali.vilivili.service;
 
 import com.yali.vilivili.model.User;
-import com.yali.vilivili.model.ro.UserAddRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
+import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 
 import java.util.List;
 
@@ -13,7 +13,11 @@ import java.util.List;
  */
 public interface UserService {
 
-    void saveUser(UserAddRO ro);
 
+    /**
+     * 更新和保存用户
+     * @param ro
+     */
+    void updateAndSaveUser(updateAndSaveUserRO ro);
     List<User> findAllUser(UserSelectRO ro);
 }

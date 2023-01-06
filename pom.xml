@@ -23,11 +23,29 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--fastJson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+        </dependency>
+
+        <!--获取浏览器信息-->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.20</version>
         </dependency>
 
 
@@ -56,6 +74,17 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.7.0</version>
         </dependency>
+        <!--bravo-->
+        <dependency>
+            <groupId>com.dragonsoftbravo.tools</groupId>
+            <artifactId>dbc-lib</artifactId>
+            <version>0.2.111.a20220421</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dbc.osplan</groupId>
+            <artifactId>excelblade</artifactId>
+            <version>0.8.1a-POI4</version>
+        </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
@@ -66,8 +95,32 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>bravo</id>
+            <name>bravo</name>
+            <url>https://maven.csmc-cloud.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+
+        <pluginRepository>
+            <id>bravo</id>
+            <name>bravo</name>
+            <url>https://maven.csmc-cloud.com/nexus/content/groups/public/</url>
+
+        </pluginRepository>
+
+    </pluginRepositories>
     <build>
         <plugins>
             <plugin>

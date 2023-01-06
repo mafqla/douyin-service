@@ -7,9 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @ControllerAdvice
 @Slf4j
@@ -24,7 +27,30 @@ public class GlobalExceptionHandler {
         if (e.getClass().equals(MyException.class)) {
             MyException lsgException = (MyException) e;
             log.debug("lsg exception,code [{}], message [{}]", lsgException.getCode(), lsgException.getMessage());
-            OR.setResult(false).setCode(StringUtils.isEmpty(lsgException.getCode())? OperationResult.CommonCodes.REAULT_FAIL: lsgException.getCode()).setMsg(lsgException.getMessage());
+            OR.setResult(false).setCode(StringUtils.isEmpty(lsgException.getCode())?
+                    OperationResult.CommonCodes.REAULT_FAIL: lsgException.getCode()).setMsg(lsgException.getMessage()
+            );
+            responseEntity = ResponseEntity.ok(OR);
+
+            // 拦截validation异常
+        } else if (e.getClass().equals(org.springframework.validation.BindException.class)) {
+            org.springframework.validation.BindException bindException = (org.springframework.validation.BindException) e;
+            // 获取validation异常信息
+            List<FieldError> fieldErrors = bindException.getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                log.error("field: {}, error: {}", fieldError.getField(), fieldError.getDefaultMessage());
+            }
+            StringBuilder messageBuilder = new StringBuilder();
+            for (FieldError fieldError : fieldErrors) {
+                messageBuilder.append(fieldError.getField())
+                        .append(":")
+                        .append(fieldError.getDefaultMessage())
+                        .append(";");
+            }
+
+            OR.setCode(OperationResult.CommonCodes.INPUT_NOT_VALID).setMsg(messageBuilder.toString());
+
+
             responseEntity = ResponseEntity.ok(OR);
 
         } else {

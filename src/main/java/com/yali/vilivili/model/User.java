@@ -5,14 +5,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
 /**
  * @Description 用户信息
- * @Date 2023/1/3 21:13
- * @Author pq
+ * @Date 2023.1.4 18:34
+ * @Author fuqianlin
  */
 @Data
 @Entity
@@ -25,7 +24,7 @@ public class User {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -36,31 +35,37 @@ public class User {
     private String username;
 
     /**
-     * 用户名
+     * 用户密码
      */
     @Column(name = "password")
     private String password;
 
     /**
-     * 用户名
+     * 用户邮箱
      */
     @Column(name = "email")
     private String email;
 
     /**
-     * 用户名
+     * 用户头像
      */
-    @Column(name = "is_valid")
-    private int isValid;
+    @Column(name = "user_avatar")
+    private String userAvatar;
 
     /**
-     * 用户名
+     * 用户是否有效
+     */
+    @Column(name = "is_valid")
+    private byte isValid;
+
+    /**
+     * 用户ip
      */
     @Column(name = "u_ip")
     private String uIp;
 
     /**
-     * 用户名
+     * 创建时间
      */
     @Column(name = "create_time")
     @Temporal(TemporalType.TIMESTAMP)
@@ -68,15 +73,16 @@ public class User {
     private Date createTime;
 
     /**
-     * 用户名
+     * 更新时间
      */
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
     @Column(name = "update_time")
     private Date updateTime;
 
     /**
-     * 用户名
+     * 用户类型
+     * 默认值为0，0为普通用户，1为管理员
      */
     @Column(name = "type")
-    private int type;
+    private byte type;
 }

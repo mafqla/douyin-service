@@ -42,7 +42,6 @@ public class CommonOprController {
         data.setResult(false);
         data.setCode(String.valueOf(HttpStatus.BAD_REQUEST.value()));
         List<String> errs = (List)br.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-        data.setErrorMsg(errs);
         return ResponseEntity.status(data.getHttpStatus()).contentType(MediaType.APPLICATION_JSON).body(data);
     }
 

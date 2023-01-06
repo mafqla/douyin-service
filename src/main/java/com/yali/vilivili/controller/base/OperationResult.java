@@ -16,12 +16,10 @@ public class OperationResult<T> {
     private String code;
     private String msg;
     private T data;
-    private List<String> errorMsg;
 
     public OperationResult() {
         this.httpStatus = HttpStatus.OK.value();
         this.code = "";
-        this.errorMsg = Lists.newArrayList();
     }
 
     public Boolean isResult() {
@@ -52,17 +50,8 @@ public class OperationResult<T> {
         this.msg = msg;
     }
 
-    public void setResult(Boolean result) {
-        this.result = result;
-    }
 
-    public void setErrorMsg(List<String> errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 
-    public Boolean getResult() {
-        return result;
-    }
 
     public int getHttpStatus() {
         return httpStatus;
@@ -80,20 +69,19 @@ public class OperationResult<T> {
         return data;
     }
 
-    public List<String> getErrorMsg() {
-        return errorMsg;
-    }
 
     public static class CommonCodes {
-        public static final String GENERAL_FAIL = "400";
-        public static final String CAPTCHA_ERROR = "900";
         public static final String RESULT_OK = "200";
+        public static final String GENERAL_FAIL = "400";
+        public static final String NO_LOGIN = "401";
+        public static final String NO_ALLOW = "403";
+
         public static final String REAULT_FAIL = "500";
         public static final String INPUT_NOT_VALID = "505";
         public static final String ILLEGAL_FILETYPE = "601";
         public static final String ILLEGAL_FILECONTENT = "602";
-        public static final String NO_LOGIN = "401";
-        public static final String NO_ALLOW = "403";
+        public static final String CAPTCHA_ERROR = "900";
+
 
         public CommonCodes() {
         }

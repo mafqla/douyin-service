@@ -8,4 +8,5 @@ package com.yali.vilivili.constant;
  **/
 public class ErrorCode {
     public static final String USER_EXISTED="512";
+
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, String> {
 
-    User findTopByUsername(String username);
+    User findByEmail(String email);
 
     @Query(value = "select * from user where username = ?1 and is_valid = ?2 and type=?3",nativeQuery = true)
     List<User> findAllUser(String username, int isValid, int Type);
