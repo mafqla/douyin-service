@@ -26,8 +26,8 @@ public interface UserRepository extends JpaRepository<User, String> {
      * @return int 返回受影响的行数
      */
     @Modifying
-    @Query(value = "update user set  is_valid= ? where id = ?", nativeQuery = true)
-    int deleteById(Integer id, byte isValid);
+    @Query(value = "update user set  is_valid= ?2 where id = ?1", nativeQuery = true)
+    int deleteById(Integer id, int isValid);
 
     @Query(value = "select * from user where username = ?1 and is_valid = ?2 and type=?3",nativeQuery = true)
     List<User> findAllUser(String username, int isValid, int Type);

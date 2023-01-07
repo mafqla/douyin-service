@@ -88,8 +88,7 @@ public class UserServiceImpl implements UserService {
     @Transactional()
     public void deleteById(deleteByUserIdRO ro) {
         Integer userId = ro.getId();
-        byte isValid = ro.getIsValid();
-        userRepository.deleteById(userId, isValid);
+        userRepository.deleteById(userId, ro.getIsValid());
 
     }
 
