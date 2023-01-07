@@ -44,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
         TokenInfoVO tokenInfoVO = new TokenInfoVO();
         String loginUUID = UUID.randomUUID().toString();
         tokenInfoVO.setLoginUUID(loginUUID);
+        tokenInfoVO.setUserId(user.getId());
         String token = JwtUtils.getToken(tokenInfoVO);
         LoginVO loginVO = new LoginVO();
         loginVO.setUserId(user.getId());

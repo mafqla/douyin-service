@@ -6,10 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.yali.vilivili.model.vo.TokenInfoVO;
+import org.springframework.http.HttpStatus;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Description
@@ -22,7 +24,7 @@ public class JwtUtils {
     //token签发者
     private static final String ISSUSRE = "HZSTYGZPT";
     //token过期时间
-    public static final Long EXPIRE_DATE = 1000 * 60L;
+    public static final Long EXPIRE_DATE = 1000 * 60 * 60 *24L;
 
     /**
      * @return java.lang.String
@@ -42,7 +44,7 @@ public class JwtUtils {
         return JWT.create()
                 .withIssuer(ISSUSRE)
                 .withIssuedAt(now)
-                .withExpiresAt(new Date(now.getTime() + EXPIRE_DATE))
+                .withExpiresAt(instance.getTime())
                 .withClaim("userId", tokenInfoVO.getUserId())
                 .withClaim("loginUUID", tokenInfoVO.getLoginUUID())
                 .sign(algorithm);
@@ -78,10 +80,10 @@ public class JwtUtils {
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT jwt = verifier.verify(token);
-        int userId = jwt.getClaim("userId").asInt();
+
         String loginUUID=jwt.getClaim("loginUUID").asString();
         TokenInfoVO tokenInfoVO=new TokenInfoVO();
-        tokenInfoVO.setUserId(userId);
+        tokenInfoVO.setUserId(Optional.ofNullable(jwt.getClaim("userId").asInt()).orElseThrow(()->new MyException(HttpStatus.OK.toString(),"token中id不存在，请登录！")));
         tokenInfoVO.setLoginUUID(loginUUID);
         return tokenInfoVO;
     }

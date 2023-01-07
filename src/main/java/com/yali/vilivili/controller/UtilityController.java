@@ -29,14 +29,14 @@ public class UtilityController extends BaseController {
     @ApiOperation(value = "AES加密")
     @PostMapping("/AESEncrypt")
     @RequireLogin(required = false)
-    public ResponseEntity<OR<String>> aESEncrypt(@Valid AESRO ro) {
+    public ResponseEntity<OR<String>> aESEncrypt(AESRO ro) {
         return processData(() -> AESUtil.encrypt(ro.getPlaintext()), this::processException);
     }
 
     @ApiOperation(value = "AES解密")
     @PostMapping("/AESDecrypt")
     @RequireLogin(required = false)
-    public ResponseEntity<OR<String>> aESDecrypt(@Valid AESRO ro) {
+    public ResponseEntity<OR<String>> aESDecrypt(AESRO ro) {
         return processData(() -> AESUtil.decrypt(ro.getCiphertext()), this::processException);
     }
 }
