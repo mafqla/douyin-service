@@ -1,13 +1,9 @@
 package com.yali.vilivili.repository;
 
 import com.yali.vilivili.model.User;
-import jakarta.transaction.Transactional;
-import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
-import java.beans.Transient;
 import java.util.List;
 
 /**
@@ -31,4 +27,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "select * from user where username = ?1 and is_valid = ?2 and type=?3",nativeQuery = true)
     List<User> findAllUser(String username, int isValid, int Type);
+
+    User findTopByUsername(String username);
 }

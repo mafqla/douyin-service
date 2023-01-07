@@ -2,8 +2,7 @@ package com.yali.vilivili.utils;
 
 import com.alibaba.fastjson.JSON;
 import eu.bitwalker.useragentutils.UserAgent;
-import jakarta.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;

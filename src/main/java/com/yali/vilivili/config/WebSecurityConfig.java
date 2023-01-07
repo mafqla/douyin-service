@@ -41,14 +41,32 @@ public class WebSecurityConfig {
                     try {
                         authorize
                                 //放行所有接口
-                                .requestMatchers("/user/**").permitAll()
-                                .requestMatchers("/user/updateAndSaveUser").permitAll()
-                                // 放行登录接口
-                                .requestMatchers("/user/login").permitAll()
-                                // 放行注册接口
-                                .requestMatchers("/user/register").permitAll()
-                                // 放行资源目录
-                                .requestMatchers("/static/**", "/resources/**").permitAll()
+
+                                //springboot2.7写法
+                                .antMatchers("/user/**").permitAll()
+                                .antMatchers("/user/updateAndSaveUser").permitAll()
+                                .antMatchers("/user/login").permitAll()
+                                .antMatchers("/user/register").permitAll()
+                                .antMatchers("/static/**", "/resources/**").permitAll()
+                                .antMatchers("/swagger/**","v2/**","/v2/api-docs", "/swagger-resources/configuration/ui",
+                                        "/swagger-resources", "/swagger-resources/configuration/security",
+                                        "/swagger-ui.html", "/doc.html","/webjars/**").permitAll()
+                                .antMatchers("/swagger/**").permitAll()
+                                .antMatchers("/swagger-ui.html").permitAll()
+                                .antMatchers("/webjars/**").permitAll()
+                                .antMatchers("/v2/**").permitAll()
+                                .antMatchers("/v2/api-docs-ext/**").permitAll()
+                                .antMatchers("/swagger-resources/**").permitAll()
+                                .antMatchers("/doc.html").permitAll()
+                              //springboot3.0写法
+//                                .requestMatchers("/user/**").permitAll()
+//                                .requestMatchers("/user/updateAndSaveUser").permitAll()
+//                                // 放行登录接口
+//                                .requestMatchers("/user/login").permitAll()
+//                                // 放行注册接口
+//                                .requestMatchers("/user/register","").permitAll()
+//                                // 放行资源目录
+//                                .requestMatchers("/static/**", "/resources/**").permitAll()
                                 // 其余的都需要权限校验
                                 .anyRequest().authenticated()
                                 // 防跨站请求伪造

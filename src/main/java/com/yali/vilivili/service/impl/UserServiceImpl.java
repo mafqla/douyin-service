@@ -1,6 +1,5 @@
 package com.yali.vilivili.service.impl;
 
-import com.yali.vilivili.constant.ErrorCode;
 import com.yali.vilivili.model.User;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
@@ -8,16 +7,15 @@ import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.CodeMessageService;
 import com.yali.vilivili.service.UserService;
+import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
-import com.yali.vilivili.utils.MyException;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -49,16 +47,13 @@ public class UserServiceImpl implements UserService {
         String userAvatar = "http://127.0.0.1:8080/static/avatar/1.jpg";
         String ipAddress = IpUtils.getIpAddress(request);
 
-        String password = BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt());
+//        String password = BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt());
+        String password= AESUtil.encrypt(ro.getPassword());
         ro.setPassword(password);
         //判断用户邮箱是否存在
         User isEmail = userRepository.findByEmail(ro.getEmail());
         if (Objects.nonNull(isEmail)) {
             isEmail.setUpdateTime(new Date());
-            isEmail.setUserAvatar(ro.getUser_avatar());
-            isEmail.setEmail(ro.getEmail());
-            isEmail.setPassword(BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt()));
-            isEmail.setUIp(ro.getU_ip());
             isEmail.setUIp(ipAddress);
             isEmail.setUserAvatar(userAvatar);
             isEmail.setUsername(ro.getUsername());
