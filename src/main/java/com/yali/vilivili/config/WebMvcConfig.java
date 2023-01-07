@@ -1,6 +1,7 @@
 package com.yali.vilivili.config;
 
 import com.yali.vilivili.interceptor.UserInterceptor;
+import com.yali.vilivili.interceptor.UtilityInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,12 +17,16 @@ import javax.annotation.Resource;
 @Slf4j
 @Configuration
 
-public class WebMvcConfig implements WebMvcConfigurer{
-        @Resource
-        UserInterceptor userInterceptor;
+public class WebMvcConfig implements WebMvcConfigurer {
+    @Resource
+    UserInterceptor userInterceptor;
 
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(userInterceptor).addPathPatterns("/**");
-        }
+    @Resource
+    UtilityInterceptor utilityInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(userInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(utilityInterceptor).addPathPatterns("/**");
+    }
 }

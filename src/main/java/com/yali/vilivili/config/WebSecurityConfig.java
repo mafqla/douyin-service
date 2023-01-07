@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                                 .antMatchers("/swagger-resources/**").permitAll()
                                 .antMatchers("/doc.html").permitAll()
                                 .antMatchers("/login/**").permitAll()
+                                .antMatchers("/util/**").permitAll()
                               //springboot3.0写法
 //                                .requestMatchers("/user/**").permitAll()
 //                                .requestMatchers("/user/updateAndSaveUser").permitAll()
