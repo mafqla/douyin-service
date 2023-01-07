@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                     try {
                         authorize
                                 //放行所有接口
+                                .requestMatchers("/user/**").permitAll()
                                 .requestMatchers("/user/updateAndSaveUser").permitAll()
                                 // 放行登录接口
                                 .requestMatchers("/user/login").permitAll()

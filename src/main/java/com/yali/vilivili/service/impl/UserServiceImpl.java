@@ -3,6 +3,7 @@ package com.yali.vilivili.service.impl;
 import com.yali.vilivili.constant.ErrorCode;
 import com.yali.vilivili.model.User;
 import com.yali.vilivili.model.ro.UserSelectRO;
+import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.CodeMessageService;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,11 @@ public class UserServiceImpl implements UserService {
     @Resource
     private HttpServletRequest request;
 
+    /**
+     * 更新和保存用户
+     *
+     * @param ro
+     */
     public void updateAndSaveUser(updateAndSaveUserRO ro) {
 
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
@@ -53,6 +60,12 @@ public class UserServiceImpl implements UserService {
             isEmail.setPassword(BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt()));
             isEmail.setUIp(ro.getU_ip());
             isEmail.setUIp(ipAddress);
+            isEmail.setUserAvatar(userAvatar);
+            isEmail.setUsername(ro.getUsername());
+            isEmail.setPassword(ro.getPassword());
+            isEmail.setEmail(ro.getEmail());
+            isEmail.setIsValid(ro.getIsValid());
+            isEmail.setType(ro.getType());
             userRepository.save(isEmail);
         } else {
             ro.setCreateTime(new Date());
@@ -62,10 +75,30 @@ public class UserServiceImpl implements UserService {
             // 保存用户ip
             saveUser.setUIp(ipAddress);
             BeanUtils.copyProperties(ro, saveUser);
+            System.out.println(saveUser);
             userRepository.save(saveUser);
         }
     }
 
+    /**
+     * 删除用户
+     *
+     * @param ro
+     */
+    @Transactional()
+    public void deleteById(deleteByUserIdRO ro) {
+        Integer userId = ro.getId();
+        byte isValid = ro.getIsValid();
+        userRepository.deleteById(userId, isValid);
+
+    }
+
+    /**
+     * 查询所有用户
+     *
+     * @param ro
+     * @return
+     */
     public List<User> findAllUser(UserSelectRO ro){
         return userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
     }

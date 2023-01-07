@@ -5,6 +5,7 @@ import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.model.User;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
+import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,14 @@ public class UserController extends BaseController {
     @PostMapping("/updateAndSaveUser")
     public ResponseEntity<OR<Void>> updateAndSaveUser(@Valid updateAndSaveUserRO ro) {
         userService.updateAndSaveUser(ro);
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "删除用户")
+    @PostMapping("/deleteById")
+    public ResponseEntity<OR<Void>> deleteById(@Valid deleteByUserIdRO ro) {
+        System.out.println("删除用户"+ro);
+        userService.deleteById(ro);
         return process(this::successResult);
     }
 
