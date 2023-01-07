@@ -48,9 +48,6 @@ public class WebSecurityConfig {
                                 .antMatchers("/user/login").permitAll()
                                 .antMatchers("/user/register").permitAll()
                                 .antMatchers("/static/**", "/resources/**").permitAll()
-                                .antMatchers("/swagger/**","v2/**","/v2/api-docs", "/swagger-resources/configuration/ui",
-                                        "/swagger-resources", "/swagger-resources/configuration/security",
-                                        "/swagger-ui.html", "/doc.html","/webjars/**").permitAll()
                                 .antMatchers("/swagger/**").permitAll()
                                 .antMatchers("/swagger-ui.html").permitAll()
                                 .antMatchers("/webjars/**").permitAll()
@@ -58,6 +55,7 @@ public class WebSecurityConfig {
                                 .antMatchers("/v2/api-docs-ext/**").permitAll()
                                 .antMatchers("/swagger-resources/**").permitAll()
                                 .antMatchers("/doc.html").permitAll()
+                                .antMatchers("/login/**").permitAll()
                               //springboot3.0写法
 //                                .requestMatchers("/user/**").permitAll()
 //                                .requestMatchers("/user/updateAndSaveUser").permitAll()

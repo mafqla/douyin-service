@@ -12,5 +12,5 @@ public class TokenInfoVO {
 
     private String loginUUID;
 
-    private int userId;
+    private Integer userId;
 }

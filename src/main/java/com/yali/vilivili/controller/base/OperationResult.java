@@ -1,6 +1,7 @@
 package com.yali.vilivili.controller.base;
 
 import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -17,11 +18,20 @@ public class OperationResult<T> {
     private String msg;
     private T data;
 
+    @ApiModelProperty("the error message")
+    private List<String> errorMsg;
+
     public OperationResult() {
         this.httpStatus = HttpStatus.OK.value();
         this.code = "";
     }
 
+    public OperationResult(boolean result) {
+        this.httpStatus = HttpStatus.OK.value();
+        this.code = "";
+        this.errorMsg = Lists.newArrayList();
+        this.result = result;
+    }
     public Boolean isResult() {
         return this.result;
     }
@@ -85,5 +95,13 @@ public class OperationResult<T> {
 
         public CommonCodes() {
         }
+    }
+
+
+    public OperationResult<T> fail(String message) {
+        this.result = false;
+        this.httpStatus = HttpStatus.BAD_REQUEST.value();
+        this.msg = message;
+        return this;
     }
 }

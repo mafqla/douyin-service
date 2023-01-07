@@ -1,5 +1,6 @@
 package com.yali.vilivili.controller;
 
+import com.yali.vilivili.annotation.RequireLogin;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.model.User;
@@ -32,6 +33,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "更新和保存用户")
     @PostMapping("/updateAndSaveUser")
+    @RequireLogin
     public ResponseEntity<OR<Void>> updateAndSaveUser(@Valid updateAndSaveUserRO ro) {
         userService.updateAndSaveUser(ro);
         return process(this::successResult);
@@ -39,6 +41,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "删除用户")
     @PostMapping("/deleteById")
+    @RequireLogin
     public ResponseEntity<OR<Void>> deleteById(@Valid deleteByUserIdRO ro) {
         System.out.println("删除用户"+ro);
         userService.deleteById(ro);
@@ -47,6 +50,7 @@ public class UserController extends BaseController {
 
     @ApiOperation(value = "查询用户")
     @PostMapping("/find")
+    @RequireLogin
     public ResponseEntity<OR<List<User>>> findAllUser(UserSelectRO ro) {
         userService.findAllUser(ro);
         return processData(()->userService.findAllUser(ro),this::processException);

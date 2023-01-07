@@ -1,4 +1,4 @@
-package com.yali.vilivili.handler;
+package com.yali.vilivili.interceptor;
 
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.controller.base.OperationResult;
@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+/**
+ * @Description 全局异常拦截器,不需要配置就能生效
+ * @Date 2023/1/8 1:12
+ * @Author pq
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
