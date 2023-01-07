@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param ro
      */
-    @Transactional()
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(deleteByUserIdRO ro) {
         Integer userId = ro.getId();
         byte isValid = ro.getIsValid();
