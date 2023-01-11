@@ -32,6 +32,6 @@ public class LoginController extends BaseController {
     @ApiOperation(value = "登录")
     @PostMapping("/login")
     public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br){
-        return this.processData(()->loginService.login(ro),br,"msg",this::processException);
+        return this.processData(()->loginService.login(ro),br,"登录成功",this::processException);
     }
 }
