@@ -49,6 +49,7 @@ public class WebSecurityConfig {
                                 .antMatchers("/doc.html").permitAll()
                                 .antMatchers("/login/**").permitAll()
                                 .antMatchers("/util/**").permitAll()
+                                .antMatchers("/img/**").permitAll()
                               //springboot3.0写法
 //                                .requestMatchers("/user/**").permitAll()
 //                                .requestMatchers("/user/updateAndSaveUser").permitAll()
