@@ -45,7 +45,7 @@ public class OperationResult<T> {
 
     public OperationResult<T> setHttpStatus(int httpStatus) {
         this.httpStatus = httpStatus;
-        return this;
+        return this ;
     }
 
 
