@@ -77,7 +77,6 @@ public class CommonOprController {
 
         try {
             M val = sp.get();
-            data.setResult(true);
             data.setMsg(msg);
             data.setCode(String.valueOf(HttpStatus.OK.value())).setData(val);
             if (Objects.nonNull(consumer)) {
