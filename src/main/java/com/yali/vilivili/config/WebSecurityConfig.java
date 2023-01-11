@@ -4,8 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -20,16 +19,6 @@ public class WebSecurityConfig {
 
 
     /**
-     * 密码加密
-     *
-     * @return {@link PasswordEncoder} 加密方式
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /**
      * 配置Spring Security的http安全
      *
      * @throws Exception 异常
@@ -37,15 +26,18 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests(authorize -> {
+        return http
+                // 基于token，不需要csrf
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeHttpRequests(authorize -> {
                     try {
                         authorize
-                                //放行所有接口
 
                                 //springboot2.7写法
                                 .antMatchers("/user/**").permitAll()
                                 .antMatchers("/user/updateAndSaveUser").permitAll()
-                                .antMatchers("/user/login").permitAll()
+                                .antMatchers("/auth/login").permitAll()
                                 .antMatchers("/user/register").permitAll()
                                 .antMatchers("/static/**", "/resources/**").permitAll()
                                 .antMatchers("/swagger/**").permitAll()
@@ -76,6 +68,7 @@ public class WebSecurityConfig {
                 }
         ).build();
     }
+
 
 }
 

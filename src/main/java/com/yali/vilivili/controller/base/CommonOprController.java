@@ -39,7 +39,6 @@ public class CommonOprController {
     private <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> errorOstResult(BindingResult br) {
         com.yali.vilivili.controller.base.OR<M> data = new com.yali.vilivili.controller.base.OR();
         data.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-        data.setResult(false);
         data.setCode(String.valueOf(HttpStatus.BAD_REQUEST.value()));
         List<String> errs = (List)br.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
         return ResponseEntity.status(data.getHttpStatus()).contentType(MediaType.APPLICATION_JSON).body(data);
@@ -50,7 +49,6 @@ public class CommonOprController {
 
         try {
             M val = sp.get();
-            data.setResult(true);
             data.setCode(String.valueOf(HttpStatus.OK.value())).setData(val);
             if (Objects.nonNull(consumer)) {
                 consumer.accept(data);

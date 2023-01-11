@@ -1,6 +1,6 @@
 package com.yali.vilivili.service.impl;
 
-import com.yali.vilivili.model.User;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
@@ -11,7 +11,6 @@ import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -44,14 +43,13 @@ public class UserServiceImpl implements UserService {
     public void updateAndSaveUser(updateAndSaveUserRO ro) {
 
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
-        String userAvatar = "http://127.0.0.1:8080/static/avatar/1.jpg";
+        String userAvatar = "http://127.0.0.1:8080/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
 
-//        String password = BCrypt.hashpw(ro.getPassword(), BCrypt.gensalt());
         String password= AESUtil.encrypt(ro.getPassword());
         ro.setPassword(password);
         //判断用户邮箱是否存在
-        User isEmail = userRepository.findByEmail(ro.getEmail());
+        UserEntity isEmail = userRepository.findByEmail(ro.getEmail());
         if (Objects.nonNull(isEmail)) {
             isEmail.setUpdateTime(new Date());
             isEmail.setUIp(ipAddress);
@@ -65,7 +63,7 @@ public class UserServiceImpl implements UserService {
         } else {
             ro.setCreateTime(new Date());
             ro.setUpdateTime(new Date());
-            User saveUser = new User();
+            UserEntity saveUser = new UserEntity();
             saveUser.setUserAvatar(userAvatar);
             // 保存用户ip
             saveUser.setUIp(ipAddress);
@@ -94,7 +92,7 @@ public class UserServiceImpl implements UserService {
      * @param ro
      * @return
      */
-    public List<User> findAllUser(UserSelectRO ro){
+    public List<UserEntity> findAllUser(UserSelectRO ro){
         return userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
     }
 }

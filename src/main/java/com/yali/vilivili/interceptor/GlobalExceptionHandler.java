@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
         if (e.getClass().equals(MyException.class)) {
             MyException lsgException = (MyException) e;
             log.debug("lsg exception,code [{}], message [{}]", lsgException.getCode(), lsgException.getMessage());
-            OR.setResult(false).setCode(StringUtils.isEmpty(lsgException.getCode())?
+            OR.setCode(StringUtils.isEmpty(lsgException.getCode())?
                     OperationResult.CommonCodes.REAULT_FAIL: lsgException.getCode()).setMsg(lsgException.getMessage()
             );
             responseEntity = ResponseEntity.ok(OR);
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
             responseEntity = ResponseEntity.ok(OR);
 
         } else {
-            OR.setResult(false).setCode(OperationResult.CommonCodes.REAULT_FAIL).setMsg("服务器异常");
+            OR.setCode(OperationResult.CommonCodes.REAULT_FAIL).setMsg("服务器异常");
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(OR);
         }
         log.error(this.getClass().getSimpleName(), e);
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
 
         log.error(this.getClass().getSimpleName(), e);
         OR<Void> OR = new OR<>();
-        OR.setCode(OperationResult.CommonCodes.GENERAL_FAIL).setResult(false);
+        OR.setCode(OperationResult.CommonCodes.GENERAL_FAIL);
         OR.setMsg(e.getMessage());
         return new ResponseEntity(OR, HttpStatus.OK);
     }

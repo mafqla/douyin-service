@@ -1,6 +1,6 @@
 package com.yali.vilivili.service;
 
-import com.yali.vilivili.model.User;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
@@ -27,5 +27,5 @@ public interface UserService {
      * @param ro
      */
     void deleteById(deleteByUserIdRO ro);
-    List<User> findAllUser(UserSelectRO ro);
+    List<UserEntity> findAllUser(UserSelectRO ro);
 }

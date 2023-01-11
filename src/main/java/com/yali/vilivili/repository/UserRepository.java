@@ -1,6 +1,6 @@
 package com.yali.vilivili.repository;
 
-import com.yali.vilivili.model.User;
+import com.yali.vilivili.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +11,9 @@ import java.util.List;
  * @Date 2023.1.6 22:58
  * @Author fuqianlin
  */
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-    User findByEmail(String email);
+    UserEntity findByEmail(String email);
 
     /**
      * 根据用户id删除用户
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     int deleteById(Integer id, byte isValid);
 
     @Query(value = "select * from user where username = ?1 and is_valid = ?2 and type=?3",nativeQuery = true)
-    List<User> findAllUser(String username, int isValid, int Type);
+    List<UserEntity> findAllUser(String username, int isValid, int Type);
 
-    User findTopByUsername(String username);
+    UserEntity findTopByUsername(String username);
 }

@@ -1,4 +1,4 @@
-package com.yali.vilivili.model;
+package com.yali.vilivili.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.Date;
 @Table(name = "user")
 @DynamicInsert
 @DynamicUpdate
-public class User {
+public class UserEntity {
 
     /**
      * 主键

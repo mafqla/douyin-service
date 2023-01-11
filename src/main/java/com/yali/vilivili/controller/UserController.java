@@ -3,7 +3,7 @@ package com.yali.vilivili.controller;
 import com.yali.vilivili.annotation.RequireLogin;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
-import com.yali.vilivili.model.User;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
@@ -43,7 +43,6 @@ public class UserController extends BaseController {
     @PostMapping("/deleteById")
     @RequireLogin
     public ResponseEntity<OR<Void>> deleteById(@Valid deleteByUserIdRO ro) {
-        System.out.println("删除用户"+ro);
         userService.deleteById(ro);
         return process(this::successResult);
     }
@@ -51,7 +50,7 @@ public class UserController extends BaseController {
     @ApiOperation(value = "查询用户")
     @PostMapping("/find")
     @RequireLogin
-    public ResponseEntity<OR<List<User>>> findAllUser(UserSelectRO ro) {
+    public ResponseEntity<OR<List<UserEntity>>> findAllUser(UserSelectRO ro) {
         userService.findAllUser(ro);
         return processData(()->userService.findAllUser(ro),this::processException);
     }

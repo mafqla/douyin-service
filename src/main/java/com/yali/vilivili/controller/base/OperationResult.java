@@ -12,7 +12,7 @@ import java.util.List;
  * @Author pq
  */
 public class OperationResult<T> {
-    private Boolean result = false;
+
     private int httpStatus;
     private String code;
     private String msg;
@@ -30,11 +30,8 @@ public class OperationResult<T> {
         this.httpStatus = HttpStatus.OK.value();
         this.code = "";
         this.errorMsg = Lists.newArrayList();
-        this.result = result;
     }
-    public Boolean isResult() {
-        return this.result;
-    }
+
 
     public OperationResult<T> setData(T data) {
         this.data = data;
@@ -51,10 +48,7 @@ public class OperationResult<T> {
         return this;
     }
 
-    public OperationResult<T> setResult(boolean result) {
-        this.result = result;
-        return this;
-    }
+
 
     public void setMsg(String msg) {
         this.msg = msg;
@@ -99,7 +93,6 @@ public class OperationResult<T> {
 
 
     public OperationResult<T> fail(String message) {
-        this.result = false;
         this.httpStatus = HttpStatus.BAD_REQUEST.value();
         this.msg = message;
         return this;

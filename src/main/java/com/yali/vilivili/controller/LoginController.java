@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * @Author pq
  */
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 @Api(value = "登录相关", tags = {"登录相关"})
 public class LoginController extends BaseController {
     @Resource
