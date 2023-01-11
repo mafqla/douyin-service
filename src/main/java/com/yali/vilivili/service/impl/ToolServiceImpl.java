@@ -1,7 +1,7 @@
 package com.yali.vilivili.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yali.vilivili.controller.base.OperationResult;
+import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.service.ToolService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
@@ -23,7 +23,7 @@ public class ToolServiceImpl implements ToolService {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MimeTypeUtils.APPLICATION_JSON_VALUE);
         ObjectMapper om = new ObjectMapper();
-        OperationResult<Void> operationResult = new OperationResult<>(false);
+        OR<Void> operationResult = new OR<>(false);
         operationResult.setCode(code);
         operationResult.fail(message);
         try {

@@ -2,7 +2,6 @@ package com.yali.vilivili.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yali.vilivili.annotation.RequireLogin;
-import com.yali.vilivili.controller.base.OperationResult;
 import com.yali.vilivili.model.vo.TokenInfoVO;
 import com.yali.vilivili.service.ToolService;
 import com.yali.vilivili.utils.JwtUtils;

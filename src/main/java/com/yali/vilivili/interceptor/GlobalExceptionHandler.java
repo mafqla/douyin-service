@@ -1,7 +1,6 @@
 package com.yali.vilivili.interceptor;
 
 import com.yali.vilivili.controller.base.OR;
-import com.yali.vilivili.controller.base.OperationResult;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +32,7 @@ public class GlobalExceptionHandler {
             MyException lsgException = (MyException) e;
             log.debug("lsg exception,code [{}], message [{}]", lsgException.getCode(), lsgException.getMessage());
             OR.setCode(StringUtils.isEmpty(lsgException.getCode())?
-                    OperationResult.CommonCodes.REAULT_FAIL: lsgException.getCode()).setMsg(lsgException.getMessage()
+                    com.yali.vilivili.controller.base.OR.CommonCodes.REAULT_FAIL: lsgException.getCode()).setMsg(lsgException.getMessage()
             );
             responseEntity = ResponseEntity.ok(OR);
 
@@ -53,13 +52,13 @@ public class GlobalExceptionHandler {
                         .append(";");
             }
 
-            OR.setCode(OperationResult.CommonCodes.INPUT_NOT_VALID).setMsg(messageBuilder.toString());
+            OR.setCode(com.yali.vilivili.controller.base.OR.CommonCodes.INPUT_NOT_VALID).setMsg(messageBuilder.toString());
 
 
             responseEntity = ResponseEntity.ok(OR);
 
         } else {
-            OR.setCode(OperationResult.CommonCodes.REAULT_FAIL).setMsg("服务器异常");
+            OR.setCode(com.yali.vilivili.controller.base.OR.CommonCodes.REAULT_FAIL).setMsg("服务器异常");
             responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(OR);
         }
         log.error(this.getClass().getSimpleName(), e);
@@ -72,7 +71,7 @@ public class GlobalExceptionHandler {
 
         log.error(this.getClass().getSimpleName(), e);
         OR<Void> OR = new OR<>();
-        OR.setCode(OperationResult.CommonCodes.GENERAL_FAIL);
+        OR.setCode(com.yali.vilivili.controller.base.OR.CommonCodes.GENERAL_FAIL);
         OR.setMsg(e.getMessage());
         return new ResponseEntity(OR, HttpStatus.OK);
     }
