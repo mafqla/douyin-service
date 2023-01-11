@@ -23,24 +23,31 @@ import java.util.stream.Collectors;
 public class CommonOprController {
 
 
-
     public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processData(Supplier<M> sp, BindingResult br, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
-        return this.processDataCallback(sp, br, (Consumer)null, processExp);
+        return this.processDataCallback(sp, br, (Consumer) null, processExp);
+    }
+
+    public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processData(Supplier<M> sp, BindingResult br, String msg, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
+        return this.processDataCallback(sp, br, msg, (Consumer) null, processExp);
     }
 
     public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processData(Supplier<M> sp, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
-        return this.processDataCallback(sp, (Consumer)null, processExp);
+        return this.processDataCallback(sp, (Consumer) null, processExp);
     }
 
     public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processDataCallback(Supplier<M> sp, BindingResult br, Consumer<com.yali.vilivili.controller.base.OR<M>> consumer, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
         return br.hasErrors() ? this.errorOstResult(br) : this.processDataCallback(sp, consumer, processExp);
     }
 
+    public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processDataCallback(Supplier<M> sp, BindingResult br, String msg, Consumer<com.yali.vilivili.controller.base.OR<M>> consumer, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
+        return br.hasErrors() ? this.errorOstResult(br) : this.processDataCallback(sp, msg, consumer, processExp);
+    }
+
     private <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> errorOstResult(BindingResult br) {
         com.yali.vilivili.controller.base.OR<M> data = new com.yali.vilivili.controller.base.OR();
         data.setHttpStatus(HttpStatus.BAD_REQUEST.value());
         data.setCode(String.valueOf(HttpStatus.BAD_REQUEST.value()));
-        List<String> errs = (List)br.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+        List<String> errs = (List) br.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
         return ResponseEntity.status(data.getHttpStatus()).contentType(MediaType.APPLICATION_JSON).body(data);
     }
 
@@ -49,6 +56,29 @@ public class CommonOprController {
 
         try {
             M val = sp.get();
+            data.setCode(String.valueOf(HttpStatus.OK.value())).setData(val);
+            if (Objects.nonNull(consumer)) {
+                consumer.accept(data);
+            }
+
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(data);
+        } catch (Exception var6) {
+            CommonOprController.log.error(this.getClass().getSimpleName(), var6);
+            if (Objects.nonNull(processExp)) {
+                processExp.accept(data, var6);
+            }
+
+            return ResponseEntity.status(data.getHttpStatus()).contentType(MediaType.APPLICATION_JSON).body(data);
+        }
+    }
+
+    public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processDataCallback(Supplier<M> sp, String msg, Consumer<com.yali.vilivili.controller.base.OR<M>> consumer, BiConsumer<com.yali.vilivili.controller.base.OR<M>, Exception> processExp) {
+        com.yali.vilivili.controller.base.OR<M> data = new com.yali.vilivili.controller.base.OR();
+
+        try {
+            M val = sp.get();
+            data.setResult(true);
+            data.setMsg(msg);
             data.setCode(String.valueOf(HttpStatus.OK.value())).setData(val);
             if (Objects.nonNull(consumer)) {
                 consumer.accept(data);

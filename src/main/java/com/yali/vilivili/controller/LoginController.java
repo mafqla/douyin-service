@@ -7,6 +7,7 @@ import com.yali.vilivili.model.vo.LoginVO;
 import com.yali.vilivili.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +32,6 @@ public class LoginController extends BaseController {
     @ApiOperation(value = "登录")
     @PostMapping("/login")
     public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br){
-        return this.processData(()->loginService.login(ro),br,this::processException);
+        return this.processData(()->loginService.login(ro),br,"msg",this::processException);
     }
 }
