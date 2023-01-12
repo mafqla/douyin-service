@@ -47,7 +47,6 @@ public class WebSecurityConfig {
                                 .antMatchers("/v2/api-docs-ext/**").permitAll()
                                 .antMatchers("/swagger-resources/**").permitAll()
                                 .antMatchers("/doc.html").permitAll()
-                                .antMatchers("/login/**").permitAll()
                                 .antMatchers("/util/**").permitAll()
                                 .antMatchers("/img/**").permitAll()
                               //springboot3.0写法
