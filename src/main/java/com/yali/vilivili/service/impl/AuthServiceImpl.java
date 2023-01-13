@@ -5,7 +5,7 @@ import com.yali.vilivili.model.ro.LoginRO;
 import com.yali.vilivili.model.vo.LoginVO;
 import com.yali.vilivili.model.vo.TokenInfoVO;
 import com.yali.vilivili.repository.UserRepository;
-import com.yali.vilivili.service.LoginService;
+import com.yali.vilivili.service.AuthService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * @Author pq
  */
 @Service
-public class LoginServiceImpl implements LoginService {
+public class AuthServiceImpl implements AuthService {
 
     @Resource
     private UserRepository userRepository;
@@ -57,4 +57,6 @@ public class LoginServiceImpl implements LoginService {
         loginVO.setToken(token);
         return loginVO;
     }
+
+
 }
