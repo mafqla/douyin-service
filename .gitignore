@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Igonre application.properties
+!src/main/resources/application-local.properties
+
 ### STS ###
 .apt_generated
 .classpath
