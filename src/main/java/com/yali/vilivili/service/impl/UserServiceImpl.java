@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public void updateAndSaveUser(updateAndSaveUserRO ro) {
 
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
-        String userAvatar = "http://127.0.0.1:8080/static/default_logo/1.png";
+        String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
 
         String password= AESUtil.encrypt(ro.getPassword());

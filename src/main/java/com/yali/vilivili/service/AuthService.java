@@ -1,7 +1,9 @@
 package com.yali.vilivili.service;
 
 
+import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
+import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
 
 /**
@@ -19,4 +21,17 @@ public interface AuthService {
     LoginVO login(LoginRO ro);
 
 
+    /**
+     * 退出登录
+     * @param token token
+     */
+    void logout(String token);
+
+    void sendEmailCode(EmailRO ro);
+
+    /**
+     * 注册
+     * @param ro 注册参数
+     */
+    void register(RegisterRO ro);
 }

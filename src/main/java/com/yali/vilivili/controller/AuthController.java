@@ -2,7 +2,9 @@ package com.yali.vilivili.controller;
 
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
+import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
+import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
 import com.yali.vilivili.service.AuthService;
 import io.swagger.annotations.Api;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @Description 登录注册接口
@@ -23,15 +27,37 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/auth")
-@Api(value = "登录相关", tags = {"登录相关"})
+@Api(value = "账号相关", tags = {"账户相关"})
 public class AuthController extends BaseController {
     @Resource
-    private AuthService loginService;
+    private AuthService authService;
 
     @ApiOperation(value = "登录")
     @PostMapping("/login")
     public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br){
-        return this.processData(()->loginService.login(ro),br,"登录成功",this::processException);
+        return this.processData(()->authService.login(ro),br,"登录成功",this::processException);
+    }
+
+    @ApiOperation(value = "退出登录")
+    @PostMapping("/logout")
+    public ResponseEntity<OR<Void>> logout(HttpServletRequest request){
+        String token = request.getHeader("loginToken");
+        authService.logout(token);
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "发送验证码")
+    @PostMapping("/sendCode")
+    public ResponseEntity<OR<Void>> sendCode(@Valid EmailRO ro){
+        authService.sendEmailCode(ro);
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "注册")
+    @PostMapping("/register")
+    public ResponseEntity<OR<Void>> register(@Valid RegisterRO ro){
+        authService.register(ro);
+        return process(this::successResult);
     }
 
 }
