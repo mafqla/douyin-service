@@ -61,3 +61,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+/src/main/resources/application-local.properties
