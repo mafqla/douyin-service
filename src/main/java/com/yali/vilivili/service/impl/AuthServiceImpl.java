@@ -98,14 +98,19 @@ public class AuthServiceImpl implements AuthService {
         String code = UUID.randomUUID().toString().substring(0, 6);
         // 将验证码存入redis中，设置过期时间为5分钟
         redisTemplate.opsForValue().set(ro.getEmail(), code, 5, TimeUnit.MINUTES);
-        // 调用javaMail发送邮件
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("sendmail_post@qq.com");
-        message.setTo(ro.getEmail());
-        message.setSubject("邮箱验证码");
-        message.setText("<h1>邮箱验证码</h1><p>您的邮箱验证码为：" + code + "</p>"+ "<p>请在5分钟内使用</p>"
-                + "<p>如果不是本人操作，请忽略</p>"+ "<p>此邮件由系统自动发出，请勿回复</p>");
-        javaMailSender.send(message);
+        try {
+            // 调用javaMail发送邮件
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("sendmail_post@qq.com");
+            message.setTo(ro.getEmail());
+            message.setSubject("账户注册验证码");
+            message.setText("<h1>邮箱验证码</h1><p>您的邮箱验证码为：" + code + "</p>" + "<p>请在5分钟内使用</p>"
+                    + "<p>如果不是本人操作，请忽略</p>" + "<p>此邮件由系统自动发出，请勿回复</p>");
+            javaMailSender.send(message);
+            System.out.println("邮件发送成功,验证码为:" + code);
+        } catch (Exception e) {
+            throw new MyException(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "邮件发送失败");
+        }
     }
 
     /**
