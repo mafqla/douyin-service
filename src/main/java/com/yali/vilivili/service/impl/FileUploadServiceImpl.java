@@ -3,6 +3,7 @@ package com.yali.vilivili.service.impl;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,18 +27,13 @@ import java.util.UUID;
 public class FileUploadServiceImpl implements FileUploadService {
 
 
-    /**
-     * 图片上传
-     *
-     * @param file
-     * @return
-     */
     @Value("${file.upload.path}")
     private String filePath;
     @Value("${file.upload.image.suffix}")
     private String imageSuffix;
     @Value("${server.port}")
     private String port;
+
     @Value("${file.upload.context-path}")
     private String contextPath;
     @Override
@@ -45,14 +41,15 @@ public class FileUploadServiceImpl implements FileUploadService {
         if (file.isEmpty()) {
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件");
         }
+        // 转换类型
+
         String fileName = file.getOriginalFilename();
         assert fileName != null;
         if(!imageSuffix.contains(fileName.substring(fileName.lastIndexOf(".")+1))){
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件格式不正确");
         }
         // 文件上传后的路径,文件重命名，防止重复
-        String newFileName = UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
-        fileName = newFileName;
+        fileName = UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
         File dest = new File(filePath + fileName);
         try {
             // 检测是否存在目录
@@ -60,11 +57,22 @@ public class FileUploadServiceImpl implements FileUploadService {
                 dest.getParentFile().mkdirs();// 新建文件夹
             }
             // 文件写入
-            file.transferTo(dest);
+//            file.transferTo(file.getInputStream(),dest);
+            FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
             return "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port +contextPath+"/"+fileName;
         } catch (IOException e) {
             log.error("上传失败", e);
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件写入失败");
         }
+    }
+
+    /**
+     * 图片预览
+     *
+     * @param filePath 图片路径
+     */
+    @Override
+    public void imagePreview(String filePath) {
+
     }
 }

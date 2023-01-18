@@ -5,7 +5,6 @@ import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.service.FileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +33,9 @@ public class FileUploadController extends BaseController {
 
     @ApiOperation(value = "图片上传")
     @PostMapping("/image")
-    public ResponseEntity<OR<Void>> imageUpload(@RequestParam("file") MultipartFile file){
-        fileUploadService.imageUpload(file);
-        return process(this::successResult);
-    }
+    public ResponseEntity<OR<String>> imageUpload(@RequestParam("file") MultipartFile file){
+        return processData(() -> fileUploadService.imageUpload(file),"上传成功", this::processException);    }
+
 
 
 }

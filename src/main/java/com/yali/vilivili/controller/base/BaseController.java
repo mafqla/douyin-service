@@ -64,6 +64,10 @@ public class BaseController {
         return br.hasErrors() ? errorOstResult(br) : this.processDataCallback(sp, msg, processExp);
     }
 
+    public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processData(Supplier<M> sp, String msg, BiConsumer<OR<M>, Exception> processExp) {
+        return  this.processDataCallback(sp, msg, processExp);
+    }
+
     public <M> ResponseEntity<com.yali.vilivili.controller.base.OR<M>> processData(Supplier<M> sp, BindingResult br, BiConsumer<OR<M>, Exception> processExp) {
         return br.hasErrors() ? errorOstResult(br) : this.processDataCallback(sp, processExp);
     }

@@ -10,8 +10,14 @@ public interface FileUploadService {
 
     /**
      * 图片上传
-     * @param file
-     * @return
+     * @param file 文件
+     * @return url
      */
-    public String imageUpload(MultipartFile file);
+    String imageUpload(MultipartFile file);
+
+    /**
+     * 图片预览
+     * @param filePath 图片路径
+     */
+    void imagePreview(String filePath);
 }
