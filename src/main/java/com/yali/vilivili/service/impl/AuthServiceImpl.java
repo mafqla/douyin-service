@@ -46,6 +46,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Resource
+    private  FileUploadServiceImpl fileUploadService;
+
     @Override
     public LoginVO login(LoginRO ro) {
         UserEntity user=userRepository.findTopByUsername(ro.getUsername());
@@ -67,11 +70,15 @@ public class AuthServiceImpl implements AuthService {
         String token = JwtUtils.getToken(tokenInfoVO);
         // 将token存入redis中，设置过期时间为2小时）
         redisTemplate.opsForValue().set(loginUUID, token, 2, TimeUnit.HOURS);
+
+        // 获取用户头像url
+        String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+
         LoginVO loginVO = new LoginVO();
         loginVO.setUserId(user.getId());
         loginVO.setUsername(user.getUsername());
         loginVO.setEmail(user.getEmail());
-        loginVO.setUserAvatar(user.getUserAvatar());
+        loginVO.setUserAvatar(avatarUrl);
         loginVO.setType(String.valueOf(user.getType()));
         loginVO.setCreateTime(user.getCreateTime());
         loginVO.setToken(token);

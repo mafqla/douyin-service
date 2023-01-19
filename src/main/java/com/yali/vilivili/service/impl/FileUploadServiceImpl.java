@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.UUID;
 
@@ -29,6 +32,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${file.upload.path}")
     private String filePath;
+
+    @Value("${file.upload.path2}")
+    private String filePath2;
+
     @Value("${file.upload.image.suffix}")
     private String imageSuffix;
     @Value("${server.port}")
@@ -67,12 +74,32 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
-     * 图片预览
+     * 根据路径返回图片在线预览地址
      *
-     * @param filePath 图片路径
+     * @param path 路径
+     * @return url
      */
     @Override
-    public void imagePreview(String filePath) {
+    public String getImageUrl(String path) {
 
+        try{
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port +contextPath;
+            if(path.startsWith("/static/avatar/")){
+                //去除掉/static/avatar/，只留下文件名
+                path = path.substring(15);
+                return url+path;
+            }else if(path.startsWith("/static/default_logo/")){
+                //去除掉/static/default_logo/，只留下文件名
+                path = path.substring(20);
+                return url+path;
+            }else{
+                return url;
+            }
+        }catch (Exception e){
+            log.error("获取图片地址失败", e);
+            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "获取图片地址失败");
+        }
     }
+
+
 }

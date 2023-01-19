@@ -2,6 +2,8 @@ package com.yali.vilivili.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author fuqianlin
  * @date 2023-01-18 21:58
@@ -16,8 +18,10 @@ public interface FileUploadService {
     String imageUpload(MultipartFile file);
 
     /**
-     * 图片预览
-     * @param filePath 图片路径
+     * 根据路径返回图片在线预览地址
+     * @param path 路径
+     * @return url
      */
-    void imagePreview(String filePath);
+    String getImageUrl(String path);
+
 }

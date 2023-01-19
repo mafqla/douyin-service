@@ -28,6 +28,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${file.upload.path}")
     private String fileUploadPath;
+
+    @Value("${file.upload.path2}")
+    private String fileUploadPath2;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(userInterceptor).addPathPatterns("/**");
@@ -37,6 +40,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/avatar/**")
-                .addResourceLocations("file:"+fileUploadPath);
+                .addResourceLocations("file:"+fileUploadPath)
+                .addResourceLocations("file:"+fileUploadPath2);
     }
 }
