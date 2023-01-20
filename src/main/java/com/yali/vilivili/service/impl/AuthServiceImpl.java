@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Objects;
@@ -141,6 +142,42 @@ public class AuthServiceImpl implements AuthService {
         addUser.setPassword(ro.getPassword());
         addUser.setEmail(ro.getEmail());
         userService.updateAndSaveUser(addUser);
+    }
+
+    /**
+     * 重置密码
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void resetPassword(String email,  String password, String code) {
+        UserEntity user = userRepository.findByEmail(email);
+        if (Objects.isNull(user)) {
+            throw new MyException(HttpStatus.OK.toString(), "用户不存在!");
+        }
+        // 判断验证码是否正确
+        String verifyCode = redisTemplate.opsForValue().get(email);
+        if (!StringUtils.equals(verifyCode, code)) {
+            throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
+        }
+        // 重置密码
+       userRepository.resetPasswordByEmail(email, AESUtil.encrypt(password));
+    }
+
+    /**
+     * 根据用户id修改头像
+     *
+     * @param email 用户邮箱
+     * @param avatar 头像
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAvatar(String email, String avatar) {
+        UserEntity user = userRepository.findByEmail(email);
+        if (Objects.isNull(user)) {
+            throw new MyException(HttpStatus.OK.toString(), "用户不存在!");
+        }
+        userRepository.updateAvatarByEmail(email, avatar);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.yali.vilivili.controller;
 
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
+import com.yali.vilivili.model.vo.FileUploadVO;
 import com.yali.vilivili.service.FileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,7 @@ public class FileUploadController extends BaseController {
 
     @ApiOperation(value = "图片上传")
     @PostMapping("/image")
-    public ResponseEntity<OR<String>> imageUpload(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<OR<FileUploadVO>> imageUpload(@RequestParam("file") MultipartFile file){
         return processData(() -> fileUploadService.imageUpload(file),"上传成功", this::processException);
     }
 

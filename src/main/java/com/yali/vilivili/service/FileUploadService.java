@@ -1,5 +1,6 @@
 package com.yali.vilivili.service;
 
+import com.yali.vilivili.model.vo.FileUploadVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,7 @@ public interface FileUploadService {
      * @param file 文件
      * @return url
      */
-    String imageUpload(MultipartFile file);
+    FileUploadVO imageUpload(MultipartFile file);
 
     /**
      * 根据路径返回图片在线预览地址

@@ -18,6 +18,11 @@ import java.util.Date;
 @ApiModel(description = "新增用户接受类")
 @Data
 public class updateAndSaveUserRO {
+    /**
+     * 用户id
+     */
+    @ApiModelProperty(value = "用户id", required = false)
+    private Integer userId;
 
     /**
      * 用户名
@@ -31,7 +36,7 @@ public class updateAndSaveUserRO {
      */
     @NotBlank(message = "密码不能为空")
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$", message = "密码必须是6-16位数字和字母组合")
-    @ApiModelProperty(name = "password", value = "用户密码", required = true)
+    @ApiModelProperty(name = "password", value = "用户密码", required = false)
     private String password;
 
 

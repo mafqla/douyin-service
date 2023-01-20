@@ -27,6 +27,10 @@ public interface AuthService {
      */
     void logout(String token);
 
+    /**
+     * 发送验证码
+     * @param ro 邮箱参数
+     */
     void sendEmailCode(EmailRO ro);
 
     /**
@@ -34,4 +38,20 @@ public interface AuthService {
      * @param ro 注册参数
      */
     void register(RegisterRO ro);
+
+    /**
+     * 重置密码
+     * @param email 用户邮箱
+     * @param password 新密码
+     * @param code 验证码
+     */
+    void resetPassword(String email,  String password, String code);
+
+    /**
+     * 根据用户id修改头像
+     * @param email 用户邮箱
+     * @param avatar 头像
+     */
+    void updateAvatar(String email, String avatar);
+
 }

@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
         String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
 
-        String password= AESUtil.encrypt(ro.getPassword());
-        ro.setPassword(password);
+
         //判断用户邮箱是否存在
         UserEntity isEmail = userRepository.findByEmail(ro.getEmail());
         if (Objects.nonNull(isEmail)) {
@@ -63,6 +62,8 @@ public class UserServiceImpl implements UserService {
         } else {
             ro.setCreateTime(new Date());
             ro.setUpdateTime(new Date());
+            String password= AESUtil.encrypt(ro.getPassword());
+            ro.setPassword(password);
             UserEntity saveUser = new UserEntity();
             saveUser.setUserAvatar(userAvatar);
             // 保存用户ip

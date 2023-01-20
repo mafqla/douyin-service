@@ -60,4 +60,18 @@ public class AuthController extends BaseController {
         return process(this::successResult);
     }
 
+    @ApiOperation(value = "重置密码")
+    @PostMapping("/resetPassword")
+    public ResponseEntity<OR<Void>> resetPassword(String email,  String password, String code){
+        authService.resetPassword(email,password,code);
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "修改用户头像")
+    @PostMapping("/updateAvatar")
+    public ResponseEntity<OR<Void>> updateAvatar(String email, String avatar){
+        authService.updateAvatar(email,avatar);
+        return process(this::successResult);
+    }
+
 }

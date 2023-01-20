@@ -1,5 +1,6 @@
 package com.yali.vilivili.service.impl;
 
+import com.yali.vilivili.model.vo.FileUploadVO;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${file.upload.context-path}")
     private String contextPath;
     @Override
-    public String imageUpload(MultipartFile file) {
+    public FileUploadVO imageUpload(MultipartFile file) {
         if (file.isEmpty()) {
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件");
         }
@@ -64,9 +65,16 @@ public class FileUploadServiceImpl implements FileUploadService {
                 dest.getParentFile().mkdirs();// 新建文件夹
             }
             // 文件写入
-//            file.transferTo(file.getInputStream(),dest);
             FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
-            return "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port +contextPath+"/"+fileName;
+
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port +contextPath+"/"+fileName;
+            // 去除src/main/resources前缀,返回相对路径
+            String path = filePath.substring(18)+fileName;
+            log.info("图片上传成功，图片地址为：" + path+" url:"+url);
+            FileUploadVO fileUploadVO = new FileUploadVO();
+            fileUploadVO.setUrl(url);
+            fileUploadVO.setPath(path);
+            return fileUploadVO;
         } catch (IOException e) {
             log.error("上传失败", e);
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件写入失败");
@@ -93,7 +101,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                 path = path.substring(20);
                 return url+path;
             }else{
-                return url;
+                return path;
             }
         }catch (Exception e){
             log.error("获取图片地址失败", e);
