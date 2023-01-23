@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 06/01/2023 21:53:49
+ Date: 23/01/2023 12:01:46
 */
 
 SET NAMES utf8mb4;
@@ -80,7 +80,7 @@ CREATE TABLE `follow`  (
   `follower_id` bigint NOT NULL COMMENT '用户ID',
   `followee_id` bigint NOT NULL COMMENT '被关注用户ID',
   `follow_time` datetime NOT NULL COMMENT '关注时间',
-  PRIMARY KEY (`follower_id`, `followee_id`) USING BTREE
+  PRIMARY KEY (`follower_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -95,7 +95,7 @@ CREATE TABLE `like`  (
   `user_id` bigint NOT NULL COMMENT '用户ID',
   `video_id` bigint NOT NULL COMMENT '视频ID',
   `like_time` datetime NOT NULL COMMENT '点赞时间',
-  PRIMARY KEY (`user_id`, `video_id`) USING BTREE
+  PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -113,17 +113,18 @@ CREATE TABLE `user`  (
   `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户邮箱',
   `user_avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户头像',
   `is_valid` tinyint NOT NULL DEFAULT 0 COMMENT '用户是否有效(1无效,0有效)',
+  `type` tinyint NOT NULL DEFAULT 0 COMMENT '用户类型（0：普通用户，1：管理员，2：超级管理员，3：VIP用户)',
   `u_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ip地址',
   `create_time` datetime NOT NULL COMMENT '用户创建时间',
   `update_time` datetime NOT NULL COMMENT '用户更新时间',
-  `type` tinyint NOT NULL DEFAULT 0 COMMENT '用户类型（0：普通用户，1：管理员，2：超级管理员，3：VIP用户)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', '$2a$10$stBYddlA/MOOT..UMgxx1ea4brbUV3XhltXV/YEQF4e76am1GiXcK', 'admin@qq.com', 'http://127.0.0.1:8080/static/avatar/1.jpg', 0, '192.168.207.1', '2023-01-06 21:17:26', '2023-01-06 21:17:26', 0);
+INSERT INTO `user` VALUES (1, 'admin', 'admin13n', 'admin@qq.com', '/static/default_logo/1.png', 0, 0, '192.168.227.1', '2023-01-11 21:06:39', '2023-01-20 13:23:26');
+INSERT INTO `user` VALUES (2, 'test', 'ZURVvDoaGYQVX4okQDO1ag==', 'test@qq.com', '/static/avatar/067672ad-109b-408e-a7a9-376f1973addb.png', 0, 0, '192.168.227.1', '2023-01-14 23:50:31', '2023-01-14 23:50:31');
 
 -- ----------------------------
 -- Table structure for videos
@@ -132,15 +133,17 @@ DROP TABLE IF EXISTS `videos`;
 CREATE TABLE `videos`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '视频id',
   `title` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频标题',
-  `videos_cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频封面',
-  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频描述',
+  `videos_cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频封面地址',
+  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '视频描述',
   `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频作者用户名',
+  `videos_time` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频时长',
   `videos_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '视频地址',
   `upload_time` datetime NOT NULL COMMENT '视频上传时间',
-  `play_count` bigint(20) UNSIGNED ZEROFILL NOT NULL COMMENT '视频播放次数',
-  `like_count` bigint(20) UNSIGNED ZEROFILL NOT NULL COMMENT '视频点赞次数',
-  `dislike_count` bigint(20) UNSIGNED ZEROFILL NOT NULL COMMENT '视频点踩次数',
-  `comment_count` bigint(20) UNSIGNED ZEROFILL NOT NULL COMMENT '视频评论数量',
+  `play_count` bigint(20) UNSIGNED ZEROFILL NOT NULL DEFAULT 00000000000000000000 COMMENT '视频播放次数',
+  `like_count` bigint(20) UNSIGNED ZEROFILL NOT NULL DEFAULT 00000000000000000000 COMMENT '视频点赞次数',
+  `dislike_count` bigint(20) UNSIGNED ZEROFILL NOT NULL DEFAULT 00000000000000000000 COMMENT '视频点踩次数',
+  `comment_count` bigint(20) UNSIGNED ZEROFILL NOT NULL DEFAULT 00000000000000000000 COMMENT '视频评论数量',
+  `status` int NOT NULL DEFAULT 0 COMMENT '默认为0对所有人可见，1仅粉丝可见，2仅自己可见，3置顶',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 

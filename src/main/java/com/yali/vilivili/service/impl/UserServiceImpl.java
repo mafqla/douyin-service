@@ -5,7 +5,6 @@ import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.repository.UserRepository;
-import com.yali.vilivili.service.CodeMessageService;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
@@ -28,9 +27,6 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     @Resource
-    private CodeMessageService codeMessageService;
-
-    @Resource
     private UserRepository userRepository;
     @Resource
     private HttpServletRequest request;
@@ -38,7 +34,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 更新和保存用户
      *
-     * @param ro
+     * @param ro 更新和保存用户
      */
     public void updateAndSaveUser(updateAndSaveUserRO ro) {
 
@@ -46,13 +42,19 @@ public class UserServiceImpl implements UserService {
         String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
 
-
         //判断用户邮箱是否存在
         UserEntity isEmail = userRepository.findByEmail(ro.getEmail());
+
         if (Objects.nonNull(isEmail)) {
             isEmail.setUpdateTime(new Date());
             isEmail.setUIp(ipAddress);
-            isEmail.setUserAvatar(userAvatar);
+            // 如果userAvatar为空，则设置默认头像
+            if (Objects.isNull(isEmail.getUserAvatar())) {
+                isEmail.setUserAvatar(userAvatar);
+            } else {
+                isEmail.setUserAvatar(isEmail.getUserAvatar());
+            }
+
             isEmail.setUsername(ro.getUsername());
             isEmail.setPassword(ro.getPassword());
             isEmail.setEmail(ro.getEmail());
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
         } else {
             ro.setCreateTime(new Date());
             ro.setUpdateTime(new Date());
-            String password= AESUtil.encrypt(ro.getPassword());
+            String password = AESUtil.encrypt(ro.getPassword());
             ro.setPassword(password);
             UserEntity saveUser = new UserEntity();
             saveUser.setUserAvatar(userAvatar);
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 删除用户
      *
-     * @param ro
+     * @param ro 删除用户
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(deleteByUserIdRO ro) {
@@ -89,11 +91,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 查询所有用户
-     *
-     * @param ro
-     * @return
+     * @param ro 查询条件
      */
-    public List<UserEntity> findAllUser(UserSelectRO ro){
+    public List<UserEntity> findAllUser(UserSelectRO ro) {
         return userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
     }
 }

@@ -33,6 +33,9 @@ public class VideosEntity {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "videos_time")
+    private String videosTime;
+
     @Column(name = "videos_address")
     private String videosAddress;
 
@@ -51,4 +54,8 @@ public class VideosEntity {
 
     @Column(name = "comment_count")
     private long commentCount;
+
+    //默认为0对所有人可见，1仅粉丝可见，2仅自己可见，3置顶
+    @Column(name = "status")
+    private Integer status;
 }

@@ -7,14 +7,10 @@ import com.yali.vilivili.service.FileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文件上传接口
@@ -41,10 +37,12 @@ public class FileUploadController extends BaseController {
 
 
     @ApiOperation(value = "根据路径返回图片在线预览地址")
-    @PostMapping("/getImageUrl")
+    @GetMapping("/getImageUrl")
     public ResponseEntity<OR<String>> getImageUrl(String path){
         return processData(() -> fileUploadService.getImageUrl(path),"获取成功", this::processException);
     }
+
+
 
 
 

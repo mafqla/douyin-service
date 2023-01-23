@@ -1,9 +1,8 @@
 package com.yali.vilivili.service;
 
+import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.FileUploadVO;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author fuqianlin
@@ -24,5 +23,12 @@ public interface FileUploadService {
      * @return url
      */
     String getImageUrl(String path);
+
+    /**
+     * 视频上传
+     * @param videosRo 视频请求参数
+     * @return url and path
+     */
+    Void videoUpload(MultipartFile videos, VideosRo videosRo);
 
 }
