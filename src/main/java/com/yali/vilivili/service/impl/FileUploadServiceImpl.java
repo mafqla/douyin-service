@@ -139,6 +139,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         //将视频转换为mp4格式
 
         try {
+            // 获取视频时长
+            String duration = FFmpegUtils.getVideoDuration(videos.getInputStream());
+            System.out.println(duration);
 
             String coverName = String.valueOf(UUID.randomUUID());
             //图片保存为png格式

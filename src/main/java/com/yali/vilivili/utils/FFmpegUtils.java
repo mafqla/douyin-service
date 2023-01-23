@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 视频转换工具类
@@ -113,15 +116,22 @@ public class FFmpegUtils {
      * @param inputFile 视频文件
      * @return HH:mm:ss
      */
-    public static int getVideoDuration(File inputFile) {
+    public static String getVideoDuration(InputStream inputFile) {
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputFile)) {
             grabber.start();
-            int duration = (int) grabber.getLengthInTime() / (1000 * 1000);
+            //获取视频时长
+            long duration = grabber.getLengthInTime() / 1000000;
+            // HH:mm:ss
+            long hours = duration / 3600;
+            long minutes = (duration % 3600) / 60;
+            long seconds = duration % 60;
+            String time = String.format("%02d:%02d:%02d", hours, minutes, seconds);
             grabber.stop();
-            return duration;
+            return time;
+
         } catch (FrameGrabber.Exception e) {
             e.printStackTrace();
-            return -1;
+            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "视频时长获取失败"+e.getMessage());
         }
     }
 }
