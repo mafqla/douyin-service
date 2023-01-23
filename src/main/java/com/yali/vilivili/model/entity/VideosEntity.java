@@ -27,6 +27,9 @@ public class VideosEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "videos_cover")
+    private String videosCover;
+
     @Column(name = "description")
     private String description;
 

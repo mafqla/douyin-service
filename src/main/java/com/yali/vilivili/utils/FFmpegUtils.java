@@ -69,14 +69,14 @@ public class FFmpegUtils {
     /**
      * 获取视频封面
      *
-     * @param inputFile 视频文件
+     * @param path 视频路径
      * @return outputFile 封面文件
      */
-    public static ByteArrayInputStream getVideoCover(InputStream inputFile) {
+    public static ByteArrayInputStream getVideoCover(String path) {
         ByteArrayInputStream out = null;
 
-        try{
-            FFmpegFrameGrabber ff = new FFmpegFrameGrabber(inputFile);
+        try {
+            FFmpegFrameGrabber ff = new FFmpegFrameGrabber(path);
             ff.start();
             //获取视频总帧数
             int ffLength = ff.getLengthInFrames();

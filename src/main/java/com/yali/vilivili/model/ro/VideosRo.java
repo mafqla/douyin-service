@@ -26,5 +26,8 @@ public class VideosRo {
     @ApiModelProperty("用户名")
     private String username;
 
+    @ApiModelProperty("视频状态")
+    private String status;
+
 
 }

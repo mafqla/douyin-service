@@ -1,7 +1,9 @@
 package com.yali.vilivili.service.impl;
 
+import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.FileUploadVO;
+import com.yali.vilivili.repository.VideosRepository;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.utils.FFmpegUtils;
 import com.yali.vilivili.utils.MyException;
@@ -12,10 +14,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -31,6 +35,8 @@ import java.util.UUID;
 public class FileUploadServiceImpl implements FileUploadService {
 
 
+    @Resource
+    private VideosRepository videosRepository;
     @Value("${file.upload.path}")
     private String filePath;
 
@@ -150,22 +156,44 @@ public class FileUploadServiceImpl implements FileUploadService {
             if (fileName.substring(fileName.lastIndexOf(".") + 1).equals("mp4")) {
                 FileUtils.copyInputStreamToFile(videos.getInputStream(),
                         new File(videoPath + fileName));
+                // 视频路径
+                String path = videoPath + fileName;
 
-                FileUtils.copyInputStreamToFile(FFmpegUtils.getVideoCover(videos.getInputStream()),
+                FileUtils.copyInputStreamToFile(FFmpegUtils.getVideoCover(path),
                         new File(coverPath + coverName));
+
+
             } else {
                 InputStream convertToMp4 = FFmpegUtils.convertToMp4(videos.getInputStream());
                 //转换为mp4格式
                 fileName = fileName.substring(0, fileName.lastIndexOf(".")) + ".mp4";
                 FileUtils.copyInputStreamToFile(convertToMp4,
                         new File(videoPath + fileName));
-                FileUtils.copyInputStreamToFile(FFmpegUtils.getVideoCover(convertToMp4),
+                // 视频路径
+                String path = videoPath + fileName;
+                FileUtils.copyInputStreamToFile(FFmpegUtils.getVideoCover(path),
                         new File(coverPath + coverName));
             }
+            // 视频封面路径去除掉src/main/resources前缀,返回相对路径
+            String coverPathFormat = coverName;
+            // 视频路径去除掉src/main/resources前缀,返回相对路径
+            String videoPathFormat = fileName;
+            //保存视频信息
+            VideosEntity videosEntity = new VideosEntity();
+            videosEntity.setTitle(videosRo.getTitle());
+            videosEntity.setDescription(videosRo.getDescription());
+            videosEntity.setVideosCover(coverPathFormat);
+            videosEntity.setVideosAddress(videoPathFormat);
+            videosEntity.setVideosTime(duration);
+            videosEntity.setUsername(videosRo.getUsername());
+            videosEntity.setStatus(videosEntity.getStatus());
+            videosEntity.setUploadTime(new Date());
+
+            videosRepository.save(videosEntity);
 
         } catch (Exception e) {
-            log.error("视频转换失败", e);
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "视频转换失败");
+            log.error("服务器错误", e);
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY), "服务器错误");
         }
         return null;
     }
