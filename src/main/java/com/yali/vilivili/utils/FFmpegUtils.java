@@ -72,37 +72,35 @@ public class FFmpegUtils {
     public static ByteArrayInputStream getVideoCover(InputStream inputFile) {
         ByteArrayInputStream out = null;
 
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(inputFile)) {
-            grabber.start();
-            grabber.setFormat("mp4");
-            // 获取视频总帧数
-            int length = grabber.getLengthInFrames();
-            // 获取视频帧率
-            double frameRate = grabber.getFrameRate();
-            // 获取视频封面帧
+        try{
+            FFmpegFrameGrabber ff = new FFmpegFrameGrabber(inputFile);
+            ff.start();
+            //获取视频总帧数
+            int ffLength = ff.getLengthInFrames();
+            //获取视频帧率
+            int ffFrameRate = (int) ff.getFrameRate();
+            //获取视频总时长
+            int ffLengthInTime = (int) ff.getLengthInTime();
+            //获取视频时长
+            int duration = ffLengthInTime / (1000 * 1000);
+            //获取视频总秒数
+            int seconds = ffLength / ffFrameRate;
+            //获取视频封面的帧数
             int i = 0;
-            Frame frame = null;
-            while (i < length) {
-                // 过滤前5秒和最后5秒的帧
-                if (i > frameRate * 5 && i < length - frameRate * 5) {
-                    frame = grabber.grabImage();
-                    if (frame != null) {
-                        break;
-                    }
-                }
-                i++;
+            if (seconds > 1) {
+                i = seconds / 2;
             }
-            // 获取视频封面
-            if (frame != null) {
-                Java2DFrameConverter converter = new Java2DFrameConverter();
-                BufferedImage bufferedImage = converter.getBufferedImage(frame);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(bufferedImage, "jpg", baos);
-                grabber.stop();
-                byte[] bytes = baos.toByteArray();
-                out = new ByteArrayInputStream(bytes);
-            }
-
+            //获取视频封面
+            Frame frame = ff.grabImage();
+            //获取视频封面的BufferedImage对象
+            Java2DFrameConverter converter = new Java2DFrameConverter();
+            BufferedImage bi = converter.getBufferedImage(frame);
+            //将BufferedImage对象转换为输入流
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(bi, "jpg", os);
+            byte[] bytes = os.toByteArray();
+            out = new ByteArrayInputStream(bytes);
+            ff.stop();
 
         } catch (IOException e) {
             throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "视频封面获取失败"+e.getMessage());
