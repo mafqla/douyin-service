@@ -134,7 +134,7 @@
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv</artifactId>
-            <version>1.4.4</version>
+            <version>1.5.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bytedeco</groupId>
@@ -189,7 +189,7 @@
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
-            <version>1.4.4</version>
+            <version>1.5.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bytedeco</groupId>

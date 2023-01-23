@@ -1,7 +1,7 @@
 package com.yali.vilivili.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bytedeco.javacpp.avcodec;
+import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.*;
 import org.springframework.http.HttpStatus;
 
@@ -82,10 +82,6 @@ public class FFmpegUtils {
             int ffLength = ff.getLengthInFrames();
             //获取视频帧率
             int ffFrameRate = (int) ff.getFrameRate();
-            //获取视频总时长
-            int ffLengthInTime = (int) ff.getLengthInTime();
-            //获取视频时长
-            int duration = ffLengthInTime / (1000 * 1000);
             //获取视频总秒数
             int seconds = ffLength / ffFrameRate;
             //获取视频封面的帧数
