@@ -4,14 +4,16 @@ import com.yali.vilivili.annotation.RequireLogin;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
+import com.yali.vilivili.model.ro.updateAndSaveUserRO;
 import com.yali.vilivili.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -52,6 +54,13 @@ public class UserController extends BaseController {
     @RequireLogin
     public ResponseEntity<OR<List<UserEntity>>> findAllUser(UserSelectRO ro) {
         userService.findAllUser(ro);
-        return processData(()->userService.findAllUser(ro),this::processException);
+        return processData(() -> userService.findAllUser(ro), this::processException);
+    }
+
+    @ApiOperation(value = "分页查询用户")
+    @PostMapping("/findUserByPage")
+    public ResponseEntity<OR<List<UserEntity>>> findUserByPage(Integer page, Integer size) {
+        userService.findAllUserByPage(page, size);
+        return processData(() -> userService.findAllUserByPage(page, size), this::processException);
     }
 }

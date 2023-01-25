@@ -17,15 +17,26 @@ public interface UserService {
 
     /**
      * 更新和保存用户
-     * @param ro
+     *
+     * @param ro 用户信息
      */
     void updateAndSaveUser(updateAndSaveUserRO ro);
 
 
     /**
      * 删除用户
-     * @param ro
+     *
+     * @param ro 用户id
      */
     void deleteById(deleteByUserIdRO ro);
+
     List<UserEntity> findAllUser(UserSelectRO ro);
+
+    /**
+     * 分页查询用户列表
+     *
+     * @param page 页码
+     * @param size 每页数量
+     */
+    List<UserEntity> findAllUserByPage(Integer page, Integer size);
 }

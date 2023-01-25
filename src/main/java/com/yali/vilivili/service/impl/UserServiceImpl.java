@@ -8,7 +8,9 @@ import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
+import com.yali.vilivili.utils.MyException;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Resource
     private HttpServletRequest request;
+
+    @Resource
+    private FileUploadServiceImpl fileUploadService;
+
 
     /**
      * 更新和保存用户
@@ -56,6 +62,8 @@ public class UserServiceImpl implements UserService {
             }
 
             isEmail.setUsername(ro.getUsername());
+            String password = AESUtil.encrypt(ro.getPassword());
+            ro.setPassword(password);
             isEmail.setPassword(ro.getPassword());
             isEmail.setEmail(ro.getEmail());
             isEmail.setIsValid(ro.getIsValid());
@@ -91,9 +99,34 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 查询所有用户
+     *
      * @param ro 查询条件
      */
     public List<UserEntity> findAllUser(UserSelectRO ro) {
         return userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
+    }
+
+    /**
+     * 分页查询用户列表
+     *
+     * @param page 页码
+     * @param size 每页数量
+     */
+    @Override
+    public List<UserEntity> findAllUserByPage(Integer page, Integer size) {
+        try {
+            //处理分页
+            page = (page - 1) * size;
+            List<UserEntity> allUserByPage = userRepository.findAllUserByPage(page, size);
+            //处理头像
+            allUserByPage.forEach(user -> {
+                String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+                user.setUserAvatar(avatarUrl);
+            });
+            return userRepository.findAllUserByPage(page, size);
+        } catch (Exception e) {
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "分页查询用户列表失败");
+        }
+
     }
 }

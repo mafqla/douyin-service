@@ -40,8 +40,6 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Value("${file.upload.path}")
     private String filePath;
 
-    @Value("${file.upload.path2}")
-    private String filePath2;
 
     @Value("${file.upload.image.suffix}")
     private String imageSuffix;
@@ -107,7 +105,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath;
             if (path.startsWith("/static/avatar/")) {
                 //去除掉/static/avatar/，只留下文件名
-                path = path.substring(15);
+                path = path.substring(14);
                 return url + path;
             } else if (path.startsWith("/static/default_logo/")) {
                 //去除掉/static/default_logo/，只留下文件名

@@ -1,10 +1,10 @@
 package com.yali.vilivili.repository;
 
 import com.yali.vilivili.model.entity.UserEntity;
-import io.vavr.collection.Traversable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 
 /**
@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     /**
      * 根据用户id删除用户
      *
-     * @param id
-     * @param isValid
+     * @param id      用户id
+     * @param isValid 0:删除 1:正常
      * @return int 返回受影响的行数
      */
     @Modifying
@@ -47,13 +47,23 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     /**
      * 根据用户邮箱修改头像
-     * @param email 用户邮箱
-     * @param avatar  头像
+     *
+     * @param email  用户邮箱
+     * @param avatar 头像
      * @return int
      */
     @Modifying
     @Query(value = "update user set user_avatar = ?2 where email = ?1", nativeQuery = true)
     int updateAvatarByEmail(String email, String avatar);
+
+    /**
+     * 分页查询用户列表
+     *
+     * @param page 页码
+     * @param size 每页数量
+     */
+    @Query(value = "select * from user  limit ?1,?2", nativeQuery = true)
+    List<UserEntity> findAllUserByPage(Integer page, Integer size);
 
 }
 
