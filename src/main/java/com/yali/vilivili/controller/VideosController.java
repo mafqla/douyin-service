@@ -47,7 +47,7 @@ public class VideosController extends BaseController {
         return processData(() -> videosService.getVideosList(), "获取成功", this::processException);
     }
 
-    @ApiOperation(value = "获取视频列表")
+    @ApiOperation(value = "分页获取视频列表")
     @PostMapping("/getVideosListByPage")
     public ResponseEntity<OR<List<VideosEntity>>> getVideosListByPage(Integer page, Integer size, Integer status) {
         videosService.getVideosListByPage(page, size, status);

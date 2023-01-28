@@ -18,7 +18,7 @@ export default defineConfig(({ command, mode }) => {
         '/api': {
           target: env.VITE_BASE_URL,
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
+          rewrite: (path) => path.replace(/^\/api/, '')
         }
       }
     },
@@ -37,6 +37,13 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
+      }
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/assets/styles/mixin.scss" as *; @use "@/assets/styles/variables.scss" as *; `
+        }
       }
     }
   }

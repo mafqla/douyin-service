@@ -17,7 +17,7 @@ const apiRequest = new ApiRequest({
       // 从localStorage中获取token
       const token = localCache.getCache('token')
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`
+        config.headers.set = `${token}`
       }
       return config
     },

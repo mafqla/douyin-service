@@ -52,15 +52,15 @@ public class UserController extends BaseController {
     @ApiOperation(value = "查询用户")
     @PostMapping("/find")
     @RequireLogin
-    public ResponseEntity<OR<List<UserEntity>>> findAllUser(UserSelectRO ro) {
-        userService.findAllUser(ro);
-        return processData(() -> userService.findAllUser(ro), this::processException);
+    public ResponseEntity<OR<List<UserEntity>>> findAllUser(@Valid UserSelectRO ro) {
+        userService.findUser(ro);
+        return processData(() -> userService.findUser(ro),"查询成功", this::processException);
     }
 
     @ApiOperation(value = "分页查询用户")
     @PostMapping("/findUserByPage")
     public ResponseEntity<OR<List<UserEntity>>> findUserByPage(Integer page, Integer size) {
         userService.findAllUserByPage(page, size);
-        return processData(() -> userService.findAllUserByPage(page, size), this::processException);
+        return processData(() -> userService.findAllUserByPage(page, size),"查询成功", this::processException);
     }
 }

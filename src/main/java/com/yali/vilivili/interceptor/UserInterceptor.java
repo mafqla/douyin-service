@@ -38,7 +38,7 @@ public class UserInterceptor implements AsyncHandlerInterceptor {
             if (Objects.nonNull(requireLogin) && requireLogin.required()) {
                 String token = request.getHeader(jwtHeader);
                 if (StringUtils.isBlank(token)) {
-                    toolService.failedResponse(response, "600", "token为空，请登录！");
+                    toolService.failedResponse(response, "401", "未登录，请登录！");
                     return false;
                 }
                 TokenInfoVO tokenInfoVO = JwtUtils.decodeJwt(token);

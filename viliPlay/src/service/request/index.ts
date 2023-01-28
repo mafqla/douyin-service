@@ -7,13 +7,11 @@ const DEAFULT_LOADING = true
 class ApiRequest {
   instance: AxiosInstance
   interceptors?: ApiRequestInterceptors
-  showLoading: boolean
   constructor(config: ApiRequestConfig) {
     // 创建axios实例
     this.instance = axios.create(config)
 
     // 保存基本信息
-    this.showLoading = config.showLoading ?? DEAFULT_LOADING
     this.interceptors = config.interceptors
 
     // 使用拦截器
@@ -31,13 +29,6 @@ class ApiRequest {
     //添加所有的拦截器
     this.instance.interceptors.request.use(
       config => {
-        if (this.showLoading) {
-          // this.loading = ElLoading.service({
-          //   lock: true,
-          //   text: '加载中...',
-          //   background: 'rgba(0, 0, 0, 0.7)'
-          // })
-        }
         return config
       },
       error => {
@@ -46,8 +37,6 @@ class ApiRequest {
     )
     this.instance.interceptors.response.use(
       res => {
-        // 将loading关闭
-        // this.loading?.close()
         //@ts-ignore
         if (res.message === 'Network Error') {
           ElMessage({
@@ -64,8 +53,7 @@ class ApiRequest {
         }
       },
       error => {
-        // 将loading组件关闭
-        // this.loading?.close()
+  
 
         if (error.response.status === 404) {
           console.log('页面不存在')
@@ -81,10 +69,6 @@ class ApiRequest {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config)
       }
-      // 2.判断是否需要显示loading
-      if (config.showLoading === false) {
-        this.showLoading = config.showLoading
-      }
       this.instance
         .request<any, T>(config)
         .then(res => {
@@ -92,14 +76,11 @@ class ApiRequest {
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
           }
-          // 2.将showLoading设置true, 这样不会影响下一个请求
-          this.showLoading = DEAFULT_LOADING
 
           // 3.将结果resolve返回出去
           resolve(res)
         })
         .catch(err => {
-          this.showLoading = DEAFULT_LOADING
           reject(err)
           return err
         })

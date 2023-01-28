@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <div class="follow">follow</div>
 </template>
 
 <script setup lang="ts">

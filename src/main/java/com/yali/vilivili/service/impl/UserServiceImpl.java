@@ -102,8 +102,19 @@ public class UserServiceImpl implements UserService {
      *
      * @param ro 查询条件
      */
-    public List<UserEntity> findAllUser(UserSelectRO ro) {
-        return userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
+    public List<UserEntity> findUser(UserSelectRO ro) {
+        try{
+            List<UserEntity> findUser = userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
+            //处理头像
+            findUser.forEach(user -> {
+                String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+                user.setUserAvatar(avatarUrl);
+            });
+            return findUser;
+        }catch (Exception e){
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "查询所有用户失败");
+        }
+
     }
 
     /**

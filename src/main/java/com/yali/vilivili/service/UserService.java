@@ -30,7 +30,7 @@ public interface UserService {
      */
     void deleteById(deleteByUserIdRO ro);
 
-    List<UserEntity> findAllUser(UserSelectRO ro);
+    List<UserEntity> findUser(UserSelectRO ro);
 
     /**
      * 分页查询用户列表

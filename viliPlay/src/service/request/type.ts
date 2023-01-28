@@ -10,5 +10,4 @@ export interface ApiRequestInterceptors<T = AxiosResponse> {
 export interface ApiRequestConfig<T = AxiosResponse>
   extends AxiosRequestConfig {
   interceptors?: ApiRequestInterceptors<T>
-  showLoading?: boolean
 }
