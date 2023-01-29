@@ -15,9 +15,12 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElMenuItemGroup: typeof import('element-plus/es')['ElMenuItemGroup']
+    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     SwiperVideo: typeof import('./src/components/SwiperVideo.vue')['default']
     VideoPlay: typeof import('./src/components/VideoPlay.vue')['default']
   }

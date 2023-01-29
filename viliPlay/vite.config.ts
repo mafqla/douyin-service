@@ -5,6 +5,9 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import ElementPlus from 'unplugin-element-plus/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// svg使用
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -32,6 +35,12 @@ export default defineConfig(({ command, mode }) => {
       }),
       Components({
         resolvers: [ElementPlusResolver()]
+      }),
+      createSvgIconsPlugin({
+        // 指定需要缓存的图标文件夹
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        // 指定symbolId格式
+        symbolId: 'icon-[name]'
       })
     ],
     resolve: {
@@ -42,7 +51,8 @@ export default defineConfig(({ command, mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/assets/styles/mixin.scss" as *; @use "@/assets/styles/variables.scss" as *; `
+          additionalData: `@use "@/assets/styles/mixin.scss" as *; @use "@/assets/styles/variables.scss" as *; `,
+          javascriptEnabled: true
         }
       }
     }

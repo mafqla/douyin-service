@@ -17,6 +17,11 @@ $color-text-dark-2: rgba(235, 235, 235, 0.64);
 $color-navigation-bg-light: #f1f2f5;
 $color-navigation-bg-black: #060716;
 
+//侧边栏宽度最大172px，最小72px
+$sidebar-width-max: 172px;
+$sidebar-width-min: 72px;
+
+$sidebar-width: $sidebar-width-max;
 $color-text:$color-text-light-1;
 $color-background:$color-white;
 $color-border:$divider-light-2;

@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import {} from 'vue'
 import AsideBar from '@/layout/AsideBar.vue'
+import HeaderNav from '@/layout/HeaderNav.vue'
 </script>
 
 <template>
   <div class="main">
     <el-container>
-      <el-aside width="172px">
+      <el-aside>
         <aside-bar />
       </el-aside>
       <el-container class="main-container">
-        <el-header>Header</el-header>
+        <el-header><header-nav /></el-header>
         <el-main>
           <div class="page-info">
             <router-view v-slot="{ Component, route }">
@@ -26,8 +27,11 @@ import AsideBar from '@/layout/AsideBar.vue'
 </template>
 
 <style lang="scss" scoped>
+.el-aside {
+  width: $sidebar-width;
+}
 .main-container {
-  width: calc(100% - 172px);
+  width: calc(100% - $sidebar-width);
 }
 .el-header {
   height: 60px;
@@ -39,5 +43,14 @@ import AsideBar from '@/layout/AsideBar.vue'
   width: 100%;
   height: 100%;
   padding: 25px;
+}
+
+@media screen and (max-width: 1240px) {
+  .el-aside {
+    width: $sidebar-width-min;
+  }
+  .main-container {
+    width: calc(100% - $sidebar-width-min);
+  }
 }
 </style>
