@@ -35,6 +35,7 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 }
 .el-header {
   height: 60px;
+  border-bottom: #f0f0f0 1px solid;
 }
 .el-main {
   padding: 0;

@@ -33,8 +33,8 @@ console.log(activeMenu.value)
 </script>
 <template>
   <div class="aside-bar">
-    <div class="aside-logo">
-      <span>viliplay</span>
+    <div class="aside-top">
+      <div class="aside-logo"></div>
     </div>
 
     <div class="aside-container">
@@ -79,9 +79,32 @@ console.log(activeMenu.value)
   background: $color-navigation-bg;
   position: relative;
 
-  .aside-logo {
+  .aside-top {
     height: 60px;
-    user-select: none;
+    width: 100%;
+    position: relative;
+    .aside-logo {
+      align-items: center;
+      background: linear-gradient(180deg, #eff0f3 80%, rgba(241, 242, 245, 0));
+      background-image: url(@/assets/icons/douyin.svg);
+      background-repeat: no-repeat;
+      display: flex;
+      flex-basis: 72px;
+      justify-content: center;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-20%, -20%);
+      width: 100%;
+      height: 60px;
+      z-index: 2;
+
+      .icon {
+        height: 34px;
+        opacity: 1;
+        width: 91px;
+      }
+    }
   }
 
   .aside-container {
@@ -153,6 +176,12 @@ console.log(activeMenu.value)
 
 @media screen and (max-width: 1240px) {
   .aside-bar {
+    .aside-top {
+      .aside-logo {
+        background-image: url(@/assets/icons/smalldouyin.svg);
+        background-repeat: no-repeat;
+      }
+    }
     .aside-container {
       width: $sidebar-width-min;
 
