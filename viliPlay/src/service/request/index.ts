@@ -23,20 +23,20 @@ class ApiRequest {
 
     this.instance.interceptors.response.use(
       this.interceptors?.responseInterceptor,
-      this.interceptors?.responseInterceptorCatch,
+      this.interceptors?.responseInterceptorCatch
     )
 
     //添加所有的拦截器
     this.instance.interceptors.request.use(
-      config => {
+      (config) => {
         return config
       },
-      error => {
+      (error) => {
         return error
       }
     )
     this.instance.interceptors.response.use(
-      res => {
+      (res) => {
         //@ts-ignore
         if (res.message === 'Network Error') {
           ElMessage({
@@ -45,16 +45,19 @@ class ApiRequest {
           })
         }
 
+        //@ts-ignore
         const data = res.data
-        if (data.returnCode === '-1001') {
-          console.log('请求失败')
+
+        if (data.code === '500') {
+          ElMessage({
+            message: data.msg || '请求失败',
+            type: 'error'
+          })
         } else {
           return data
         }
       },
-      error => {
-  
-
+      (error) => {
         if (error.response.status === 404) {
           console.log('页面不存在')
         }
@@ -71,7 +74,7 @@ class ApiRequest {
       }
       this.instance
         .request<any, T>(config)
-        .then(res => {
+        .then((res) => {
           // 1.单个请求对数据的处理
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
@@ -80,7 +83,7 @@ class ApiRequest {
           // 3.将结果resolve返回出去
           resolve(res)
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err)
           return err
         })

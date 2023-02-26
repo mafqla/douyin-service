@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onBeforeUnmount } from 'vue'
 import Player from 'xgplayer'
+
+const props = defineProps({
+  url: {
+    type: String,
+    required: true
+  }
+})
 let canvas: any,
   ctx: {
     drawImage: (
@@ -17,8 +24,9 @@ let canvas: any,
 onMounted(() => {
   new Player({
     id: 'video-player',
-    url: 'http://192.168.227.1:8080/res/77bc5dac-b7d8-4c86-a1d7-b161b1592de2.mp4',
-    fluid: true,
+    url: props.url,
+    width: 1445,
+    height: 833,
     autoplay: true,
     loop: true,
     controls: true,
@@ -27,7 +35,9 @@ onMounted(() => {
     keyShortcut: 'on',
     cssFullscreen: true,
     playsinline: true,
-    playbackRate: [0.5, 1.0, 1.5, 1.75, 2]
+    playbackRate: [0.5, 1.0, 1.5, 1.75, 2],
+    errorTips: `不支持的音频/视频格式`,
+    closeInactive: true
   })
 })
 

@@ -3,16 +3,17 @@ import {} from 'vue'
 </script>
 <template>
   <div class="recommend">
-    <video-play />
+    <swiper-video />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .recommend {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   height: 100%;
-}
-video-play {
-  padding: 25px;
+  position: relative;
+  overflow: hidden;
 }
 </style>

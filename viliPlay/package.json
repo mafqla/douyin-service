@@ -18,6 +18,7 @@
     "pinia-plugin-persist": "^1.0.0",
     "qs": "^6.11.0",
     "sass": "^1.57.1",
+    "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "xgplayer": "^2.32.2"
@@ -26,6 +27,7 @@
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/jsdom": "^20.0.1",
     "@types/node": "^18.11.12",
+    "@types/uuid": "^9.0.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",

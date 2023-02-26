@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ControlBar: typeof import('./src/components/videoPlayer/ControlBar.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElContainer: typeof import('element-plus/es')['ElContainer']
@@ -23,10 +24,14 @@ declare module '@vue/runtime-core' {
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    Player: typeof import('./src/components/test/player.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
+    Swiper: typeof import('./src/components/test/swiper.vue')['default']
     SwiperVideo: typeof import('./src/components/SwiperVideo.vue')['default']
     VideoPlay: typeof import('./src/components/VideoPlay.vue')['default']
+    VideoPlayer: typeof import('./src/components/videoPlayer/index.vue')['default']
+    ViliPlayer: typeof import('./src/components/videoPlayer/ViliPlayer.vue')['default']
   }
 }

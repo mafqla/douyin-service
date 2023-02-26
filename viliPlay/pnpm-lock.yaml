@@ -4,6 +4,7 @@ specifiers:
   '@rushstack/eslint-patch': ^1.1.4
   '@types/jsdom': ^20.0.1
   '@types/node': ^18.11.12
+  '@types/uuid': ^9.0.1
   '@vitejs/plugin-vue': ^4.0.0
   '@vue/eslint-config-prettier': ^7.0.0
   '@vue/eslint-config-typescript': ^11.0.0
@@ -24,6 +25,7 @@ specifiers:
   unplugin-auto-import: ^0.12.1
   unplugin-element-plus: ^0.4.1
   unplugin-vue-components: ^0.22.12
+  uuid: ^9.0.0
   vite: ^4.0.0
   vite-plugin-svg-icons: ^2.0.1
   vitest: ^0.25.6
@@ -39,6 +41,7 @@ dependencies:
   pinia-plugin-persist: 1.0.0_pinia@2.0.28+vue@3.2.45
   qs: 6.11.0
   sass: 1.57.1
+  uuid: 9.0.0
   vue: 3.2.45
   vue-router: 4.1.6_vue@3.2.45
   xgplayer: 2.32.2
@@ -47,6 +50,7 @@ devDependencies:
   '@rushstack/eslint-patch': 1.2.0
   '@types/jsdom': 20.0.1
   '@types/node': 18.11.18
+  '@types/uuid': 9.0.1
   '@vitejs/plugin-vue': 4.0.0_vite@4.0.3+vue@3.2.45
   '@vue/eslint-config-prettier': 7.0.0_crnjwcwerrbat3mlbmrsoa543e
   '@vue/eslint-config-typescript': 11.0.2_ubjihbtswo3dfrh73mhv3owlna
@@ -470,6 +474,10 @@ packages:
 
   /@types/tough-cookie/4.0.2:
     resolution: {integrity: sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==}
+    dev: true
+
+  /@types/uuid/9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
     dev: true
 
   /@types/web-bluetooth/0.0.16:
@@ -4089,6 +4097,11 @@ packages:
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
+
+  /uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
+    hasBin: true
+    dev: false
 
   /validate-npm-package-license/3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}

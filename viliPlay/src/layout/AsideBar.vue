@@ -148,6 +148,10 @@ console.log(activeMenu.value)
           opacity: 0.6;
           color: #2f3035;
         }
+
+        &:hover {
+          background: transparent;
+        }
       }
 
       // 选中的样式

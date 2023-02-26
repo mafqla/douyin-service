@@ -163,6 +163,7 @@ const toggleTheme = () => {
         background-color: #fff;
         border: 2px solid rgba(0, 0, 0, 0.7);
         caret-color: #fe2c55;
+        user-select: none;
 
         &::placeholder {
           color: rgba(47, 48, 53, 0.4);
@@ -205,6 +206,7 @@ const toggleTheme = () => {
         text-align: center;
         word-break: keep-all;
         color: rgba(47, 48, 53, 0.7);
+        user-select: none;
       }
       .icon {
         opacity: 0.8;
@@ -268,6 +270,7 @@ const toggleTheme = () => {
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        user-select: none;
       }
     }
   }
