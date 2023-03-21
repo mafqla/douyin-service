@@ -6,7 +6,7 @@ target/
 
 # Igonre application.properties
 !src/main/resources/application-local.properties
-
+!src/main/resources/static
 ### STS ###
 .apt_generated
 .classpath
@@ -62,3 +62,4 @@ coverage
 *.sln
 *.sw?
 /src/main/resources/application-local.properties
+src/main/resources/static/videos/018297b8-097d-446f-a330-81bbd0f67bd1.mp4
