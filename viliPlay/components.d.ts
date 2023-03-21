@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CarouselControls: typeof import('./src/components/swper/CarouselControls.vue')['default']
     ControlBar: typeof import('./src/components/videoPlayer/ControlBar.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
@@ -29,9 +30,15 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./src/components/SvgIcon.vue')['default']
     Swiper: typeof import('./src/components/test/swiper.vue')['default']
-    SwiperVideo: typeof import('./src/components/SwiperVideo.vue')['default']
+    SwiperVideo: typeof import('./src/components/swper/SwiperVideo.vue')['default']
+    UserHeader: typeof import('./src/components/my/userHeader/UserHeader.vue')['default']
+    VideoAction: typeof import('./src/components/videoComponents/videoAction/VideoAction.vue')['default']
+    VideoComments: typeof import('./src/components/videoComponents/videoComments/VideoComments.vue')['default']
+    VideoInfo: typeof import('./src/components/videoComponents/videoInfo/VideoInfo.vue')['default']
     VideoPlay: typeof import('./src/components/VideoPlay.vue')['default']
     VideoPlayer: typeof import('./src/components/videoPlayer/index.vue')['default']
+    VideoSidebarBtn: typeof import('./src/components/videoComponents/videoSidebarBtn/VideoSidebarBtn.vue')['default']
+    VideoSidebarButton: typeof import('./src/components/videoComponents/videoSidebarBtn/VideoSidebarButton.vue')['default']
     ViliPlayer: typeof import('./src/components/videoPlayer/ViliPlayer.vue')['default']
   }
 }

@@ -76,8 +76,14 @@ public class VideosServiceImpl implements VideosService {
                     video.setVideosCover(url + video.getVideosCover());
                 }
             }
+            if(videosList.size() == 0)
+                //返回空数值的状态码
+                throw new MyException("没有更多数据了", String.valueOf(HttpStatus.NO_CONTENT.value()));
             return videosList;
 
+        }//返回空数值的状态码
+        catch (MyException e) {
+            throw new MyException(e.getMessage(), e.getCode());
         } catch (Exception e) {
             throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }

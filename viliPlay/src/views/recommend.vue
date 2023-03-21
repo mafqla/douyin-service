@@ -4,16 +4,21 @@ import {} from 'vue'
 <template>
   <div class="recommend">
     <swiper-video />
+    <carousel-controls />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .recommend {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  width: 100%;
   height: 100%;
   position: relative;
-  overflow: hidden;
+
+  .carousel-controls {
+    position: absolute;
+    right: 13px;
+    top: 5%;
+    transform: translateY(-50%);
+  }
 }
 </style>

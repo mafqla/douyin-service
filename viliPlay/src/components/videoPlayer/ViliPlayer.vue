@@ -30,29 +30,16 @@ const playerId = ref(`xgplayer-${uniqueId}`)
 const poster = ref(props.options.poster || '')
 </script>
 <template>
-  <div class="xgplayer" ref="player" :id="playerId">
-    <div
-      class="xgplayer-blur"
-      :style="{ backgroundImage: 'url(' + poster + ')' }"
-    ></div>
-  </div>
+  <div class="xgplayer" ref="player" :id="playerId"></div>
 </template>
 
 <style lang="scss" scoped>
 .xgplayer {
   position: relative;
-  width: 100%;
+  // width: 100%;
+  width: calc(100% - 336px);
   height: 100%;
+  background: transparent;
   z-index: 1;
-
-  .xgplayer-blur {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    filter: blur(50px);
-    z-index: -1;
-  }
 }
 </style>

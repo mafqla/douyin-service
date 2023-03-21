@@ -2,8 +2,6 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
-  const ElM: typeof import('element-plus/es')['ElM']
-  const ElMe: typeof import('element-plus/es')['ElMe']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const createLogger: typeof import('vuex')['createLogger']

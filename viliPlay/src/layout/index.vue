@@ -29,13 +29,15 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 <style lang="scss" scoped>
 .el-aside {
   width: $sidebar-width;
+  z-index: 1;
 }
 .main-container {
   width: calc(100% - $sidebar-width);
 }
 .el-header {
   height: 60px;
-  border-bottom: #f0f0f0 1px solid;
+  z-index: 1;
+  padding: 0;
 }
 .el-main {
   padding: 0;
