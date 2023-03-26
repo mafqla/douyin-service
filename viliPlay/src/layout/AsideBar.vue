@@ -12,9 +12,9 @@ interface IRouterIndex {
 
 const routerIndex: IRouterIndex = {
   1: '/discover',
-  2: '/recommend',
+  2: '/',
   3: '/follow',
-  4: '/my'
+  4: '/user'
 }
 const handleSelect = (index: string) => {
   activeIndex.value = index

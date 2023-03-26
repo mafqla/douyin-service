@@ -62,17 +62,17 @@ import { ElAvatar } from 'element-plus'
     flex-direction: column;
     margin-bottom: 23px;
     margin-top: 24px;
+    position: relative;
+
     .video-action-avatar {
       height: 40px;
       width: 40px;
       box-sizing: content-box;
       flex-grow: 0;
       flex-shrink: 0;
-      position: relative;
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid rgba(231, 231, 236, 0.3) !important;
-      position: relative;
 
       .el-avatar {
         height: 100%;

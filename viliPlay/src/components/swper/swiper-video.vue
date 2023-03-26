@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
-import VideoPlayer from '@/components/videoPlayer/index.vue'
+import VideoPlayer from '@/components/video-player/index.vue'
 import type { IVideoList, IVideoListResult } from '@/service/videos/videosType'
 
 import { videoStore } from '@/stores/videos'
@@ -10,7 +10,7 @@ import {
   VideoAction,
   VideoSideBarBtn,
   VideoComments
-} from '@/components/videoComponents'
+} from '@/components/video-components'
 
 const page = ref(1)
 const pageSize = ref(10)

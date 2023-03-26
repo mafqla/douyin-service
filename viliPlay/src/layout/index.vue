@@ -11,7 +11,9 @@ import HeaderNav from '@/layout/HeaderNav.vue'
         <aside-bar />
       </el-aside>
       <el-container class="main-container">
-        <el-header><header-nav /></el-header>
+        <el-affix>
+          <el-header><header-nav /></el-header>
+        </el-affix>
         <el-main>
           <div class="page-info">
             <router-view v-slot="{ Component, route }">
@@ -29,10 +31,16 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 <style lang="scss" scoped>
 .el-aside {
   width: $sidebar-width;
-  z-index: 1;
+  z-index: 2;
 }
 .main-container {
   width: calc(100% - $sidebar-width);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  // height: 100%;
+  overflow: hidden;
+  position: relative;
 }
 .el-header {
   height: 60px;
@@ -41,6 +49,11 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 }
 .el-main {
   padding: 0;
+  // flex: 1 1 0%;
+  // display: flex;
+  // flex-direction: column;
+  // min-height: 100%;
+  // width: 100%;
 }
 .page-info {
   width: 100%;

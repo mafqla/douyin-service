@@ -125,7 +125,9 @@ const handleNext = async () => {
     position: relative;
     width: 36px;
     border-radius: 18px;
-
+    &:hover {
+      opacity: 0.9;
+    }
     .carousel-controls-switch-up {
       height: 40px;
       position: absolute;

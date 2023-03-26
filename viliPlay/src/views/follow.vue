@@ -17,4 +17,19 @@ import {} from 'vue'
   height: 100%;
   position: relative;
 }
+
+:deep(.carousel-controls) {
+  .carousel-controls-switch {
+    background-color: rgba(0, 0, 0, 0.18) !important;
+    border: 0.5px solid hsla(0, 0%, 100%, 0.15) !important;
+    width: 35px;
+
+    .carousel-controls-switch-up,
+    .carousel-controls-switch-down {
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
 </style>

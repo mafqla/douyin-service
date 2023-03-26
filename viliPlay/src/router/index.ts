@@ -6,7 +6,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: layout,
-    redirect: '/recommend',
+    redirect: '/',
     children: [
       {
         path: '/discover',
@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/discover.vue')
       },
       {
-        path: '/recommend',
+        path: '/',
         name: 'recommend',
         component: () => import('@/views/recommend.vue')
       },
@@ -25,9 +25,15 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: '/my',
-        name: 'my',
-        component: () => import('@/views/my.vue')
+        path: '/user',
+        name: 'user',
+        redirect: '/user/self',
+        children: [
+          {
+            path: 'self',
+            component: () => import('@/views/my.vue')
+          }
+        ]
       }
     ]
   }

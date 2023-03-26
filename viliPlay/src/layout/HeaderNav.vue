@@ -99,7 +99,6 @@ const toggleTheme = () => {
   width: 100%;
   height: 100%;
   border-bottom: rgba(231, 231, 236, 0.4) 1px solid;
-  // border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
 
   .header-main {
     align-items: center;
@@ -273,6 +272,7 @@ const toggleTheme = () => {
           &:hover {
             .header-right-item-overplay {
               background-color: #e7e7ec;
+              cursor: pointer;
             }
             p {
               color: #2f3035;
@@ -346,8 +346,8 @@ const toggleTheme = () => {
     .header-main {
       .header-content {
         .header-left {
-          // min-width: 400px;
-          padding: 0 16px;
+          min-width: 333px;
+          padding: 0 8px;
         }
         .header-right {
           .header-right-item:nth-child(1) {

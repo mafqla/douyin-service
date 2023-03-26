@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import ViliPlayer from './ViliPlayer.vue'
+import ViliPlayer from './vili-player.vue'
 import ControlBar from './ControlBar.vue'
 import { ref, watchEffect } from 'vue'
 
