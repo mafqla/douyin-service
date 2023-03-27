@@ -19,7 +19,7 @@ const entertainmentData = [
 <template>
   <div class="entertainment">
     <div class="entertainment-content">
-      <template v-for="item in entertainmentData" :key="itme.id">
+      <template v-for="item in entertainmentData">
         <div class="entertainment-time">{{ item.time }}</div>
         <entertainment-list />
       </template>
