@@ -9,12 +9,14 @@ import {
 </script>
 <template>
   <div class="discover">
-    <div class="discover-container">
+    <div height="904px">
       <div class="discover-container-in">
-        <discover-header />
-        <discover-classify />
-        <discover-new />
-        <discover-recommend />
+        <el-scrollbar height="886px">
+          <discover-header />
+          <discover-classify />
+          <discover-new />
+          <discover-recommend />
+        </el-scrollbar>
       </div>
     </div>
   </div>
@@ -24,7 +26,13 @@ import {
 .discover {
   height: 100%;
   position: relative;
-  overflow: auto;
+  user-select: none;
+
+  //滚动条隐藏
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &-container {
     color: rgba(22, 24, 35, 0.75);
@@ -32,7 +40,8 @@ import {
     font-size: 20px;
     font-weight: 400;
     height: 100%;
-    overflow-y: scroll;
+    // overflow-y: scroll;
+
     position: relative;
 
     &-in {

@@ -178,7 +178,6 @@ const tagList = [
           overflow-y: hidden;
           white-space: nowrap;
           width: 100%;
-          //隐藏滚动条
           scrollbar-width: none;
           -ms-overflow-style: none;
           &::-webkit-scrollbar {
@@ -276,14 +275,9 @@ const tagList = [
     }
   }
 }
-@media screen and (max-width: 1440px) {
+@media (min-width: 1440px) {
   .discover-tag-controller {
-    &.prev {
-      display: none;
-    }
-    &.next {
-      display: none;
-    }
+    display: none !important;
   }
 }
 </style>
