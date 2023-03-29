@@ -1,37 +1,26 @@
 <script setup lang="ts">
-import { nextTick, ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs } from 'element-plus'
-import { useRouter } from 'vue-router'
 
-const activeName = ref('post')
-const isLogin = ref(false)
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
 const router = useRouter()
 
-watchEffect(() => {
-  // if (localStorage.getItem('token')) {
-  //   isLogin.value = true
-  // } else {
-  //   isLogin.value = false
-  // }
-  console.log(activeName.value)
-})
+const activeName = ref(route.query.showTab || 'post')
+const isLogin = ref(false)
 
 const handleClick = (tab: any) => {
   console.log(tab)
+  activeName.value = tab
 
   router.push({
     query: {
-      ...router.currentRoute.value.query,
+      ...route.query,
       showTab: tab
     }
   })
-}
-//获取当前路由的参数
-const query = router.currentRoute.value.query
-if (query.showTab !== activeName.value) {
-  //@ts-ignore
-  activeName.value = query.showTab
 }
 </script>
 

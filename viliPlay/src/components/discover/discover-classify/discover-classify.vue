@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import {} from 'vue'
 import DiscoverItem from '../discover-item/discover-item.vue'
+import DiscoverBottom from '../discover-bottom/discover-bottom.vue'
 </script>
 <template>
   <div class="discover-classify">
     <div class="discover-content">
-      <template v-for="item in 20">
-        <discover-item />
-      </template>
-    </div>
-    <div class="discover-bottom">
-      <div>查看更多精选视频</div>
-      <svg-icon class="icon" icon="discover-bottom-arrow" />
+      <div class="discover-main">
+        <template v-for="item in 20">
+          <discover-item />
+        </template>
+      </div>
+      <discover-bottom>
+        <div>查看更多精选视频</div>
+      </discover-bottom>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .discover-classify {
+  min-width: 508px;
   height: 100%;
   position: relative;
   padding: 16px 30px 0;
@@ -28,32 +31,18 @@ import DiscoverItem from '../discover-item/discover-item.vue'
   }
 
   .discover-content {
+    padding-bottom: 40px;
+  }
+  .discover-main {
     display: flex;
     flex-wrap: wrap;
     margin: 0px -8px;
   }
+}
 
-  .discover-bottom {
-    align-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    color: rgba(22, 24, 35, 0.34);
-    cursor: pointer;
-    display: flex;
-    font-size: 13px;
-    height: 40px;
-    justify-content: center;
-    line-height: 21px;
-    text-align: center;
-
-    .icon {
-      width: 10px;
-      height: 7px;
-      margin-left: 4px;
-      transform: rotate(0);
-      transition: transform 0.3s;
-      color: rgba(22, 24, 35, 0.34);
-    }
+@media (min-width: 2472px) {
+  .discover-classify {
+    padding: 16px 0 0;
   }
 }
 </style>

@@ -9,15 +9,13 @@ import {
 </script>
 <template>
   <div class="discover">
-    <div height="904px">
-      <div class="discover-container-in">
-        <el-scrollbar height="886px">
-          <discover-header />
-          <discover-classify />
-          <discover-new />
-          <discover-recommend />
-        </el-scrollbar>
-      </div>
+    <div class="discover-container-in">
+      <el-scrollbar height="886px">
+        <discover-header />
+        <discover-classify />
+        <discover-new />
+        <discover-recommend />
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -46,7 +44,18 @@ import {
 
     &-in {
       overflow-x: visible;
+
+      :deep(.el-scrollbar__bar.is-horizontal) {
+        height: 0 !important;
+      }
     }
+  }
+}
+
+@media (min-width: 2472px) {
+  .discover-container-in {
+    margin: 0 auto;
+    width: 2256px;
   }
 }
 </style>
