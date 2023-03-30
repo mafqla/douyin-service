@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import { HeaderAvatar } from '@/components/header'
 //切换深色主题
 const isDark = ref(false)
 
@@ -73,12 +73,7 @@ const toggleTheme = () => {
             <p>投稿</p>
           </div>
           <el-divider direction="vertical" />
-          <div class="header-right-avatar">
-            <el-avatar
-              size="small"
-              src="https://p6-pc-sign.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_fddf54d2b1544d0aa4f0987fefc73f65.jpeg?x-expires=1675152000&x-signature=JTdm%2Bj2WlXsLsFrOWhx1f5%2BLW64%3D&from=2480802190"
-            />
-          </div>
+          <header-avatar />
         </div>
       </div>
     </div>
@@ -289,19 +284,6 @@ const toggleTheme = () => {
         .header-right-item:first-child {
           margin-left: 4.5px;
           margin-right: 4.5px !important;
-        }
-
-        .header-right-avatar {
-          width: 32px;
-          height: 32px;
-          margin-left: 16px;
-
-          .el-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            user-select: none;
-          }
         }
       }
     }

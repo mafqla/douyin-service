@@ -56,6 +56,7 @@ import {} from 'vue'
     position: absolute;
     top: 0px;
     overflow: hidden;
+    border-radius: 6px;
     .item-video-content-img {
       align-items: center;
       display: flex;

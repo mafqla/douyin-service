@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs } from 'element-plus'
 
@@ -8,7 +8,7 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-const activeName = ref(route.query.showTab || 'post')
+const activeName = ref(route.query.showTab || 'post') as Ref<'post' | 'comments' | 'history'>
 const isLogin = ref(false)
 
 const handleClick = (tab: any) => {
