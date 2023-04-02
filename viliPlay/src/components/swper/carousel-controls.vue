@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import { ElMessage } from 'element-plus'
 import type { IVideoList, IVideoListResult } from '@/service/videos/videosType'
+import { videoStore } from '@/stores/videos'
 
 const currentIndex = ref(0)
 const prev = ref(false)
@@ -114,8 +115,13 @@ const handleNext = async () => {
   // top: 5%;
   // transform: translateY(-50%);
   // //垂直居中
-  display: flex;
-  justify-content: center;
+  // display: flex;
+  // justify-content: center;
+
+  position: absolute;
+  right: 13px;
+  top: calc(50% + 60px);
+  transform: translateY(calc(-50% - 30px));
   z-index: 2;
 
   .carousel-controls-switch {

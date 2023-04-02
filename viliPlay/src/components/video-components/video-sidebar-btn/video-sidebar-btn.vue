@@ -18,7 +18,7 @@ import {} from 'vue'
   top: 50%;
   display: inline-block;
   transform: translateY(-50%);
-  z-index: 12;
+  z-index: 200;
   cursor: pointer;
   height: 48px;
   width: 32px;
@@ -30,7 +30,6 @@ import {} from 'vue'
   .video-sidebar-btn-cl {
     align-items: center;
     background-color: unset;
-    cursor: pointer;
     display: flex;
     height: 48px;
     justify-content: space-around;
@@ -43,10 +42,6 @@ import {} from 'vue'
     border-radius: 24px 0px 0px 24px;
     transition: all 0.3s linear 0s;
 
-    &:hover {
-      transform: scale(1.2);
-    }
-
     .video-sidebar-btn-bg {
       background: rgba(0, 0, 0, 0.18);
       border-radius: 24px 0 0 24px;
@@ -55,11 +50,8 @@ import {} from 'vue'
       position: absolute;
       right: 0;
       top: 0;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.25);
-      }
     }
+
     .icon {
       width: 10px;
       height: 18px;
@@ -71,6 +63,16 @@ import {} from 'vue'
       &:hover {
         color: #fff;
       }
+    }
+  }
+}
+
+.video-sidebar-btn:hover {
+  .video-sidebar-btn-cl {
+    transform: scale(1.2);
+
+    .video-sidebar-btn-bg {
+      background: rgba(0, 0, 0, 0.25);
     }
   }
 }

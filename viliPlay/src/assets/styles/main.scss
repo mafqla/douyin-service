@@ -23,6 +23,7 @@ body {
   background: $color-background;
   color: $color-text;
   position: fixed;
+  user-select: none;
 }
 a {
   color: inherit;
@@ -36,8 +37,6 @@ a {
   margin: 0;
   font-weight: normal;
 }
-
-
 
 ul li {
   display: inline-block;

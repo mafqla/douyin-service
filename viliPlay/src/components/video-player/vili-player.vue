@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import xgplayer from 'xgplayer'
+import { VideoAction } from '@/components/video-components'
 
 import { v4 as uuidv4 } from 'uuid'
 const props = defineProps({
@@ -30,15 +31,16 @@ const playerId = ref(`xgplayer-${uniqueId}`)
 const poster = ref(props.options.poster || '')
 </script>
 <template>
-  <div class="xgplayer" ref="player" :id="playerId"></div>
+  <div class="xgplayer" ref="player" :id="playerId">
+    <video-action @toggleComments="$emit('toggleComments')">
+      <slot name="slide" />
+    </video-action>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .xgplayer {
   position: relative;
-  // width: 100%;
-  width: calc(100% - 336px);
-  height: 100%;
   background: transparent;
   z-index: 1;
 }

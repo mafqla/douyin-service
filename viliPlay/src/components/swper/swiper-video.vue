@@ -5,13 +5,6 @@ import type { IVideoList, IVideoListResult } from '@/service/videos/videosType'
 
 import { videoStore } from '@/stores/videos'
 
-import {
-  VideoInfo,
-  VideoAction,
-  VideoSideBarBtn,
-  VideoComments
-} from '@/components/video-components'
-
 const page = ref(1)
 const pageSize = ref(10)
 const status = ref(0)
@@ -44,25 +37,14 @@ const timer: any = ref(null)
         :key="item.id"
       >
         <video-player
+          :username="item.username"
+          :description="item.description"
+          :uploadTime="item.uploadTime"
           :url="item.videosAddress"
           :poster="item.videosCover"
           :isPlay="true"
           :key="item.id"
         />
-
-        <video-info
-          :username="item.username"
-          :uploadTime="item.uploadTime"
-          :description="item.description"
-        />
-
-        <video-action>
-          <slot name="slide" />
-        </video-action>
-
-        <video-side-bar-btn />
-
-        <video-comments />
 
         <div class="video-blur">
           <img :src="item.videosCover" alt="" />

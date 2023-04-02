@@ -8,7 +8,9 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-const activeName = ref(route.query.showTab || 'post') as Ref<'post' | 'comments' | 'history'>
+const activeName = ref(route.query.showTab || 'post') as Ref<
+  'post' | 'comments' | 'history'
+>
 const isLogin = ref(false)
 
 const handleClick = (tab: any) => {

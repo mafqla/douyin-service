@@ -21,7 +21,7 @@ import { ElAvatar } from 'element-plus'
       <svg-icon class="icon" icon="dianzan" />
       <span>999</span>
     </div>
-    <div class="video-action-item">
+    <div class="video-action-item" @click="$emit('toggleComments')">
       <svg-icon class="icon" icon="comment" />
       <span>999</span>
     </div>
@@ -45,10 +45,11 @@ import { ElAvatar } from 'element-plus'
 .video-action {
   position: absolute;
   bottom: 60px;
+  // right: 38px;
   right: 0;
   height: auto;
   padding-right: 38px;
-  z-index: 1000;
+  z-index: 100;
   color: #fff;
   display: flex;
   flex-direction: column;

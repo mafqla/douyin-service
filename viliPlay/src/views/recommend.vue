@@ -14,11 +14,5 @@ import {} from 'vue'
   height: 100%;
   position: relative;
 
-  .carousel-controls {
-    position: absolute;
-    right: 13px;
-    top: 5%;
-    transform: translateY(-50%);
-  }
 }
 </style>
