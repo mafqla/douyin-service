@@ -9,12 +9,15 @@ const textarea = ref('')
   <div class="video-comment">
     <div class="video-comment-header">
       <div class="video-comment-header-title">
-        <span>评论({{ commentCount }})</span>
+        <span>全部评论({{ commentCount }})</span>
       </div>
     </div>
 
     <div class="video-comment-list">
-      <comment-item />
+      <el-scrollbar height="712px">
+        <comment-item v-for="it in 30" />
+        <list-footer />
+      </el-scrollbar>
     </div>
 
     <div class="video-comment-footer">
@@ -47,7 +50,6 @@ const textarea = ref('')
 
 <style lang="scss" scoped>
 .video-comment {
-  height: 100%;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -91,24 +93,22 @@ const textarea = ref('')
 
   .video-comment-list {
     padding: 0 7px 0 16px;
-    scrollbar-color: hsla(0, 0%, 100%, 0.16) transparent;
-    scrollbar-width: thin;
+    // scrollbar-color: hsla(0, 0%, 100%, 0.16) transparent;
+    // scrollbar-width: thin;
 
-    -ms-overflow-style: none;
+    // -ms-overflow-style: none;
     flex-direction: column;
     flex-grow: 1;
     outline: none;
-    overflow: scroll;
-    overflow-x: hidden;
-    overflow: -moz-scrollbars-none;
-    padding: 0 16px;
+    // overflow: scroll;
+    // overflow-x: hidden;
+    // overflow: -moz-scrollbars-none;
+    // padding: 0 16px;
     position: relative;
     scrollbar-width: none;
   }
 
   .video-comment-footer {
-    padding: 0 16px;
-
     flex-grow: 0;
     flex-shrink: 0;
     margin: 0 0 16px;

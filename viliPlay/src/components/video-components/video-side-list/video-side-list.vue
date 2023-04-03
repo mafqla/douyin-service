@@ -20,8 +20,9 @@ import SideItem from './side-item.vue'
       </div>
     </div>
     <div class="side-list-content">
-      <el-scrollbar height="904px">
+      <el-scrollbar height="760px">
         <side-item v-for="item in 35" />
+        <list-footer />
       </el-scrollbar>
     </div>
   </div>

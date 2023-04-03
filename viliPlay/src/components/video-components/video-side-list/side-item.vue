@@ -22,9 +22,7 @@ import {} from 'vue'
             </div>
           </div>
           <span class="author-card-user-video-like">
-            <svg width="24" height="24" viewBox="0 0 24 24">
-              <use xlink:href="#svg_icon_digg"></use>
-            </svg>
+            <svg-icon icon="small-like" class="icon" />
             <span>6.4万</span>
           </span>
           <p class="side-video-title">
@@ -145,6 +143,12 @@ import {} from 'vue'
           // left: 8px;
           line-height: 22px;
           position: absolute;
+
+          .icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 2px;
+          }
         }
 
         .side-video-title {

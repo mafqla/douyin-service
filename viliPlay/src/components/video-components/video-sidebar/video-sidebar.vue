@@ -101,4 +101,24 @@ const handleClick = (tab: string) => {
     height: calc(100% - 46px);
   }
 }
+
+@media screen and (min-width: 1440px) and (max-width: 2560px) {
+  // .BasEuG5Q.nQWxAwdY .JrMwkvQy.WQ9IVUcw {
+  //     width:71.4285714286%
+  // }
+
+  .video-sidebar {
+    width: 28.5714285714%;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  // .BasEuG5Q.nQWxAwdY .JrMwkvQy.WQ9IVUcw {
+  //   width: calc(100% - 656px);
+  // }
+
+  .video-sidebar {
+    width: 656px;
+  }
+}
 </style>

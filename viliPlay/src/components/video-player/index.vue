@@ -71,6 +71,15 @@ const openComments = () => {
   isShow.value = false
   //设置宽度
   currentWidth.value = 'calc(100% - 336px)'
+
+  //获取屏幕宽度
+  const screenWidth = document.body.clientWidth
+  // console.log(screenWidth)
+
+  //如果屏幕宽度大于等于2560px，就设置宽度为100%-28.5714285714%
+  if (screenWidth >= 1440) {
+    currentWidth.value = 'calc(100% - 28.5714285714%)'
+  }
 }
 
 //关闭评论

@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     CollectionsList: typeof import('./src/components/my/user-tab/collections-list/collections-list.vue')['default']
     CollectItem: typeof import('./src/components/my/user-tab/collect-list/collect-item.vue')['default']
     CollectList: typeof import('./src/components/my/user-tab/collect-list/collect-list.vue')['default']
+    CommentExpand: typeof import('./src/components/video-components/video-comment/comment-expand.vue')['default']
     CommentItem: typeof import('./src/components/video-components/video-comment/comment-item.vue')['default']
     ControlBar: typeof import('./src/components/video-player/control-bar.vue')['default']
     DiscoverBottom: typeof import('./src/components/discover/discover-bottom/discover-bottom.vue')['default']

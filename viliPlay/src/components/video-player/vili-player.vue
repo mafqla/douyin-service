@@ -44,4 +44,16 @@ const poster = ref(props.options.poster || '')
   background: transparent;
   z-index: 1;
 }
+
+@media screen and (min-width: 1440px) and (max-width: 2560px) {
+  .xgplayer {
+    width: 71.4285714286%;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .xgplayer {
+    width: calc(100% - 656px);
+  }
+}
 </style>
