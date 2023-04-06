@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect, type Ref, computed, nextTick } from 'vue'
+import { ref, watchEffect, type Ref, computed } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs, type TabsPaneContext } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
@@ -14,7 +14,7 @@ const activeName = ref(route.query.showTab || 'post') as Ref<
 >
 
 const handleClick = (tab: TabsPaneContext) => {
-  console.log(tab.paneName)
+  // console.log(tab.paneName)
   activeName.value = tab.paneName
 
   router.push({
@@ -87,6 +87,12 @@ watchEffect(() => {
     z-index: 1;
   }
 
+  @media (min-width: 1475px) {
+    :deep(.el-tabs__header).header-scroll {
+      padding: 0px 166.333px 0px 332.667px;
+    }
+  }
+
   @media (max-width: 1475px) {
     :deep(.el-tabs__header).header-scroll {
       padding: 0px 26px 0px 230px;
@@ -95,12 +101,6 @@ watchEffect(() => {
   @media (max-width: 1328px) {
     :deep(.el-tabs__header).header-scroll {
       padding: 0px 66px 0px 132px;
-    }
-  }
-
-  @media (min-width: 1920px) {
-    :deep(.el-tabs__header).header-scroll {
-      padding: 0px 26px 0px 230px;
     }
   }
 
