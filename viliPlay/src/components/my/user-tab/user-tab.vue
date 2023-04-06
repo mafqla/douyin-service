@@ -94,7 +94,7 @@ watchEffect(() => {
   }
   @media (max-width: 1328px) {
     :deep(.el-tabs__header).header-scroll {
-      padding: 0px 26px 0px 230px;
+      padding: 0px 66px 0px 132px;
     }
   }
 
