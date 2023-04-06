@@ -1,32 +1,39 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { UserHeader, LoginCode, UserTab, UserFooter } from '@/components/my'
-import { useScroll } from '@vueuse/core'
+import { useElScrollbarScroll } from '@/hooks'
+import type { ElScrollbar } from 'element-plus'
 
 const backgroundurlLightURL = '../assets/user-background-light.png'
 const backgroundurlDarkURL = '../assets/user-background-dark.png'
-
 const background = ref(backgroundurlLightURL)
-
 const isLogin = ref(false)
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar> | null>(null)
+const isDisplay = ref(false)
 
-const scroll = ref<HTMLElement | null>(null)
-
-const { x, y, isScrolling, arrivedState, directions } = useScroll(scroll)
-console.log(x.value, y.value, isScrolling.value, arrivedState, directions)
-
-if (isScrolling.value) {
-  console.log(1)
-}
+useElScrollbarScroll(
+  scrollbarRef,
+  (scrollTop) => {
+    if (scrollTop > 20) {
+      isDisplay.value = true
+    } else {
+      isDisplay.value = false
+    }
+  },
+  10
+)
 </script>
 <template>
-  <div class="user-detail" ref="scroll">
-    <el-scrollbar height="904px">
+  <div class="user-detail">
+    <el-scrollbar
+      height="904px"
+      ref="scrollbarRef"
+      :class="{ scrolled: isDisplay }"
+    >
       <div class="user-detail-content">
         <user-header />
-        <keep-alive include="user-tab">
-          <user-tab />
-        </keep-alive>
+        <user-tab :isDisplay="isDisplay" />
+
         <login-code v-if="isLogin" />
       </div>
       <user-footer />
@@ -49,7 +56,11 @@ if (isScrolling.value) {
     right: 0;
     top: 0;
     z-index: -1;
+    transition: opacity 0.3s ease-in-out;
   }
+}
+.scrolled.el-scrollbar::before {
+  opacity: 0; // 滚动后使背景图片消失
 }
 .user-detail {
   display: flex;

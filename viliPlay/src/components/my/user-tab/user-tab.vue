@@ -1,34 +1,48 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { ref, watchEffect, type Ref, computed, nextTick } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
-import { ElTabPane, ElTabs } from 'element-plus'
-
+import { ElTabPane, ElTabs, type TabsPaneContext } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+
+const props = defineProps<{ isDisplay: boolean }>()
 
 const route = useRoute()
 const router = useRouter()
 
 const activeName = ref(route.query.showTab || 'post') as Ref<
-  'post' | 'comments' | 'history'
+  'post' | 'comments' | 'history' | string | undefined | number
 >
-const isLogin = ref(false)
 
-const handleClick = (tab: any) => {
-  console.log(tab)
-  activeName.value = tab
+const handleClick = (tab: TabsPaneContext) => {
+  console.log(tab.paneName)
+  activeName.value = tab.paneName
 
   router.push({
     query: {
       ...route.query,
-      showTab: tab
+      showTab: tab.paneName
     }
   })
 }
+
+const isDisplay = computed(() => {
+  return props.isDisplay
+})
+watchEffect(() => {
+  // console.log('isDisplay', isDisplay.value)
+  if (isDisplay.value) {
+    document.querySelector('.el-tabs__header')?.classList.add('header-scroll')
+  } else {
+    document
+      .querySelector('.el-tabs__header')
+      ?.classList.remove('header-scroll')
+  }
+})
 </script>
 
 <template>
   <div class="user-tab">
-    <el-tabs v-model="activeName" @tab-click="handleClick(activeName)">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="作品" name="post">
         <user-post />
       </el-tab-pane>
@@ -63,7 +77,7 @@ const handleClick = (tab: any) => {
   }
 
   //下拉样式
-  .header-scroll {
+  :deep(.el-tabs__header).header-scroll {
     left: 0;
     min-width: 650px;
     position: fixed;
@@ -73,28 +87,28 @@ const handleClick = (tab: any) => {
     z-index: 1;
   }
 
-  // @media (max-width: 1475px) {
-  //   :deep(.el-tabs__header) {
-  //     padding: 0px 26px 0px 230px;
-  //   }
-  // }
-  // @media (max-width: 1328px) {
-  //   :deep(.el-tabs__header) {
-  //     padding: 0px 26px 0px 230px;
-  //   }
-  // }
+  @media (max-width: 1475px) {
+    :deep(.el-tabs__header).header-scroll {
+      padding: 0px 26px 0px 230px;
+    }
+  }
+  @media (max-width: 1328px) {
+    :deep(.el-tabs__header).header-scroll {
+      padding: 0px 26px 0px 230px;
+    }
+  }
 
-  // @media (min-width: 1920px) {
-  //   :deep(.el-tabs__header) {
-  //     padding: 0px 26px 0px 230px;
-  //   }
-  // }
+  @media (min-width: 1920px) {
+    :deep(.el-tabs__header).header-scroll {
+      padding: 0px 26px 0px 230px;
+    }
+  }
 
-  // @media (max-width: 840px) {
-  //   :deep(.el-tabs__header) {
-  //     padding: 0px 26px 0px 94px;
-  //   }
-  // }
+  @media (max-width: 840px) {
+    :deep(.el-tabs__header).header-scroll {
+      padding: 0px 26px 0px 94px;
+    }
+  }
   :deep(.el-tabs__item.is-active) {
     color: #000;
   }
