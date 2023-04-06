@@ -10,6 +10,7 @@ const background = ref(backgroundurlLightURL)
 const isLogin = ref(false)
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar> | null>(null)
 const isDisplay = ref(false)
+const tabDisplay = ref(false)
 
 useElScrollbarScroll(
   scrollbarRef,
@@ -18,6 +19,12 @@ useElScrollbarScroll(
       isDisplay.value = true
     } else {
       isDisplay.value = false
+    }
+
+    if (scrollTop > 200) {
+      tabDisplay.value = true
+    } else {
+      tabDisplay.value = false
     }
   },
   10
@@ -32,7 +39,7 @@ useElScrollbarScroll(
     >
       <div class="user-detail-content">
         <user-header />
-        <user-tab :isDisplay="isDisplay" />
+        <user-tab :isDisplay="tabDisplay" />
 
         <login-code v-if="isLogin" />
       </div>
