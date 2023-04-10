@@ -22,4 +22,14 @@ public interface VideosService {
      * @param status 状态
      */
     List<VideosEntity> getVideosListByPage(Integer page, Integer size, Integer status);
+
+    /**
+     * 视频滚动加载接口
+     *
+     * @param cursor 当前页码
+     * @param size   每页数量
+     * @param status 状态
+     */
+    List<VideosEntity> getVideosListByCursor(Integer cursor, Integer size, Integer status);
+
 }

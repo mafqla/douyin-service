@@ -53,4 +53,11 @@ public class VideosController extends BaseController {
         videosService.getVideosListByPage(page, size, status);
         return processData(() -> videosService.getVideosListByPage(page, size, status), "获取成功", this::processException);
     }
+
+    @ApiOperation(value = "视频滚动加载接口")
+    @PostMapping("/getVideosByCursor")
+    public ResponseEntity<OR<List<VideosEntity>>> getVideosByCursor(Integer cursor, Integer size, Integer status) {
+        videosService.getVideosListByCursor(cursor, size, status);
+        return processData(() -> videosService.getVideosListByCursor(cursor, size, status), "获取成功", this::processException);
+    }
 }

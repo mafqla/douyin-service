@@ -22,4 +22,15 @@ public interface VideosRepository extends JpaRepository<VideosEntity, String> {
      */
     @Query(value = "select * from videos where status = ?3  limit ?1,?2", nativeQuery = true)
     List<VideosEntity> findAllByPage(Integer page, Integer size, Integer status);
+
+    /**
+     * 视频滚动加载接口
+     *
+     * @param cursor 当前页码
+     * @param size   每页数量
+     * @param status 状态
+     */
+    @Query(value = "SELECT * FROM videos WHERE id > ?1 AND (?3 IS NULL OR status = ?3) ORDER BY id LIMIT ?2", nativeQuery = true)
+    List<VideosEntity> findVideosByCursor(Integer cursor, Integer size, Integer status);
+
 }
