@@ -38,13 +38,13 @@ public class AuthServiceImpl implements AuthService {
     @Resource
     private UserRepository userRepository;
 
-    @Autowired
+    @Resource
     private RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private JavaMailSender javaMailSender;
 
     @Resource

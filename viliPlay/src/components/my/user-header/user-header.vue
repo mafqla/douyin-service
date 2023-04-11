@@ -22,7 +22,15 @@ const avatar = ref('../assets/icons/user-avatar.svg')
         </h1>
       </div>
       <p v-if="isLogin" class="user-account">
-        <span> 抖音号：{{ 12214343 }} </span>
+        <span class="user-account-num"> 抖音号：{{ 12214343 }} </span>
+        <!-- 作者页面显示 -->
+        <span class="user-account-addr">ip属地: {{ '北京' }}</span>
+        <span class="user-account-info">
+          <svg-icon icon="small-womon" class="user-account-icon" />
+          <span>22岁</span>
+        </span>
+        <span class="user-account-info">天津·南开</span>
+        <span class="user-account-info">南开大学</span>
       </p>
       <p v-if="isLogin" class="user-signature">
         <span> 这个人很懒，什么都没有留下</span>
@@ -146,8 +154,31 @@ const avatar = ref('../assets/icons/user-avatar.svg')
 
       span {
         color: rgba(22, 24, 35, 0.6);
+        // color: rgba(255, 255, 255, 0.5);
         font-size: 12px;
         line-height: 20px;
+      }
+      .user-account-num,
+      .user-account-addr {
+        margin-right: 20px;
+      }
+
+      .user-account-info {
+        align-items: center;
+        border: 1px solid #f2f2f4;
+        // border: 1px solid rgba(242, 242, 243, 0.08);
+        border-radius: 2px;
+        display: flex;
+        height: 20px;
+        margin-right: 2px;
+        padding: 0 8px;
+
+        .user-account-icon {
+          width: 12px;
+          height: 12px;
+          margin-right: 4px;
+          color: #f5588e;
+        }
       }
     }
     .user-info-text {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { HeaderAvatar } from '@/components/header'
+import { HeaderAvatar, LoginButton } from '@/components/header'
 //切换深色主题
 const isDark = ref(false)
 
@@ -8,6 +8,10 @@ const isDark = ref(false)
 const toggleTheme = () => {
   isDark.value = !isDark.value
 }
+//是否登录
+const isLogin = ref(false)
+
+const dialogTableVisible = ref(false)
 </script>
 
 <template>
@@ -73,7 +77,20 @@ const toggleTheme = () => {
             <p>投稿</p>
           </div>
           <el-divider direction="vertical" />
-          <header-avatar />
+
+          <template v-if="isLogin">
+            <header-avatar />
+          </template>
+          <template v-else>
+            <login-button @click="dialogTableVisible = true" />
+            <el-dialog
+              v-model="dialogTableVisible"
+              title="登录后免费畅享高清视频"
+              align-center
+              center
+            >
+            </el-dialog>
+          </template>
         </div>
       </div>
     </div>
@@ -284,6 +301,19 @@ const toggleTheme = () => {
         .header-right-item:first-child {
           margin-left: 4.5px;
           margin-right: 4.5px !important;
+        }
+
+        :deep(.el-dialog) {
+          background: url(https://p3-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/login-resetpwd-bg.png)
+            0% 0% / 100% no-repeat rgb(255, 255, 255);
+          border-radius: 8px;
+          box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+          // min-height: 568px;
+          min-height: 450px;
+          padding: 24px 38px 40px;
+          // transform: scale(1);
+          // width: 480px;
+          width: 360px;
         }
       }
     }
