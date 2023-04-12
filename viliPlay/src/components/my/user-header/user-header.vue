@@ -121,6 +121,7 @@ const avatar = ref('../assets/icons/user-avatar.svg')
     flex-direction: column;
     justify-content: center;
     margin-left: 40px;
+    min-width: 560px;
     .user-name {
       .user-name-noin {
         color: #161823;
