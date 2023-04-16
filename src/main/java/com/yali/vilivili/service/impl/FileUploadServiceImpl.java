@@ -183,7 +183,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             videosEntity.setVideosCover(coverPathFormat);
             videosEntity.setVideosAddress(videoPathFormat);
             videosEntity.setVideosTime(duration);
-            videosEntity.setUsername(videosRo.getUsername());
+//            videosEntity.setUsername(videosRo.getUsername());
             videosEntity.setStatus(videosEntity.getStatus());
             videosEntity.setUploadTime(new Date());
 

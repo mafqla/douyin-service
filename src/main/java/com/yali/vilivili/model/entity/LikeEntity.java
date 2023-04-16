@@ -26,6 +26,7 @@ public class LikeEntity {
 
     @Column(name = "video_id")
     private long videoId;
+
     @Basic
     @Column(name = "like_time")
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")

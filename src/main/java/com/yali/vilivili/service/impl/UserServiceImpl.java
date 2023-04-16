@@ -1,6 +1,7 @@
 package com.yali.vilivili.service.impl;
 
 import com.yali.vilivili.model.entity.UserEntity;
+import com.yali.vilivili.model.entity.UserInfoEntity;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateAndSaveUserRO;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @Description 用户管理
@@ -47,6 +49,12 @@ public class UserServiceImpl implements UserService {
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
         String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
+
+        //设置用户信息默认值
+        String gender = "未知";
+        String birthday = "未知";
+        String location = "未知";
+        String signature = "";
 
         //判断用户邮箱是否存在
         UserEntity isEmail = userRepository.findByEmail(ro.getEmail());
@@ -80,6 +88,18 @@ public class UserServiceImpl implements UserService {
             saveUser.setUIp(ipAddress);
             BeanUtils.copyProperties(ro, saveUser);
             System.out.println(saveUser);
+            
+            // 创建新的用户信息实体
+            UserInfoEntity userInfoEntity = new UserInfoEntity();
+            userInfoEntity.setUserId(saveUser.getId());
+            userInfoEntity.setUserNum(UUID.randomUUID().toString());
+            userInfoEntity.setGender(gender);
+            userInfoEntity.setBirthdate(birthday);
+            userInfoEntity.setLocation(location);
+            userInfoEntity.setSignature(signature);
+            userInfoEntity.setUserEntity(saveUser);
+            saveUser.setUserInfoEntity(userInfoEntity);
+
             userRepository.save(saveUser);
         }
     }

@@ -26,7 +26,8 @@ const avatar = ref('../assets/icons/user-avatar.svg')
         <!-- 作者页面显示 -->
         <span class="user-account-addr">ip属地: {{ '北京' }}</span>
         <span class="user-account-info">
-          <svg-icon icon="small-womon" class="user-account-icon" />
+          <svg-icon icon="small-woman" class="user-account-icon" />
+          <svg-icon icon="small-man" class="user-account-icon" />
           <span>22岁</span>
         </span>
         <span class="user-account-info">天津·南开</span>

@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description 用户信息
@@ -85,4 +86,13 @@ public class UserEntity {
      */
     @Column(name = "type")
     private byte type;
+
+
+    /**
+     * 通过id关联用户信息表
+     * 一个用户对应一个用户信息
+     */
+    @OneToOne(targetEntity = UserInfoEntity.class ,cascade = CascadeType.ALL)
+    @JoinColumn(name = "id", referencedColumnName = "user_id")
+    private UserInfoEntity userInfoEntity;
 }

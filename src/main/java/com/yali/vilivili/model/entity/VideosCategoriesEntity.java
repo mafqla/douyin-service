@@ -23,23 +23,23 @@ import java.util.Date;
 @Table(name = "videos_categories")
 @DynamicInsert
 @DynamicUpdate
-public class VideosCategories {
+public class VideosCategoriesEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id") // 主键 ID
     private long id;
 
-    @Column(name = "img")
+    @Column(name = "img") // 图片 URL
     private String img;
 
-    @Column(name = "description")
+    @Column(name = "description") // 描述信息
     private String description;
 
-    @Column(name = "create_time")
+    @Column(name = "create_time") // 创建时间
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
     private Date createTime;
 
-    @Column(name = "update_time")
+    @Column(name = "update_time") // 更新时间
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
     private Date updateTime;
 }

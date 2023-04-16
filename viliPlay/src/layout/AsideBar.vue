@@ -86,7 +86,7 @@ console.log(activeMenu.value)
     .aside-logo {
       align-items: center;
       background: linear-gradient(180deg, #eff0f3 80%, rgba(241, 242, 245, 0));
-      background-image: url(@/assets/icons/douyin.svg);
+      // background-image: url(@/assets/icons/douyin.svg);
       background-repeat: no-repeat;
       display: flex;
       flex-basis: 72px;

@@ -33,8 +33,6 @@ public class VideosEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "username")
-    private String username;
 
     @Column(name = "videos_time")
     private String videosTime;

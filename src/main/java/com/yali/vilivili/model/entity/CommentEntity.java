@@ -26,11 +26,10 @@ public class CommentEntity {
     @Column(name = "video_id")
     private long videoId;
 
-    @Column(name = "video_username")
-    private String videoUsername;
 
-    @Column(name = "commentator")
+    @Column(name = "commentator_id")
     private String commentator;
+
     @Column(name = "comment_time")
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
     private Date commentTime;

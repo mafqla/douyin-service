@@ -1,6 +1,7 @@
 package com.yali.vilivili.repository;
 
 import com.yali.vilivili.model.entity.UserEntity;
+import com.yali.vilivili.model.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,9 +28,21 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Query(value = "update user set  is_valid= ?2 where id = ?1", nativeQuery = true)
     int deleteById(Integer id, byte isValid);
 
+    /**
+     * 根据用户名查找所有用户
+     * @param username 用户名
+     * @param isValid 用户是否有效(1无效,0有效)
+     * @param Type 用户类型 0：普通用户，1：管理员，2：超级管理员，3：VIP用户
+     * @return List<UserEntity>
+     */
     @Query(value = "select * from user where username = ?1 and is_valid = ?2 and type=?3", nativeQuery = true)
     List<UserEntity> findAllUser(String username, int isValid, int Type);
 
+    /**
+     * 根据用户名查找用户
+     * @param username 用户名
+     * @return UserEntity
+     */
     UserEntity findTopByUsername(String username);
 
     UserEntity findById(Integer userId);
@@ -64,6 +77,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
      */
     @Query(value = "select * from user  limit ?1,?2", nativeQuery = true)
     List<UserEntity> findAllUserByPage(Integer page, Integer size);
+
+
 
 }
 
