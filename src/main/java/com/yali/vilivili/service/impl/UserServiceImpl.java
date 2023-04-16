@@ -88,7 +88,8 @@ public class UserServiceImpl implements UserService {
             saveUser.setUIp(ipAddress);
             BeanUtils.copyProperties(ro, saveUser);
             System.out.println(saveUser);
-            
+
+            UserEntity savedUser = userRepository.save(saveUser);
             // 创建新的用户信息实体
             UserInfoEntity userInfoEntity = new UserInfoEntity();
             userInfoEntity.setUserId(saveUser.getId());
