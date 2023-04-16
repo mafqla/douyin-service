@@ -39,6 +39,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${file.upload.video.cover-path}")
     private String videoCoverPath;
 
+    @Value("${file.upload.icon.path}")
+    private String iconUploadPath;
+
     @Value("${file.upload.context-path}")
     private String contextPath;
 
@@ -51,10 +54,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(contextPath+"/**")
-                .addResourceLocations("file:"+fileUploadPath)
-                .addResourceLocations("file:"+fileUploadPath2)
-                .addResourceLocations("file:"+videoUploadPath)
-                .addResourceLocations("file:"+videoCoverPath);
+        registry.addResourceHandler(contextPath + "/**")
+                .addResourceLocations("file:" + fileUploadPath)
+                .addResourceLocations("file:" + fileUploadPath2)
+                .addResourceLocations("file:" + videoUploadPath)
+                .addResourceLocations("file:" + videoCoverPath)
+                .addResourceLocations("file:" + iconUploadPath);
     }
 }

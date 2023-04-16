@@ -27,10 +27,13 @@ public class VideosCategoriesEntity {
 
     @Id
     @Column(name = "id") // 主键 ID
-    private long id;
+    private Integer id;
 
     @Column(name = "img") // 图片 URL
     private String img;
+
+    @Column(name = "categories_name") // 分类名称
+    private String categoriesName;
 
     @Column(name = "description") // 描述信息
     private String description;

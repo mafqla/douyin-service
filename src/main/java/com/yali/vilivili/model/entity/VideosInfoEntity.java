@@ -4,10 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 视频信息
@@ -24,6 +21,9 @@ import javax.persistence.Table;
 public class VideosInfoEntity {
 
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id; // 视频 ID
     @Column(name = "video_id")
     private long videoId; // 视频 ID
 

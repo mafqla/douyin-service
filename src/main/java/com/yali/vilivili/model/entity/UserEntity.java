@@ -48,6 +48,50 @@ public class UserEntity {
     private String email;
 
     /**
+     * 用户手机号
+     */
+    @Column(name = "phone")
+    private String phone;
+
+    /**
+     * 用户编号
+     */
+    @Column(name = "user_num")
+    private String userNum;
+
+
+    /**
+     * 用户性别
+     */
+    @Column(name = "gender")
+    private String gender;
+
+
+    /**
+     * 用户生日
+     */
+    @Column(name = "birthdate")
+    private String birthdate;
+
+    /**
+     * 用户签名
+     */
+    @Column(name = "signature")
+    private String signature;
+
+    /**
+     * 用户学校
+     */
+    @Column(name = "school")
+    private String school; // 用户学校
+
+    /**
+     * 用户所在地
+     */
+    @Column(name = "location")
+    private String location;
+
+    /**
      * 用户头像
      */
     @Column(name = "user_avatar")
@@ -66,6 +110,13 @@ public class UserEntity {
     private String uIp;
 
     /**
+     * 用户类型
+     * 默认值为0,0：普通用户，1：管理员，2：超级管理员，3：VIP用户)
+     */
+    @Column(name = "type")
+    private byte type;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -80,19 +131,6 @@ public class UserEntity {
     @Column(name = "update_time")
     private Date updateTime;
 
-    /**
-     * 用户类型
-     * 默认值为0，0为普通用户，1为管理员
-     */
-    @Column(name = "type")
-    private byte type;
 
 
-    /**
-     * 通过id关联用户信息表
-     * 一个用户对应一个用户信息
-     */
-    @OneToOne(targetEntity = UserInfoEntity.class ,cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "user_id")
-    private UserInfoEntity userInfoEntity;
 }

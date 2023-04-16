@@ -9,6 +9,7 @@ import com.yali.vilivili.utils.FFmpegUtils;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.URL;
 import java.util.Date;
 import java.util.UUID;
 
@@ -37,10 +39,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Resource
     private VideosRepository videosRepository;
+
+
     @Value("${file.upload.path}")
     private String filePath;
-
-
     @Value("${file.upload.image.suffix}")
     private String imageSuffix;
     @Value("${server.port}")
@@ -54,6 +56,9 @@ public class FileUploadServiceImpl implements FileUploadService {
     private String videoPath;
     @Value("${file.upload.video.cover-path}")
     private String coverPath;
+
+    @Value("${file.upload.icon.path}")
+    private String iconPath;
 
     @Override
     public FileUploadVO imageUpload(MultipartFile file) {
@@ -93,6 +98,70 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     /**
+     * 图片上传
+     *
+     * @param file    文件
+     * @param urlPath 图片链接
+     */
+    @Override
+    public FileUploadVO urlUpload(MultipartFile file, String urlPath) throws IOException {
+        // 判断文件和路径是否为空
+        if (file == null && StringUtils.isBlank(urlPath)) {
+            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件或者输入链接");
+        }
+
+        String fileName = "";
+        InputStream inputStream = null;
+        boolean fromUrl = false;
+
+        if (file != null) {
+            // 从文件中获取文件名和流
+            fileName = file.getOriginalFilename();
+            assert fileName != null;
+            if (!imageSuffix.contains(fileName.substring(fileName.lastIndexOf(".") + 1))) {
+                throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件格式不正确");
+            }
+            inputStream = file.getInputStream();
+        } else {
+            // 从URL中下载并获取文件名和流
+            fileName = UUID.randomUUID() + urlPath.substring(urlPath.lastIndexOf("."));
+            try {
+                inputStream = new URL(urlPath).openStream();
+                fromUrl = true;
+            } catch (IOException e) {
+                log.error("下载失败", e);
+                throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "下载失败");
+            }
+        }
+
+        // 上传文件
+        fileName = UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
+        File dest = new File(iconPath + fileName);
+        try {
+            // 检测是否存在目录
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();// 新建文件夹
+            }
+            // 文件写入
+            FileUtils.copyInputStreamToFile(inputStream, dest);
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/" + fileName;
+            String path = iconPath.substring(18) + fileName;
+            if (fromUrl) {
+                log.info("图片下载成功，图片地址为：" + path);
+            } else {
+                log.info("图片上传成功，图片地址为：" + path);
+            }
+            FileUploadVO fileUploadVO = new FileUploadVO();
+            fileUploadVO.setUrl(url);
+            fileUploadVO.setPath(path);
+            return fileUploadVO;
+        } catch (IOException e) {
+            log.error("上传失败", e);
+            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件写入失败");
+        }
+    }
+
+    /**
      * 根据路径返回图片在线预览地址
      *
      * @param path 路径
@@ -110,6 +179,9 @@ public class FileUploadServiceImpl implements FileUploadService {
             } else if (path.startsWith("/static/default_logo/")) {
                 //去除掉/static/default_logo/，只留下文件名
                 path = path.substring(20);
+                return url + path;
+            } else if (path.startsWith("/static/icon/")) {
+                path = path.substring(12);
                 return url + path;
             } else {
                 return path;

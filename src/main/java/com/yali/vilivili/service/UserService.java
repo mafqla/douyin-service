@@ -3,7 +3,9 @@ package com.yali.vilivili.service;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
-import com.yali.vilivili.model.ro.updateAndSaveUserRO;
+import com.yali.vilivili.model.ro.updateUserRO;
+import com.yali.vilivili.model.ro.AddUserRO;
+
 
 import java.util.List;
 
@@ -16,11 +18,19 @@ public interface UserService {
 
 
     /**
-     * 更新和保存用户
+     * 更新用户信息
      *
      * @param ro 用户信息
      */
-    void updateAndSaveUser(updateAndSaveUserRO ro);
+    void updateUser(updateUserRO ro);
+
+
+    /**
+     * 添加用户
+     *
+     * @param ro 用户信息
+     */
+    void addUser(AddUserRO ro);
 
 
     /**

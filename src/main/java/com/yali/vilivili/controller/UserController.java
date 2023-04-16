@@ -4,9 +4,10 @@ import com.yali.vilivili.annotation.RequireLogin;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.model.entity.UserEntity;
+import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
-import com.yali.vilivili.model.ro.updateAndSaveUserRO;
+import com.yali.vilivili.model.ro.updateUserRO;
 import com.yali.vilivili.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @Description 用户管理
  * @Date 2023.1.4 16:34
- * @Author  fuqianlin
+ * @Author fuqianlin
  */
 @RestController
 @Api(value = "用户管理", tags = {"用户管理"})
@@ -33,11 +34,19 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
-    @ApiOperation(value = "更新和保存用户")
-    @PostMapping("/updateAndSaveUser")
+    @ApiOperation(value = "更新用户")
+    @PostMapping("/updateUser")
     @RequireLogin
-    public ResponseEntity<OR<Void>> updateAndSaveUser(@Valid updateAndSaveUserRO ro) {
-        userService.updateAndSaveUser(ro);
+    public ResponseEntity<OR<Void>> updateUser(@Valid updateUserRO ro) {
+        userService.updateUser(ro);
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "添加用户")
+    @PostMapping("/addUser")
+    @RequireLogin
+    public ResponseEntity<OR<Void>> addUser(@Valid AddUserRO ro) {
+        userService.addUser(ro);
         return process(this::successResult);
     }
 

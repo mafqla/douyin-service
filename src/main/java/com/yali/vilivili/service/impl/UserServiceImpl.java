@@ -1,16 +1,15 @@
 package com.yali.vilivili.service.impl;
 
 import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.entity.UserInfoEntity;
+import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
-import com.yali.vilivili.model.ro.updateAndSaveUserRO;
+import com.yali.vilivili.model.ro.updateUserRO;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
 import com.yali.vilivili.utils.MyException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,70 +38,57 @@ public class UserServiceImpl implements UserService {
     private FileUploadServiceImpl fileUploadService;
 
 
-    /**
-     * 更新和保存用户
-     *
-     * @param ro 更新和保存用户
-     */
-    public void updateAndSaveUser(updateAndSaveUserRO ro) {
-
+    public void addUser(AddUserRO ro) {
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
         String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
-
-        //设置用户信息默认值
-        String gender = "未知";
-        String birthday = "未知";
-        String location = "未知";
-        String signature = "";
+        //生成随机的用户账号num
+        String num = UUID.randomUUID().toString().substring(0, 11);
 
         //判断用户邮箱是否存在
-        UserEntity isEmail = userRepository.findByEmail(ro.getEmail());
+        UserEntity existingUser = userRepository.findByEmail(ro.getEmail());
 
-        if (Objects.nonNull(isEmail)) {
-            isEmail.setUpdateTime(new Date());
-            isEmail.setUIp(ipAddress);
-            // 如果userAvatar为空，则设置默认头像
-            if (Objects.isNull(isEmail.getUserAvatar())) {
-                isEmail.setUserAvatar(userAvatar);
-            } else {
-                isEmail.setUserAvatar(isEmail.getUserAvatar());
-            }
-
-            isEmail.setUsername(ro.getUsername());
+        if (Objects.isNull(existingUser)) {
+            UserEntity newUser = new UserEntity();
+            newUser.setCreateTime(new Date());
+            newUser.setUpdateTime(new Date());
             String password = AESUtil.encrypt(ro.getPassword());
             ro.setPassword(password);
-            isEmail.setPassword(ro.getPassword());
-            isEmail.setEmail(ro.getEmail());
-            isEmail.setIsValid(ro.getIsValid());
-            isEmail.setType(ro.getType());
-            userRepository.save(isEmail);
-        } else {
-            ro.setCreateTime(new Date());
-            ro.setUpdateTime(new Date());
-            String password = AESUtil.encrypt(ro.getPassword());
-            ro.setPassword(password);
-            UserEntity saveUser = new UserEntity();
-            saveUser.setUserAvatar(userAvatar);
+
+            newUser.setUserAvatar(userAvatar);
             // 保存用户ip
-            saveUser.setUIp(ipAddress);
-            BeanUtils.copyProperties(ro, saveUser);
-            System.out.println(saveUser);
+            newUser.setUIp(ipAddress);
 
-            UserEntity savedUser = userRepository.save(saveUser);
-            // 创建新的用户信息实体
-            UserInfoEntity userInfoEntity = new UserInfoEntity();
-            userInfoEntity.setUserId(saveUser.getId());
-            userInfoEntity.setUserNum(UUID.randomUUID().toString());
-            userInfoEntity.setGender(gender);
-            userInfoEntity.setBirthdate(birthday);
-            userInfoEntity.setLocation(location);
-            userInfoEntity.setSignature(signature);
-            userInfoEntity.setUserEntity(saveUser);
-            saveUser.setUserInfoEntity(userInfoEntity);
-
-            userRepository.save(saveUser);
+            newUser.setUsername(ro.getUsername());
+            newUser.setPassword(ro.getPassword());
+            newUser.setEmail(ro.getEmail());
+            newUser.setUserNum(num);
+            userRepository.save(newUser);
+        } else {
+            //邮箱已经存在，抛出异常或者返回错误信息
+            throw new MyException(HttpStatus.OK.toString(), "邮箱已经注册");
         }
+    }
+
+
+    /**
+     * 更新用户信息
+     *
+     * @param ro 更新用户
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(updateUserRO ro) {
+
+        String ipAddress = IpUtils.getIpAddress(request);
+
+        try {
+            userRepository.updateUserInfoByEmail(ro.getEmail(), ro.getUsername(), ro.getUserNum(), ro.getPhone(),
+                    ro.getGender(), ro.getBirthdate(), ro.getSignature(), ro.getSchool(),
+                    ro.getLocation(), ipAddress);
+        } catch (Exception e) {
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "更新用户信息失败");
+        }
+
     }
 
     /**

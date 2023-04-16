@@ -41,6 +41,42 @@ public class LoginVO {
     private String email;
 
     /**
+     * 用户手机号
+     */
+    @ApiModelProperty(value = "phone")
+    private String phone;
+
+    /**
+     * 用户编号
+     */
+    @ApiModelProperty(value = "userNum")
+    private String userNum;
+
+    /**
+     * 用户ip属地
+     */
+    @ApiModelProperty(value = "ipLocation")
+    private String ipLocation;
+
+    /**
+     * 用户性别
+     */
+    @ApiModelProperty(value = "gender")
+    private String gender;
+
+    /**
+     * 用户生日
+     */
+    @ApiModelProperty(value = "birthdate")
+    private String birthdate;
+
+    /**
+     * 用户个性签名
+     */
+    @ApiModelProperty(value = "signature")
+    private String signature;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(value = "createtime")

@@ -1,7 +1,6 @@
 package com.yali.vilivili.repository;
 
 import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,11 +38,12 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     List<UserEntity> findAllUser(String username, int isValid, int Type);
 
     /**
-     * 根据用户名查找用户
-     * @param username 用户名
+     * 根据邮箱查找用户
+     *
+     * @param email 邮箱
      * @return UserEntity
      */
-    UserEntity findTopByUsername(String username);
+    UserEntity findTopByEmail(String email);
 
     UserEntity findById(Integer userId);
 
@@ -68,6 +68,36 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Modifying
     @Query(value = "update user set user_avatar = ?2 where email = ?1", nativeQuery = true)
     int updateAvatarByEmail(String email, String avatar);
+
+    /**
+     * 更新用户信息
+     *
+     * @param email     用户邮箱
+     * @param username  用户名
+     * @param userNum   用户账号
+     * @param phone     手机号码
+     * @param gender    性别
+     * @param birthdate 出生日期
+     * @param signature 个性签名
+     * @param school    学校
+     * @param location  位置
+     * @param uIP       用户ip
+     */
+    @Modifying
+    @Query(value = "UPDATE user SET " +
+            "username = COALESCE(NULLIF(?2, ''), username), " +
+            "user_num = COALESCE(NULLIF(?3, ''), user_num), " +
+            "phone = COALESCE(NULLIF(?4, ''), phone), " +
+            "gender = COALESCE(NULLIF(?5, ''), gender), " +
+            "birthdate = COALESCE(NULLIF(?6, ''), birthdate), " +
+            "signature = COALESCE(NULLIF(?7, ''), signature), " +
+            "school = COALESCE(NULLIF(?8, ''), school), " +
+            "location = COALESCE(NULLIF(?9, ''), location), " +
+            "u_ip = COALESCE(NULLIF(?10, ''), u_ip) " +
+            "WHERE email = ?1", nativeQuery = true)
+    void updateUserInfoByEmail(String email, String username, String userNum, String phone,
+                               String gender, String birthdate, String signature,
+                               String school, String location, String uIP);
 
     /**
      * 分页查询用户列表

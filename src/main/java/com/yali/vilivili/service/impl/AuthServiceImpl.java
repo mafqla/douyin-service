@@ -1,10 +1,7 @@
 package com.yali.vilivili.service.impl;
 
 import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.ro.EmailRO;
-import com.yali.vilivili.model.ro.LoginRO;
-import com.yali.vilivili.model.ro.RegisterRO;
-import com.yali.vilivili.model.ro.updateAndSaveUserRO;
+import com.yali.vilivili.model.ro.*;
 import com.yali.vilivili.model.vo.LoginVO;
 import com.yali.vilivili.model.vo.TokenInfoVO;
 import com.yali.vilivili.repository.UserRepository;
@@ -14,7 +11,6 @@ import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,10 +23,12 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static com.yali.vilivili.utils.IpUtils.getIpSource;
+
 /**
  * @Description
  * @Date 2022/11/16 22:47
- * @Author pq
+ * @Author fuqianlin
  */
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -52,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginVO login(LoginRO ro) {
-        UserEntity user=userRepository.findTopByUsername(ro.getUsername());
+        UserEntity user = userRepository.findTopByEmail(ro.getEmail());
         if (Objects.isNull(user)){
             throw new MyException(HttpStatus.OK.toString(),"用户不存在！");
         }
@@ -75,6 +73,9 @@ public class AuthServiceImpl implements AuthService {
         // 获取用户头像url
         String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
 
+        //获取ip属地
+        String ipLocation = getIpSource(user.getUIp());
+
         LoginVO loginVO = new LoginVO();
         loginVO.setUserId(user.getId());
         loginVO.setUsername(user.getUsername());
@@ -82,6 +83,12 @@ public class AuthServiceImpl implements AuthService {
         loginVO.setUserAvatar(avatarUrl);
         loginVO.setType(String.valueOf(user.getType()));
         loginVO.setCreateTime(user.getCreateTime());
+        loginVO.setPhone(user.getPhone());
+        loginVO.setUserNum(user.getUserNum());
+        loginVO.setIpLocation(ipLocation);
+        loginVO.setBirthdate(user.getBirthdate());
+        loginVO.setGender(user.getGender());
+        loginVO.setSignature(user.getSignature());
         loginVO.setToken(token);
         return loginVO;
     }
@@ -137,11 +144,12 @@ public class AuthServiceImpl implements AuthService {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
         }
 
-        updateAndSaveUserRO addUser = new updateAndSaveUserRO();
+        AddUserRO addUser = new AddUserRO();
         addUser.setUsername(ro.getUsername());
         addUser.setPassword(ro.getPassword());
         addUser.setEmail(ro.getEmail());
-        userService.updateAndSaveUser(addUser);
+//        userService.updateAndSaveUser(addUser);
+        userService.addUser(addUser);
     }
 
     /**
