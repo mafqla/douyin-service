@@ -37,7 +37,7 @@ import {} from 'vue'
         </div>
         <p class="comment-item-content-text">
           <span class="comment-item-content-text-text">
-            虽然南师是考研黑名单的常客，但在江苏，南师是一所很好的文科院校。是江苏高三学子都想努力一把上的大学
+            testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
           </span>
         </p>
         <div class="comment-item-content-time">

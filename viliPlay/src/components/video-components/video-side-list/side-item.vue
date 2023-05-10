@@ -16,9 +16,9 @@ import {} from 'vue'
 
           <div class="user-video-stats-tag">
             <div class="user-video-tag">
-              <span class="tag-title" style="background: rgb(250, 206, 21)"
+              <!-- <span class="tag-title" style="background: rgb(250, 206, 21)"
                 >置顶</span
-              >
+              > -->
             </div>
           </div>
           <span class="author-card-user-video-like">

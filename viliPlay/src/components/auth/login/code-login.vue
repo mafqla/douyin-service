@@ -5,17 +5,14 @@ import {} from 'vue'
   <div class="code-login">
     <el-form>
       <el-form-item>
-        <el-input placeholder="手机号">
-          <template #prepend>
-            <!-- <el-select
-              placeholder="+86"
-              style="width: 180px"
-            >
+        <el-input placeholder="邮箱">
+          <!-- <template #prepend>
+            <el-select placeholder="+86" style="width: 180px">
               <el-option label="Restaurant" value="1" />
               <el-option label="Order No." value="2" />
               <el-option label="Tel" value="3" />
-            </el-select> -->
-          </template>
+            </el-select>
+          </template> -->
         </el-input>
       </el-form-item>
       <el-form-item>

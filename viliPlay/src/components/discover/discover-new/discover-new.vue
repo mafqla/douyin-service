@@ -6,69 +6,69 @@ import newItem from './new-item.vue'
 const newData = [
   {
     id: 1,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 0
   },
   {
     id: 2,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 1
   },
   {
     id: 3,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 2
   },
   {
     id: 4,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 3
   },
   {
     id: 5,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 4
   },
   {
     id: 6,
-    title: '中国是亚洲和世界经济稳定器',
-    describe: '中国是亚洲和世界经济的“稳定器”',
-    img: 'https://p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/1da2478bce49583d31bc159c15c47292?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1680123600&x-signature=BZA%2BtgtaP78zqmbfKiX2i%2BCCwTI%3D',
+    title: 'test',
+    describe: 'test',
+    img: 'https://p6-pc-sign.douyinpic.com/obj/image-cut-tos-priv/dafe68e698b5680638080f1798c5db5f?biz_tag=&from=65706370&s=&sc=&se=false&sh=&x-expires=1681912800&x-signature=oj8v72UI2LWWHurVLFoDPnu0eW4%3D',
     playNumber: '1098.1万',
     playTime: '00:31',
-    author: '人民网',
+    author: 'test',
     rank: 5
   }
 ]
 </script>
 <template>
   <div class="discover-new">
-    <div class="discover-new-title">抖音热榜</div>
+    <div class="discover-new-title">热榜</div>
 
     <template v-for="item in newData" :key="item.id">
       <new-item :item="item" />

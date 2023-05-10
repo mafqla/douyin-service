@@ -5,14 +5,14 @@ import codeLogin from './code-login.vue'
 import passLogin from './pass-login.vue'
 import { ref } from 'vue'
 
-const activeName = ref('qr')
+const activeName = ref('code')
 </script>
 <template>
   <div class="login">
     <el-tabs v-model="activeName" class="demo-tabs">
-      <el-tab-pane label="扫码登录" name="qr">
+      <!-- <el-tab-pane label="扫码登录" name="qr">
         <qr-login />
-      </el-tab-pane>
+      </el-tab-pane> -->
 
       <el-tab-pane label="验证码登录" name="code">
         <code-login />

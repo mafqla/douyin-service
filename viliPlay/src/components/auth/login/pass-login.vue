@@ -20,7 +20,7 @@ const handleLogin = (email: string, password: string) => {
   <div class="pass-login">
     <el-form>
       <el-form-item>
-          <el-input placeholder="手机号" v-model="email"/>
+          <el-input placeholder="邮箱" v-model="email"/>
       </el-form-item>
       <el-form-item>
           <el-input placeholder="请输入密码" type="password" show-password v-model="password">
@@ -47,7 +47,7 @@ const handleLogin = (email: string, password: string) => {
         </div>
       </el-form-item>
       <el-form-item>
-          <el-button @click="handleLogin(email,password)" :disabled="!email || !password">登录/注册</el-button>
+          <el-button @click="handleLogin(email,password)" :disabled="!email || !password">登录</el-button>
       </el-form-item>
     </el-form>
   </div>

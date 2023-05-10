@@ -25,7 +25,7 @@ const props = defineProps<{
           <div class="blank"></div>
           <img
             :src="props.item.img"
-            alt="中国是亚洲和世界经济的“稳定器”"
+            alt="test"
             class="img"
           />
         </div>

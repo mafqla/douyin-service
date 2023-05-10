@@ -7,7 +7,7 @@ import {} from 'vue'
       <div class="item-video-content-img item-video-content-img-hover">
         <div class="item-video-content-img-item-defalut"></div>
         <img
-          src="//p9-pc-sign.douyinpic.com/obj/image-cut-tos-priv/b879c3eef74405f0058d7e2477adf331?biz_tag=pcweb_cover&amp;from=1231223059&amp;se=false&amp;x-expires=1995368400&amp;x-signature=QJCwExpomdIGU50AT01VhP5TL50%3D"
+          src="//p3-pc-sign.douyinpic.com/obj/image-cut-tos-priv/34b39f756abf5c161b03ef05c9320098?biz_tag=pcweb_cover&from=1231223059&se=false&x-expires=1997251200&x-signature=7iKcNp8dY%2FlCFcFo%2B2pqA8dLzds%3D"
           alt="心理战大数据是如何操控大选的?"
           class=""
         />

@@ -4,7 +4,7 @@ import {} from 'vue'
 <template>
   <div class="item-title-box">
     <div class="item-title-content">
-      <div class="item-title-content-title">心理战大数据是如何操控大选的?</div>
+      <div class="item-title-content-title">test</div>
       <div class="item-title-author">
         <span class="item-title-bottom"
           ><span class="item-title-author-f">@</span
