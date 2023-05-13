@@ -121,6 +121,9 @@ public class VideosController extends BaseController {
         videosInfoEntities.forEach(videosInfoEntity -> {
             videoIdList.add(videosInfoEntity.getVideoId());
         });
+        if(videoIdList.size()==0){
+            return processData(() -> videosEntityVOS, "没有该分类视频", this::processException);
+        }
         Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
         QueryWrapper<VideosEntity> videosEntityQueryWrapper = new QueryWrapper<>();
         videosEntityQueryWrapper.in("id", videoIdList);
