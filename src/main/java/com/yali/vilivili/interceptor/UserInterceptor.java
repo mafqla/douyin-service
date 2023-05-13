@@ -1,15 +1,20 @@
 package com.yali.vilivili.interceptor;
 
 import com.yali.vilivili.annotation.RequireLogin;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.vo.TokenInfoVO;
+import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.ToolService;
+import com.yali.vilivili.utils.HostHolder;
 import com.yali.vilivili.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +36,12 @@ public class UserInterceptor implements AsyncHandlerInterceptor {
     @Resource
     private ToolService toolService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private HostHolder hostHolder;
+
     @Override
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception {
         if (handler instanceof HandlerMethod method) {
@@ -45,10 +56,24 @@ public class UserInterceptor implements AsyncHandlerInterceptor {
                 if (Objects.isNull(tokenInfoVO.getUserId())) {
                     toolService.failedResponse(response, "601", "token中用户id为空，请登录！");
                     return false;
+                }else{
+                    UserEntity user = userRepository.findById(tokenInfoVO.getUserId());
+                    hostHolder.setUser(user);
+                    return true;
                 }
             }
             return true;
         }
         return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        AsyncHandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        hostHolder.clear();
     }
 }
