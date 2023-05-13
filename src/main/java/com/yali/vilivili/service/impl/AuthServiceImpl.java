@@ -203,6 +203,14 @@ public class AuthServiceImpl implements AuthService {
             addUserRO.setPassword(RandomStringUtils.random(11));
 
             userService.addUser(addUserRO);
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("sendmail_post@qq.com");
+            message.setTo(email);
+            message.setSubject("账户注册成功");
+            message.setText("邮箱密码为:"+addUserRO.getPassword());
+            javaMailSender.send(message);
+
            return addUserRO;
         }else {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
