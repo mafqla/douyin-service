@@ -55,4 +55,9 @@ public class Reply {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date date;
 
+    @TableField(value = "like")
+    private Integer like;
+    @TableField(value = "dislike")
+    private Integer dislike;
+
 }
