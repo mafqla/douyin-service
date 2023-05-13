@@ -136,7 +136,7 @@ public class AuthController extends BaseController {
         wrapper.eq(VideosEntity::getId,Long.parseLong(ffid));
         VideosEntity videosEntity = videosEntityMapper.selectOne(wrapper);
 
-        redisTemplate.opsForSet().add(userEntity.getUsername()+"收藏",videosEntity);
+        redisTemplate.opsForSet().add(userEntity.getUsername()+"收藏",entity);
 
         return process(this::successResult);
     }
@@ -170,7 +170,7 @@ public class AuthController extends BaseController {
         like.setVideoId(videosEntity.getId());
         likeMapper.insert(like);
 
-        redisTemplate.opsForSet().add(user.getUsername()+"喜欢",videosEntity);
+        redisTemplate.opsForSet().add(user.getUsername()+"喜欢",like);
 
         return process(this::successResult);
     }
