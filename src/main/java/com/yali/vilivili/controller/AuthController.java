@@ -6,6 +6,7 @@ import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.CollectionMapper;
 import com.yali.vilivili.mapper.VideosEntityMapper;
 import com.yali.vilivili.model.entity.CollectionEntity;
+import com.yali.vilivili.model.entity.LikeEntity;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.ro.AddUserRO;
@@ -13,10 +14,12 @@ import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
 import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
+import com.yali.vilivili.repository.LikeRepository;
 import com.yali.vilivili.service.AuthService;
 import com.yali.vilivili.utils.HostHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -145,7 +148,39 @@ public class AuthController extends BaseController {
        return processData(()->list,"操作成功",this::processException);
     }
 
+    @Autowired
+    LikeRepository likeRepository;
 
+    @ApiOperation(value = "喜欢视频")
+    @PostMapping("/like")
+    public ResponseEntity<OR<Void>> like (Long vid) {
+        VideosEntity videosEntity = videosEntityMapper.selectById(vid);
+        LikeEntity like = new LikeEntity();
+        like.setLikeTime(new Date());
+        UserEntity user = hostHolder.get();
+        like.setUserId(user.getId());
+        like.setVideoId(videosEntity.getId());
+        likeRepository.save(like);
+
+        redisTemplate.opsForSet().add(user.getUsername()+"喜欢",videosEntity);
+
+        return process(this::successResult);
+    }
+
+    @ApiOperation(value = "查询喜欢")
+    @PostMapping("/selectLike")
+    public ResponseEntity<OR<List<LikeEntity>>> mylike (){
+        UserEntity userEntity = hostHolder.get();
+
+        Set<Object> members = redisTemplate.opsForSet().members(userEntity.getUsername() + "喜欢");
+        ArrayList<LikeEntity> list = new ArrayList<>();
+
+        for (Object member : members) {
+            list.add((LikeEntity) member);
+        }
+
+        return processData(()->list,"操作成功",this::processException);
+    }
 
 
 }
