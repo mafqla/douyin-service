@@ -6,6 +6,7 @@ import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateUserRO;
 import com.yali.vilivili.repository.UserRepository;
+import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
@@ -36,12 +37,13 @@ public class UserServiceImpl implements UserService {
     private HttpServletRequest request;
 
     @Resource
-    private FileUploadServiceImpl fileUploadService;
+    private FileUploadService fileUploadService;
 
     @Resource
     private RedisTemplate<String,String> redisTemplate;
 
 
+    @Override
     public void addUser(AddUserRO ro) {
         // 设置用户信息头像，头像地址为当前服务器的static文件夹下的头像文件夹下的1.jpg
         String userAvatar = "/static/default_logo/1.png";
@@ -80,6 +82,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param ro 更新用户
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(updateUserRO ro) {
 
@@ -100,6 +103,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param ro 删除用户
      */
+    @Override
+
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(deleteByUserIdRO ro) {
         Integer userId = ro.getId();
@@ -113,6 +118,8 @@ public class UserServiceImpl implements UserService {
      *
      * @param ro 查询条件
      */
+    @Override
+
     public List<UserEntity> findUser(UserSelectRO ro) {
         try{
             List<UserEntity> findUser = userRepository.findAllUser(ro.getUsername(), ro.getIsValid(), ro.getType());
