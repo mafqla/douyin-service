@@ -10,6 +10,7 @@ import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
 import com.yali.vilivili.utils.MyException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private FileUploadServiceImpl fileUploadService;
+
+    @Resource
+    private RedisTemplate<String,String> redisTemplate;
 
 
     public void addUser(AddUserRO ro) {
@@ -146,5 +150,17 @@ public class UserServiceImpl implements UserService {
             throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "分页查询用户列表失败");
         }
 
+    }
+
+    @Override
+    public void attention(String username, String fansname) {
+        redisTemplate.opsForSet().add(username+"粉丝",fansname);
+        redisTemplate.opsForSet().add(fansname+"关注",username);
+    }
+
+    @Override
+    public void cancel(String username, String fansname) {
+        redisTemplate.opsForSet().remove(username+"关注",fansname);
+        redisTemplate.opsForSet().remove(fansname+"粉丝",username);
     }
 }

@@ -49,4 +49,13 @@ public interface UserService {
      * @param size 每页数量
      */
     List<UserEntity> findAllUserByPage(Integer page, Integer size);
+
+
+    /**
+     * 用户关注
+     */
+    void attention(String username,String fansname);
+
+
+    void cancel(String username,String fansname);
 }

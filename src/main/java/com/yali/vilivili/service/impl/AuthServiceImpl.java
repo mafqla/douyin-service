@@ -10,6 +10,7 @@ import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -186,6 +188,20 @@ public class AuthServiceImpl implements AuthService {
         }
         userRepository.updateAvatarByEmail(email, avatar);
 
+    }
+
+    @Override
+    public String emailLogin(String email, String code) {
+        EmailRO emailRO = new EmailRO();
+        emailRO.setEmail(email);
+        sendEmailCode(emailRO);
+        String redisCode = redisTemplate.opsForValue().get(email);
+
+        if(StringUtils.equals(code,redisCode)){
+           return RandomStringUtils.randomAlphanumeric(11);
+        }else {
+            throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
+        }
     }
 
 

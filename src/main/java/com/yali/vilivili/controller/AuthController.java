@@ -74,4 +74,13 @@ public class AuthController extends BaseController {
         return process(this::successResult);
     }
 
+
+    @ApiOperation(value = "验证码登录")
+    @PostMapping("/emailLogin")
+    public ResponseEntity<OR<String>> emailLogin(String email, String code){
+        String password = authService.emailLogin(email, code);
+        return processData(()->password,this::processException);
+
+    }
+
 }

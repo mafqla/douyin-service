@@ -72,4 +72,20 @@ public class UserController extends BaseController {
         userService.findAllUserByPage(page, size);
         return processData(() -> userService.findAllUserByPage(page, size),"查询成功", this::processException);
     }
+
+    @ApiOperation(value = "关注")
+    @PostMapping("/attention")
+    public ResponseEntity<OR<Void>> attention(String username,String fansname) {
+        userService.attention(username,fansname);
+        return process(this::successResult);
+    }
+
+
+    @ApiOperation(value = "取关")
+    @PostMapping("/cancel")
+    public ResponseEntity<OR<Void>> cancel(String username,String fansnams) {
+        userService.cancel(username, fansnams);
+        return process(this::successResult);
+    }
+
 }

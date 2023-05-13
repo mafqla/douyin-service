@@ -54,4 +54,11 @@ public interface AuthService {
      */
     void updateAvatar(String email, String avatar);
 
+
+    /**
+     * 邮箱验证码登录
+     */
+    String emailLogin(String email,String code);
+
+
 }
