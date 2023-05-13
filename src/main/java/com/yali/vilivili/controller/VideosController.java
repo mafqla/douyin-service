@@ -114,7 +114,11 @@ public class VideosController extends BaseController {
             });
             return processData(() -> videosEntityVOS, "获取分类视频成功", this::processException);
         }
-        videosInfoEntityQueryWrapper.eq("tag_name", ro.getTagName());
+        QueryWrapper<VideosTagEntity> videosTagEntityQueryWrapper=new QueryWrapper<>();
+        videosTagEntityQueryWrapper.eq("tag_name",ro.getTagName());
+        VideosTagEntity videosTagEntity = videosTagMapper.selectOne(videosTagEntityQueryWrapper);
+        videosInfoEntityQueryWrapper.eq("tag_id", videosTagEntity.getId());
+
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
         List<Long> videoIdList = new ArrayList<>();
         videosInfoEntities.forEach(videosInfoEntity -> {
