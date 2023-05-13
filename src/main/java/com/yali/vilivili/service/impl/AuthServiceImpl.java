@@ -150,6 +150,7 @@ public class AuthServiceImpl implements AuthService {
         addUser.setUsername(ro.getUsername());
         addUser.setPassword(ro.getPassword());
         addUser.setEmail(ro.getEmail());
+
 //        userService.updateAndSaveUser(addUser);
         userService.addUser(addUser);
     }
@@ -191,14 +192,18 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String emailLogin(String email, String code) {
-        EmailRO emailRO = new EmailRO();
-        emailRO.setEmail(email);
-        sendEmailCode(emailRO);
+    public AddUserRO emailLogin(String email, String code) {
         String redisCode = redisTemplate.opsForValue().get(email);
 
+
         if(StringUtils.equals(code,redisCode)){
-           return RandomStringUtils.randomAlphanumeric(11);
+            AddUserRO addUserRO = new AddUserRO();
+            addUserRO.setEmail(email);
+            addUserRO.setUsername(RandomStringUtils.random(6));
+            addUserRO.setPassword(RandomStringUtils.random(11));
+
+            userService.addUser(addUserRO);
+           return addUserRO;
         }else {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
         }
