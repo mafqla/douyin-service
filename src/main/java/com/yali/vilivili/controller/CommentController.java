@@ -56,7 +56,7 @@ public class CommentController extends BaseController {
             @ApiImplicitParam(name = "videoId", value = "视频id"),
             @ApiImplicitParam(name = "commentInfo", value = "评论内容"),
     })
-    public ResponseEntity<OR<Void>> add(@RequestBody @ApiIgnore CommentEntity commentEntity, HttpServletRequest request) {
+    public ResponseEntity<OR<Void>> add(@ApiIgnore CommentEntity commentEntity, HttpServletRequest request) {
         commentEntity.setCommentIp(IpUtils.getIpAddress(request));
         commentEntity.setCommentDislike(0);
         commentEntity.setCommentLike(0);
@@ -68,7 +68,9 @@ public class CommentController extends BaseController {
 
     @PostMapping("/list")
     @ApiOperation(value = "当前视频的所有评论")
-    @ApiImplicitParam(name = "cid", value = "当前视频id")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "vid", value = "当前视频id")
+    })
     private ResponseEntity<OR<List<CommentEntity>>> list(@ApiIgnore long vid){
         List<CommentEntity> commentEntities = commentRepository.findAllByVideoId(vid);
         commentEntities.forEach(commentEntity -> {

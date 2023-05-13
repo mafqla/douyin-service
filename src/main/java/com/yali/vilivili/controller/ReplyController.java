@@ -59,7 +59,7 @@ public class ReplyController extends BaseController {
             @ApiImplicitParam(name = "toUid", value = "被回复人的id"),
             @ApiImplicitParam(name = "msg", value = "回复内容"),
     })
-    private ResponseEntity<OR<Void>> add(@RequestBody @ApiIgnore Reply reply, HttpServletRequest request){
+    private ResponseEntity<OR<Void>> add(@ApiIgnore Reply reply, HttpServletRequest request){
         UserEntity user = hostHolder.get();
         reply.setFromUid(user.getId());
         reply.setDate(new Date());
@@ -75,7 +75,9 @@ public class ReplyController extends BaseController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "当前评论下的所有回复")
-    @ApiImplicitParam(name = "cid", value = "评论id")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "cid", value = "当前评论id")
+    })
     private ResponseEntity<OR<List<Reply>>> list( @ApiIgnore Integer cid){
         LambdaQueryWrapper<Reply> replyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         replyLambdaQueryWrapper.eq(Reply::getCid, cid);
