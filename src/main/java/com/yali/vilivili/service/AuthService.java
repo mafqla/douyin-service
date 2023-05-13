@@ -1,6 +1,7 @@
 package com.yali.vilivili.service;
 
 
+import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
 import com.yali.vilivili.model.ro.RegisterRO;
@@ -58,7 +59,7 @@ public interface AuthService {
     /**
      * 邮箱验证码登录
      */
-    String emailLogin(String email,String code);
+    AddUserRO emailLogin(String email, String code);
 
 
 }

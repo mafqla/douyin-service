@@ -43,4 +43,7 @@ public class AddUserRO {
     @ApiModelProperty(name = "email", value = "用户邮箱", required = true)
     private String email;
 
+
+
+
 }
