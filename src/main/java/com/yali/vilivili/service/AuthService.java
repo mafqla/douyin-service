@@ -59,7 +59,7 @@ public interface AuthService {
     /**
      * 邮箱验证码登录
      */
-    AddUserRO emailLogin(String email, String code);
+    LoginVO emailLogin(String email, String code);
 
 
 }
