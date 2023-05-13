@@ -19,7 +19,7 @@ import java.util.Date;
 @Table(name = "collection")
 @DynamicInsert
 @DynamicUpdate
-@TableName("collection")
+@TableName(value="collection")
 public class CollectionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

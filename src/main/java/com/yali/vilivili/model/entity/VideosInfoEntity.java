@@ -1,5 +1,6 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -18,6 +19,7 @@ import javax.persistence.*;
 @Table(name = "videos_info")
 @DynamicInsert
 @DynamicUpdate
+@TableName(value = "videos_info")
 public class VideosInfoEntity {
 
     @Id

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class VideosClassifyRO extends PageRO{
 
-    @ApiModelProperty(name = "tagId", value = "标签id", required = true)
-    private long tagId;
+    @ApiModelProperty(name = "tagName", value = "标签名", required = true)
+    private String tagName;
 
 }

@@ -1,5 +1,6 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Table(name = "videos_categories")
 @DynamicInsert
 @DynamicUpdate
+@TableName(value="videos_categories")
 public class VideosCategoriesEntity {
 
     @Id
