@@ -7,14 +7,17 @@ import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.VideosEntityMapper;
 import com.yali.vilivili.mapper.VideosInfoEntityMapper;
+import com.yali.vilivili.mapper.VideosTagMapper;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.entity.VideosInfoEntity;
+import com.yali.vilivili.model.entity.VideosTagEntity;
 import com.yali.vilivili.model.ro.VideosPageRO;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.service.VideosService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +49,9 @@ public class VideosController extends BaseController {
 
     @Resource
     VideosEntityMapper videosEntityMapper;
+
+    @Resource
+    VideosTagMapper videosTagMapper;
 
     @ApiOperation(value = "视频上传")
     @PostMapping("/addVideo")
@@ -79,6 +85,12 @@ public class VideosController extends BaseController {
     @PostMapping("/getVideosByTag")
     public ResponseEntity<OR<List<VideosEntity>>> getVideosByTag(@RequestBody VideosPageRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
+        VideosTagEntity videosTag = videosTagMapper.selectById(ro.getTagId());
+        if( StringUtils.equals(videosTag.getTagName(),"全部")){
+            Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
+            IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, null);
+            return processData(videosEntityIPage::getRecords, "获取分类视频成功", this::processException);
+        }
         videosInfoEntityQueryWrapper.eq("tag_id", ro.getTagId());
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
         List<Long> videoIdList = new ArrayList<>();
