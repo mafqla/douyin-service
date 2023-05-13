@@ -25,7 +25,7 @@ public class CollectionEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "user_id")
     private long userId;
     @Column(name = "video_id")

@@ -19,26 +19,26 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "like_")
+@Table(name = "attention")
 @DynamicInsert
 @DynamicUpdate
-@TableName("like_")
-public class LikeEntity implements Serializable {
+@TableName("attention")
+public class AttentionEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "video_id")
-    private long videoId;
+    @Column(name = "attention_id")
+    private long attentionId;
 
-    @Basic
-    @Column(name = "like_time")
+    @Column(name = "attention_time") // 关注时间
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date likeTime;
+    private Date attentionTime=new Date();
+
 }

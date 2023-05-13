@@ -1,5 +1,7 @@
 package com.yali.vilivili.controller.base;
 
+import com.yali.vilivili.model.vo.TokenInfoVO;
+import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -8,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -113,5 +118,26 @@ public class BaseController {
             }
             return ResponseEntity.status(data.getHttpStatus()).contentType(MediaType.APPLICATION_JSON).body(data);
         }
+    }
+
+    public int currentUser() {
+        HttpServletRequest request = request();
+        String token = this.request().getHeader("loginToken");
+        if (StringUtils.isBlank(token)) {
+            token = request.getParameter("token");
+        }
+        if(StringUtils.isBlank(token)){
+            throw new MyException(201,"201","token不存在");
+        }
+        TokenInfoVO tokenInfoVo = JwtUtils.decodeJwt(token);
+        return tokenInfoVo.getUserId();
+    }
+
+    public HttpServletRequest request() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+        assert requestAttributes != null;
+
+        return requestAttributes.getRequest();
     }
 }

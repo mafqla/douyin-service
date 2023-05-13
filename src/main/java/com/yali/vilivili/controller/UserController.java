@@ -1,8 +1,11 @@
 package com.yali.vilivili.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yali.vilivili.annotation.RequireLogin;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
+import com.yali.vilivili.mapper.AttentionMapper;
+import com.yali.vilivili.model.entity.AttentionEntity;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 
@@ -77,7 +81,7 @@ public class UserController extends BaseController {
         return processData(() -> userService.findAllUserByPage(page, size),"查询成功", this::processException);
     }
 
-    @ApiOperation(value = "关注")
+    @ApiOperation(value = "关注 保存到redis")
     @PostMapping("/attention")
     public ResponseEntity<OR<Void>> attention(String username,String fansname) {
         userService.attention(username,fansname);
@@ -85,7 +89,7 @@ public class UserController extends BaseController {
     }
 
 
-    @ApiOperation(value = "取关")
+    @ApiOperation(value = "取关 保存到redis")
     @PostMapping("/cancel")
     public ResponseEntity<OR<Void>> cancel(String username,String fansnams) {
         userService.cancel(username, fansnams);
@@ -100,5 +104,28 @@ public class UserController extends BaseController {
         return processData(()->userEntities,this::processException);
     }
 
+    @Resource
+    AttentionMapper attentionMapper;
 
+    @ApiOperation(value = "关注/取关 保存到mysql")
+    @PostMapping("/attentionNew")
+    public ResponseEntity<OR<String>> attentionNew(long attentionId) {
+        if(attentionId==currentUser()){
+            throw new RuntimeException("自己不能关注自己");
+        }
+        QueryWrapper<AttentionEntity> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("attention_id", attentionId);
+        AttentionEntity existAttention = attentionMapper.selectOne(queryWrapper);
+        if(null==existAttention){
+            AttentionEntity attention=new AttentionEntity();
+            attention.setAttentionId(attentionId);
+            attention.setUserId(currentUser());
+            attention.setAttentionTime(new Date());
+            attentionMapper.insert(attention);
+            return processData(()->"关注成功",this::processException);
+        }else{
+            attentionMapper.deleteById(existAttention.getId());
+            return processData(()->"取关成功",this::processException);
+        }
+    }
 }

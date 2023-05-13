@@ -32,7 +32,7 @@ public class VideosTagEntity {
     @Id
     @Column(name = "id") // 主键 ID
     @TableId(value = "id",type = IdType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "tag_name") // 标签名称
     private String tagName;

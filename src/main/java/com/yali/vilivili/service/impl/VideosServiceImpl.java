@@ -1,6 +1,8 @@
 package com.yali.vilivili.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yali.vilivili.mapper.*;
 import com.yali.vilivili.model.entity.*;
@@ -116,6 +118,9 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
         }
     }
 
+    @Resource
+    VideosEntityMapper videosEntityMapper;
+
 
     /**
      * 视频滚动加载接口
@@ -170,6 +175,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                     UserEntity user = userEntityMapper.selectById(userId);
                     String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
                     videosEntityVO.setAuthorAvatar(avatarUrl);
+                    videosEntityVO.setAuthorName(user.getUsername());
                     List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
                     List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
                     videosEntityVO.setTagNameList(tagNameList);
