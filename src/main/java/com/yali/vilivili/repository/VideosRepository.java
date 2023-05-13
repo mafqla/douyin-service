@@ -10,7 +10,10 @@ import java.util.List;
  * @author fuqianlin
  * @date 2023-01-22 15:48
  **/
-public interface VideosRepository extends JpaRepository<VideosEntity, String> {
+public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
+
+
+    VideosEntity findAllById(Long id);
 
 
     /**
