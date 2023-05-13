@@ -1,5 +1,8 @@
 package com.yali.vilivili.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yali.vilivili.mapper.VideosInfoEntityMapper;
+import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.service.VideosInfoService;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +14,5 @@ import org.springframework.stereotype.Service;
  **/
 
 @Service
-public class VideosInfoServiceImpl implements VideosInfoService {
+public class VideosInfoServiceImpl extends ServiceImpl<VideosInfoEntityMapper, VideosInfoEntity> implements VideosInfoService {
 }

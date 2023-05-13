@@ -1,8 +1,12 @@
 package com.yali.vilivili.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
+import com.yali.vilivili.mapper.VideosEntityMapper;
+import com.yali.vilivili.mapper.VideosInfoEntityMapper;
 import com.yali.vilivili.model.entity.VideosEntity;
+import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.service.VideosService;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +37,12 @@ public class VideosController extends BaseController {
 
     @Resource
     private VideosService videosService;
+
+    @Resource
+    VideosInfoEntityMapper videosInfoEntityMapper;
+
+    @Resource
+    VideosEntityMapper videosEntityMapper;
 
     @ApiOperation(value = "视频上传")
     @PostMapping("/addVideo")
@@ -59,5 +70,19 @@ public class VideosController extends BaseController {
     public ResponseEntity<OR<List<VideosEntity>>> getVideosByCursor(Integer cursor, Integer size, Integer status) {
         videosService.getVideosListByCursor(cursor, size, status);
         return processData(() -> videosService.getVideosListByCursor(cursor, size, status), "获取成功", this::processException);
+    }
+
+    @ApiOperation(value = "分类视频")
+    @GetMapping("/getVideosByTag")
+    public ResponseEntity<OR<List<VideosEntity>>> getVideosByTag(@RequestParam String tagId) {
+        QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper=new QueryWrapper<>();
+        videosInfoEntityQueryWrapper.eq("tag_id",tagId);
+        List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
+        List<Long> videoIdList=new ArrayList<>();
+        videosInfoEntities.forEach(videosInfoEntity -> {
+            videoIdList.add(videosInfoEntity.getVideoId());
+        });
+        List<VideosEntity> videosEntitieList = videosEntityMapper.selectBatchIds(videoIdList);
+        return processData(() ->videosEntitieList, "获取分类视频成功", this::processException);
     }
 }

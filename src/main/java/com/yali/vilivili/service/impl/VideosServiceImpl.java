@@ -1,5 +1,7 @@
 package com.yali.vilivili.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yali.vilivili.mapper.VideosEntityMapper;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.repository.VideosRepository;
 import com.yali.vilivili.service.VideosService;
@@ -20,7 +22,7 @@ import java.util.List;
  **/
 
 @Service
-public class VideosServiceImpl implements VideosService {
+public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper,VideosEntity> implements VideosService {
     @Resource
     private VideosRepository videosRepository;
 

@@ -130,6 +130,12 @@
             <version>2.5</version>
         </dependency>
 
+        <!--mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.3.1</version>
+        </dependency>
         <!--视频处理导入-->
         <dependency>
             <groupId>org.bytedeco</groupId>
