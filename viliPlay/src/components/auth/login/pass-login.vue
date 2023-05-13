@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { userStore } from '@/stores/user'
+import { ref } from 'vue'
 
 const email = ref('')
 const password = ref('')
@@ -10,47 +11,55 @@ const rules = {}
 //调用登录接口
 
 const handleLogin = (email: string, password: string) => {
-
-    console.log(email, password);
-
-
+    // 调用登录接口
+    const store = userStore()
+    store.login({ email, password })
 }
 </script>
 <template>
-  <div class="pass-login">
-    <el-form>
-      <el-form-item>
-          <el-input placeholder="邮箱" v-model="email"/>
-      </el-form-item>
-      <el-form-item>
-          <el-input placeholder="请输入密码" type="password" show-password v-model="password">
-              <template #append>忘记密码</template>
-          </el-input>
-      </el-form-item>
+    <div class="pass-login">
+        <el-form>
+            <el-form-item>
+                <el-input placeholder="邮箱" v-model="email" />
+            </el-form-item>
+            <el-form-item>
+                <el-input
+                        placeholder="请输入密码"
+                        type="password"
+                        show-password
+                        v-model="password"
+                >
+                    <template #append>忘记密码</template>
+                </el-input>
+            </el-form-item>
 
-      <el-form-item>
-        <div class="web-login-confirm-info">
-          <span class="web-login-confirm-info__before-text">同意</span>
-          <a
-            target="_blank"
-            href="https://www.douyin.com/agreements/?id=6773906068725565448"
-            class="web-login-confirm-info__info"
-            >用户协议
-          </a>
-          <span class="web-login-confirm-info__connect-text">和</span>
-          <a
-            target="_blank"
-            href="https://www.douyin.com/agreements/?id=6773901168964798477"
-            class="web-login-confirm-info__info"
-            >隐私政策
-          </a>
-        </div>
-      </el-form-item>
-      <el-form-item>
-          <el-button @click="handleLogin(email,password)" :disabled="!email || !password">登录</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+            <el-form-item>
+                <div class="web-login-confirm-info">
+                    <span class="web-login-confirm-info__before-text">同意</span>
+                    <a
+                            target="_blank"
+                            href="https://www.douyin.com/agreements/?id=6773906068725565448"
+                            class="web-login-confirm-info__info"
+                    >用户协议
+                    </a>
+                    <span class="web-login-confirm-info__connect-text">和</span>
+                    <a
+                            target="_blank"
+                            href="https://www.douyin.com/agreements/?id=6773901168964798477"
+                            class="web-login-confirm-info__info"
+                    >隐私政策
+                    </a>
+                </div>
+            </el-form-item>
+            <el-form-item>
+                <el-button
+                        @click="handleLogin(email, password)"
+                        :disabled="!email || !password"
+                >登录</el-button
+                >
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
 <style lang="scss" scoped>

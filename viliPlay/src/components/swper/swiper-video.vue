@@ -1,43 +1,23 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import VideoPlayer from '@/components/video-player/index.vue'
-import type { IVideoList, IVideoListResult } from '@/service/videos/videosType'
-
 import { videoStore } from '@/stores/videos'
-
-const page = ref(1)
-const pageSize = ref(10)
-const status = ref(0)
-
-let video: IVideoList = {
-  page: page.value,
-  size: pageSize.value,
-  status: status.value
-}
-const videoData = videoStore().getVideos(video)
-
-const videosList = ref<IVideoListResult[]>([])
-watchEffect(async () => {
-  //@ts-ignore
-  videosList.value = (await videoData).list
-})
-
-const translateY = ref(0)
-const timer: any = ref(null)
 </script>
 <template>
   <div class="carousel">
     <div
       class="carousel-inner"
-      :style="{ transform: 'translate3d(0px,' + translateY + 'px, 0px)' }"
+      :style="{
+        transform: 'translate3d(0px,' + videoStore().translateY + 'px, 0px)'
+      }"
     >
       <div
         class="carousel-item"
-        v-for="(item, index) in videosList"
+        v-for="(item, index) in videoStore().videos as any "
         :key="item.id"
       >
         <video-player
-          :username="item.username"
+          :username="item.authorName"
           :description="item.description"
           :uploadTime="item.uploadTime"
           :url="item.videosAddress"

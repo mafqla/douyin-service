@@ -1,9 +1,20 @@
 export interface ILogin {
   email: string
-    password: string
+  password: string
 }
+
 export interface ILoginResult {
-  id: number
-  name: string
+  userId: number
+  username: string
   token: string
+  type: string
+  userAvatar: string
+  email: string
+  phone: string
+  userNum: string
+  ipLocation: string
+  gender: string
+  birthdate: string
+  signature: string
+  createTime: string
 }

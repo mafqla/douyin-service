@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import { ElMessage } from 'element-plus'
-import type { IVideoList, IVideoListResult } from '@/service/videos/videosType'
 import { videoStore } from '@/stores/videos'
 
 const currentIndex = ref(0)
@@ -10,24 +9,12 @@ const next = ref(false)
 const isPlay = ref(false)
 
 const page = ref(1)
-const pageSize = ref(10)
-const status = ref(0)
+const pageSize = ref(5)
 
-let video: IVideoList = {
-  page: page.value,
-  size: pageSize.value,
-  status: status.value
-}
-const videosList = ref<IVideoListResult[]>([])
-watchEffect(async () => {
-  //@ts-ignore
-  videosList.value = (await videoData).list
-})
+console.log(currentIndex.value)
 
-const props = defineProps<{
-  translateY: number
-  videosList: any
-}>()
+const videoData = await videoStore().getVideos(page.value, pageSize.value)
+console.log(videoData)
 
 //点击上一张 ，当前索引为0时，不能再点击
 const handlePrev = () => {
@@ -42,22 +29,19 @@ const handlePrev = () => {
   // 暂停上一个视频
   isPlay.value = false
   currentIndex.value--
-  props.translateY += 893
+  videoStore().translateY += 893
   prev.value = false
   next.value = false
 }
 
 const handleNext = async () => {
-  if (currentIndex.value === videosList.value.length - 1) {
+  if (currentIndex.value === -1) {
     page.value++
-    video = {
-      page: page.value,
-      size: pageSize.value,
-      status: status.value
-    }
 
     if (!next.value) {
-      const videoData = await videoStore().getVideos(video)
+      const videoData = await videoStore().getVideos(page.value, pageSize.value)
+      console.log(videoData)
+
       // 如果不是true，则将data.list的值赋值给videosList.value
       if (videoData.code === 200) {
         //@ts-ignore
@@ -81,7 +65,7 @@ const handleNext = async () => {
   // 暂停上一个视频
   isPlay.value = false
   currentIndex.value++
-  translateY.value -= 893
+  videoStore().translateY -= 893
 }
 </script>
 

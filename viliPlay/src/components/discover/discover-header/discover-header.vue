@@ -1,64 +1,27 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { getCategoriesList } from '@/service/discover/discover'
+import { discoverStore } from '@/stores/discover'
+import { ref, watchEffect } from 'vue'
 
-const tagList = [
-  {
-    id: 1,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/fun.png',
-    title: '搞笑王在此'
-  },
-  {
-    id: 2,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/food.png',
-    title: '美食'
-  },
+let tagList: any = ref('')
+//获取分类列表
 
-  {
-    id: 3,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/anime.png',
-    title: '动漫'
-  },
-  {
-    id: 4,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/music.png',
-    title: '音乐'
-  },
-  {
-    id: 5,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/culture.png',
-    title: '人文社科'
-  },
-  {
-    id: 6,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/fashion.png',
-    title: '穿搭'
-  },
-  {
-    id: 7,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/beauty.png',
-    title: '美妆'
-  },
-  {
-    id: 8,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/pet.png',
-    title: '动物宠物'
-  },
-  {
-    id: 9,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/game.png',
-    title: '游戏'
-  },
-  {
-    id: 10,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/science.png',
-    title: '科普'
-  },
-  {
-    id: 11,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/workout.png',
-    title: '健身'
-  }
-]
+watchEffect(async () => {
+  const data = await getCategoriesList()
+  tagList.value = data.data
+})
+// console.log(tagList.value)
+const store = discoverStore()
+//点击切换分类
+const changeTag = (item: any) => {
+  console.log(item)
+  store.getCategoriesList(1, 10, item)
+}
+
+//获取全部分类视频
+const getAllCategoriesList = () => {
+  store.getCategoriesList(1, 10, '')
+}
 </script>
 <template>
   <div class="discover-header">
@@ -82,15 +45,17 @@ const tagList = [
                     d="M10.571 6.786a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM10.571 14.214a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM18 6.786a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM18 14.214a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0z"
                     fill="#fff"
                   ></path></svg
-                ><span class="tag-title">全部</span>
+                ><span class="tag-title" @click="getAllCategoriesList"
+                  >全部</span
+                >
               </div>
             </div>
             <template v-for="item in tagList">
               <div class="discover-list">
-                <img :src="item.img" class="discover-img" /><span
-                  class="tag-title"
-                  >{{ item.title }}</span
-                >
+                <img :src="item.img" class="discover-img" />
+                <span class="tag-title" @click="changeTag(item.title)">
+                  {{ item.title }}
+                </span>
               </div>
             </template>
           </ul>

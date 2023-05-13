@@ -53,6 +53,9 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
     @Resource
     VideosTagMapper videosTagMapper;
 
+    @Resource
+    private  FileUploadServiceImpl fileUploadService;
+
     /**
      * 获取视频列表
      *
@@ -165,7 +168,8 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 if (videosInfoEntities.size() != 0) {
                     long userId = videosInfoEntities.get(0).getUserId();
                     UserEntity user = userEntityMapper.selectById(userId);
-                    videosEntityVO.setAuthorAvatar(user.getUserAvatar());
+                    String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+                    videosEntityVO.setAuthorAvatar(avatarUrl);
                     List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
                     List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
                     videosEntityVO.setTagNameList(tagNameList);
