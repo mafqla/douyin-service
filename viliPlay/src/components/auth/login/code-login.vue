@@ -1,49 +1,63 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { userStore } from '@/stores/user'
+import { ref } from 'vue'
+
+const email = ref('')
+const code = ref('')
+
+console.log(email, code)
+const handleLogin = (email: string, code: string) => {
+    console.log(email, code)
+    // 调用登录接口
+    const store = userStore()
+    store.login({ email, code })
+}
 </script>
 <template>
-  <div class="code-login">
-    <el-form>
-      <el-form-item>
-        <el-input placeholder="邮箱">
-          <!-- <template #prepend>
-            <el-select placeholder="+86" style="width: 180px">
-              <el-option label="Restaurant" value="1" />
-              <el-option label="Order No." value="2" />
-              <el-option label="Tel" value="3" />
-            </el-select>
-          </template> -->
-        </el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-input placeholder="请输入验证码">
-          <template #append>获取验证码</template>
-        </el-input>
-      </el-form-item>
+    <div class="code-login">
+        <el-form>
+            <el-form-item>
+                <el-input placeholder="邮箱" v-model="email">
+                    <!-- <template #prepend>
+                      <el-select placeholder="+86" style="width: 180px">
+                        <el-option label="Restaurant" value="1" />
+                        <el-option label="Order No." value="2" />
+                        <el-option label="Tel" value="3" />
+                      </el-select>
+                    </template> -->
+                </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="请输入验证码" v-model="code">
+                    <template #append>获取验证码</template>
+                </el-input>
+            </el-form-item>
 
-      <el-form-item>
-        <div class="web-login-confirm-info">
-          <span class="web-login-confirm-info__before-text">同意</span>
-          <a
-            target="_blank"
-            href="https://www.douyin.com/agreements/?id=6773906068725565448"
-            class="web-login-confirm-info__info"
-            >用户协议
-          </a>
-          <span class="web-login-confirm-info__connect-text">和</span>
-          <a
-            target="_blank"
-            href="https://www.douyin.com/agreements/?id=6773901168964798477"
-            class="web-login-confirm-info__info"
-            >隐私政策
-          </a>
-        </div>
-      </el-form-item>
-      <el-form-item>
-        <el-button disabled>登录/注册</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+            <el-form-item>
+                <div class="web-login-confirm-info">
+                    <span class="web-login-confirm-info__before-text">同意</span>
+                    <a
+                            target="_blank"
+                            href="https://www.douyin.com/agreements/?id=6773906068725565448"
+                            class="web-login-confirm-info__info"
+                    >用户协议
+                    </a>
+                    <span class="web-login-confirm-info__connect-text">和</span>
+                    <a
+                            target="_blank"
+                            href="https://www.douyin.com/agreements/?id=6773901168964798477"
+                            class="web-login-confirm-info__info"
+                    >隐私政策
+                    </a>
+                </div>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="handleLogin(email, code)" :disabled="!email || !code"
+                >登录/注册</el-button
+                >
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
 
 <style lang="scss" scoped>

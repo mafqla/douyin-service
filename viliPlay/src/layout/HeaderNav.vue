@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { HeaderAvatar, LoginButton } from '@/components/header'
 import { login } from '@/components/auth'
+import { userStore } from '@/stores/user'
 //切换深色主题
 const isDark = ref(false)
 
@@ -10,9 +11,19 @@ const toggleTheme = () => {
   isDark.value = !isDark.value
 }
 //是否登录
-const isLogin = ref(false)
+let isLogin: any = ref(false)
 
-const dialogTableVisible = ref(false)
+let dialogTableVisible: any = ref(false)
+const store = userStore()
+
+watchEffect(() => {
+  // console.log(store.isLogin())
+  isLogin.value = store.isLogin()
+  //关闭登录弹窗
+  if (isLogin.value) {
+    dialogTableVisible.value = false
+  }
+})
 </script>
 
 <template>

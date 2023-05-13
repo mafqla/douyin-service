@@ -1,64 +1,15 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { getCategoriesList } from '@/service/discover/discover'
+import { ref, watchEffect } from 'vue'
 
-const tagList = [
-  {
-    id: 1,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/fun.png',
-    title: '搞笑王在此'
-  },
-  {
-    id: 2,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/food.png',
-    title: '美食'
-  },
+let tagList: any = ref('')
+//获取分类列表
 
-  {
-    id: 3,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/anime.png',
-    title: '动漫'
-  },
-  {
-    id: 4,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/music.png',
-    title: '音乐'
-  },
-  {
-    id: 5,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/culture.png',
-    title: '人文社科'
-  },
-  {
-    id: 6,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/fashion.png',
-    title: '穿搭'
-  },
-  {
-    id: 7,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/beauty.png',
-    title: '美妆'
-  },
-  {
-    id: 8,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/pet.png',
-    title: '动物宠物'
-  },
-  {
-    id: 9,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/game.png',
-    title: '游戏'
-  },
-  {
-    id: 10,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/science.png',
-    title: '科普'
-  },
-  {
-    id: 11,
-    img: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/ild_jw_upfbvk_lm/ljhwZthlaukjlkulzlp/home/sub_tab/workout.png',
-    title: '健身'
-  }
-]
+watchEffect(async () => {
+  const data = await getCategoriesList()
+  tagList.value = data.data
+})
+console.log(tagList.value)
 </script>
 <template>
   <div class="discover-header">

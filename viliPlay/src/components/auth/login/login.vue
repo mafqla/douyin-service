@@ -5,7 +5,7 @@ import codeLogin from './code-login.vue'
 import passLogin from './pass-login.vue'
 import { ref } from 'vue'
 
-const activeName = ref('code')
+const activeName = ref('pass')
 </script>
 <template>
   <div class="login">
