@@ -8,12 +8,15 @@ import com.yali.vilivili.model.entity.Reply;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.utils.HostHolder;
+import com.yali.vilivili.utils.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,9 +43,11 @@ public class ReplyController extends BaseController {
      * @return
      */
     @RequestMapping("/add")
-    private ResponseEntity<OR<Void>> add(@RequestBody Reply reply){
+    private ResponseEntity<OR<Void>> add(@RequestBody Reply reply, HttpServletRequest request){
         UserEntity user = hostHolder.get();
         reply.setFromUid(user.getId());
+        reply.setDate(new Date());
+        reply.setIp(IpUtils.getIpAddress(request));
         replyDao.insert(reply);
         return process(this::successResult);
     }

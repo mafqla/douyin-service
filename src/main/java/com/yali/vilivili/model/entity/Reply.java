@@ -36,6 +36,9 @@ public class Reply {
     @TableField(value = "fromUid")
     private Integer fromUid;
 
+    @TableField(value = "ip")
+    private String ip;
+
     @TableField(exist = false)
     private UserEntity fromUser;
 
