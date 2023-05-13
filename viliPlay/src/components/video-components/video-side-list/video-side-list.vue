@@ -12,7 +12,7 @@ import SideItem from './side-item.vue'
             <span>作者</span>
             <svg-icon icon="side-list-right" class="icon" />
           </div>
-          <div class="info-number">32.6万粉丝<span></span>651.8万获赞</div>
+          <div class="info-number">0粉丝<span></span>0获赞</div>
         </a>
       </div>
       <div class="side-list-header-btn">

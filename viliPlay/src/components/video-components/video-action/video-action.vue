@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import {} from 'vue'
 import { ElAvatar } from 'element-plus'
+
+const props = defineProps({
+  img: String,
+  dianzan: Number,
+  comment: Number,
+  shoucang: Number
+})
 </script>
 
 <template>
@@ -8,10 +15,7 @@ import { ElAvatar } from 'element-plus'
     <slot />
     <div class="video-action-content">
       <div class="video-action-avatar">
-        <ElAvatar
-          size="small"
-          src="https://img2.baidu.com/it/u=1818181818,1818181818&fm=26&fmt=auto&gp=0.jpg"
-        />
+        <ElAvatar size="small" :src="props.img" />
       </div>
       <div class="video-action-avatar-follow">
         <svg-icon class="icon" icon="avfollow" />
@@ -19,20 +23,20 @@ import { ElAvatar } from 'element-plus'
     </div>
     <div class="video-action-item">
       <svg-icon class="icon" icon="dianzan" />
-      <span>999</span>
+      <span>{{ props.dianzan }}</span>
     </div>
     <div class="video-action-item" @click="$emit('toggleComments')">
       <svg-icon class="icon" icon="comment" />
-      <span>999</span>
+      <span>{{ props.comment }}</span>
     </div>
     <div class="video-action-item">
       <span class="iconfont icon-shoucang"></span>
       <svg-icon class="icon" icon="shoucang" />
-      <span>999</span>
+      <span>{{ props.shoucang }}</span>
     </div>
     <div class="video-action-item">
       <svg-icon class="icon" icon="fenxiang" />
-      <span>999</span>
+      <span>9</span>
     </div>
 
     <div class="video-action-item">

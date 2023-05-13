@@ -6,7 +6,11 @@ enum VideoApi {
   //获取分页视频列表
   getVideoList = '/video/getVideosListByPage',
   //获取视频滚动列表
-  getVideoScrollList = '/video/getVideosByCursor'
+  getVideoScrollList = '/video/getVideosByCursor',
+  //获取视频评论列表
+  getVideoCommentList = '/comment/list',
+  //添加评论
+  addVideoComment = '/comment/add'
 }
 
 /**
@@ -27,6 +31,27 @@ export const getVideoScrollList = (cursor: number, size: number) => {
     data: {
       cursor,
       size
+    }
+  })
+}
+
+// 获取视频评论列表
+export const getVideoCommentList = (vid: number) => {
+  return apiRequest.post<IDataType>({
+    url: VideoApi.getVideoCommentList,
+    data: {
+      vid
+    }
+  })
+}
+
+//添加评论
+export const addVideoComment = (videoId: number, commentInfo: string) => {
+  return apiRequest.post<IDataType>({
+    url: VideoApi.addVideoComment,
+    data: {
+      videoId,
+      commentInfo
     }
   })
 }

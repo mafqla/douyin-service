@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import CommentItem from './comment-item.vue'
+import { commentStore } from '@/stores/comment'
 
 const commentCount = ref(0)
 const textarea = ref('')
+const props = defineProps({
+  id: Number
+})
+const store = commentStore()
+
+watchEffect(() => {
+  const list = store.getVideoCommentList(props.id as any)
+  console.log(list)
+})
 </script>
 <template>
   <div class="video-comment">

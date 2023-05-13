@@ -20,9 +20,9 @@ const props = defineProps<{
     <div class="video-info-desc">
       <span>{{ props.description }}</span>
       <div class="video-info-tag">
-        <a href="#">
+        <!-- <a href="#">
           <span>#愿所有的美好和期待2023都能如约而至</span>
-        </a>
+        </a> -->
       </div>
     </div>
   </div>

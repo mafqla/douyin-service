@@ -4,12 +4,17 @@ import { ElTabPane, ElTabs } from 'element-plus'
 import VideoSideList from '../video-side-list/video-side-list.vue'
 import VideoComment from '../video-comment/video-comment.vue'
 
-const activeName = ref('post')
+const activeName = ref('comment')
 
 const handleClick = (tab: string) => {
   console.log(activeName)
   activeName.value = tab
 }
+
+const props = defineProps({
+  id: Number,
+  username: String
+})
 </script>
 <template>
   <div class="video-sidebar">
@@ -19,7 +24,7 @@ const handleClick = (tab: string) => {
       </el-tab-pane>
 
       <el-tab-pane label="评论" name="comment">
-        <video-comment />
+        <video-comment :id="props.id" />
       </el-tab-pane>
     </el-tabs>
 

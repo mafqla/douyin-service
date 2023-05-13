@@ -8,7 +8,11 @@ const props = defineProps({
   options: {
     type: Object,
     required: true
-  }
+  },
+  img: String,
+  dianzan: Number,
+  comment: Number,
+  shoucang: Number
 })
 
 const player = ref<any>(null)
@@ -32,7 +36,13 @@ const poster = ref(props.options.poster || '')
 </script>
 <template>
   <div class="xgplayer" ref="player" :id="playerId">
-    <video-action @toggleComments="$emit('toggleComments')">
+    <video-action
+      :img="props.img"
+      :dianzan="props.dianzan"
+      :comment="props.comment"
+      :shoucang="props.shoucang"
+      @toggleComments="$emit('toggleComments')"
+    >
       <slot name="slide" />
     </video-action>
   </div>

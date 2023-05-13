@@ -27,7 +27,7 @@ watchEffect(() => {
             <div class="user-name">
                 <h1 class="user-name-noin" v-if="!isLogin">未登录</h1>
                 <h1 class="user-name-login" v-if="isLogin">
-                    <span>test</span>
+                    <span>{{store.userInfo.username  }}</span>
                 </h1>
             </div>
             <p v-if="isLogin" class="user-account">

@@ -17,6 +17,7 @@ import { videoStore } from '@/stores/videos'
         :key="item.id"
       >
         <video-player
+          :id="item.id"
           :username="item.authorName"
           :description="item.description"
           :uploadTime="item.uploadTime"
@@ -24,6 +25,10 @@ import { videoStore } from '@/stores/videos'
           :poster="item.videosCover"
           :isPlay="true"
           :key="item.id"
+          :img="item.authorAvatar"
+          :dianzan="item.likeCount"
+          :comment="item.commentCount"
+          :shoucang="item.collectionCount"
         />
 
         <div class="video-blur">

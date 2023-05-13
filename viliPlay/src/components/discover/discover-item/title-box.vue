@@ -18,7 +18,8 @@ const props = defineProps({
       <div class="item-title-author">
         <span class="item-title-bottom"
           ><span class="item-title-author-f">@</span
-          ><span class="item-title-author-name">{{ props.title }}</span></span
+          ><span class="item-title-author-name">{{ props.author }}</span>
+          </span
         >
         <!-- <span class="item-title-tag fellow">
           <span class="item-title-tag-name">已关注</span>

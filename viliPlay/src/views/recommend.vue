@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { } from 'vue'
+import CarouselControls from '@/components/swper/carousel-controls.vue'
 </script>
 <template>
   <div class="recommend">

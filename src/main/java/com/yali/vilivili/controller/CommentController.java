@@ -4,9 +4,11 @@ import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.model.entity.CommentEntity;
 import com.yali.vilivili.model.entity.Reply;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.repository.CommentRepository;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.repository.VideosRepository;
+import com.yali.vilivili.service.impl.FileUploadServiceImpl;
 import com.yali.vilivili.utils.HostHolder;
 import com.yali.vilivili.utils.IpUtils;
 import io.swagger.annotations.Api;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +51,8 @@ public class CommentController extends BaseController {
 
     @Autowired
     private UserRepository userRepository;
+    @Resource
+    private FileUploadServiceImpl fileUploadService;
 
 
     @PostMapping("/add")
@@ -66,6 +71,7 @@ public class CommentController extends BaseController {
         return process(this::successResult);
     }
 
+
     @PostMapping("/list")
     @ApiOperation(value = "当前视频的所有评论")
     @ApiImplicitParams(value = {
@@ -75,7 +81,10 @@ public class CommentController extends BaseController {
         List<CommentEntity> commentEntities = commentRepository.findAllByVideoId(vid);
         commentEntities.forEach(commentEntity -> {
             commentEntity.setVideosEntity(videosRepository.findAllById(commentEntity.getVideoId()));
-            commentEntity.setUser(userRepository.findById(commentEntity.getUid()));
+            UserEntity user = userRepository.findById(commentEntity.getUid());
+            String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+            user.setUserAvatar(avatarUrl);
+            commentEntity.setUser(user);
         });
         return processData(()-> commentEntities ,"查询成功", this::processException);
 

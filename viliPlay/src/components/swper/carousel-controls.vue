@@ -106,7 +106,7 @@ const handleNext = async () => {
   right: 13px;
   top: calc(50% + 60px);
   transform: translateY(calc(-50% - 30px));
-  z-index: 2;
+  z-index: 20;
 
   .carousel-controls-switch {
     background-color: rgb(50, 52, 66);

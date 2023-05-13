@@ -8,8 +8,10 @@ import {
   VideoSideBarBtn,
   VideoSidebar
 } from '@/components/video-components'
+import { commentStore } from '@/stores/comment'
 
 const props = defineProps({
+  id: Number,
   username: {
     type: String,
     required: true
@@ -33,7 +35,11 @@ const props = defineProps({
   isPlay: {
     type: Boolean,
     required: true
-  }
+  },
+  img: String,
+  dianzan: Number,
+  comment: Number,
+  shoucang: Number
 })
 
 const globalVolume = ref(0)
@@ -91,7 +97,7 @@ const closeComments = () => {
 }
 
 //切换评论区的显示状态
-const toggleComments = () => {
+const toggleComments = (id: any) => {
   isShow.value = !isShow.value
   if (!isShow.value) {
     //如果评论区关闭，就执行打开评论操作
@@ -106,8 +112,12 @@ const toggleComments = () => {
 <template>
   <ViliPlayer
     :options="playerOptions"
+    :img="props.img"
+    :dianzan="props.dianzan"
+    :comment="props.comment"
+    :shoucang="props.shoucang"
     :style="{ width: currentWidth }"
-    @toggleComments="toggleComments"
+    @toggleComments="toggleComments(props.id)"
   />
 
   <video-info
@@ -117,7 +127,12 @@ const toggleComments = () => {
   />
   <video-side-bar-btn @click="openComments" v-show="isShow" />
 
-  <video-sidebar @closeComments="closeComments" v-show="!isShow" />
+  <video-sidebar
+    :id="props.id"
+    :username="props.username"
+    @closeComments="closeComments"
+    v-show="!isShow"
+  />
 </template>
 
 <style lang="scss" scoped></style>
