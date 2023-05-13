@@ -1,12 +1,15 @@
 package com.yali.vilivili.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.VideosEntityMapper;
 import com.yali.vilivili.mapper.VideosInfoEntityMapper;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.entity.VideosInfoEntity;
+import com.yali.vilivili.model.ro.VideosPageRO;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.service.VideosService;
@@ -73,16 +76,19 @@ public class VideosController extends BaseController {
     }
 
     @ApiOperation(value = "分类视频")
-    @GetMapping("/getVideosByTag")
-    public ResponseEntity<OR<List<VideosEntity>>> getVideosByTag(@RequestParam String tagId) {
-        QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper=new QueryWrapper<>();
-        videosInfoEntityQueryWrapper.eq("tag_id",tagId);
+    @PostMapping("/getVideosByTag")
+    public ResponseEntity<OR<List<VideosEntity>>> getVideosByTag(@RequestBody VideosPageRO ro) {
+        QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
+        videosInfoEntityQueryWrapper.eq("tag_id", ro.getTagId());
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
-        List<Long> videoIdList=new ArrayList<>();
+        List<Long> videoIdList = new ArrayList<>();
         videosInfoEntities.forEach(videosInfoEntity -> {
             videoIdList.add(videosInfoEntity.getVideoId());
         });
-        List<VideosEntity> videosEntitieList = videosEntityMapper.selectBatchIds(videoIdList);
-        return processData(() ->videosEntitieList, "获取分类视频成功", this::processException);
+        Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
+        QueryWrapper<VideosEntity> videosEntityQueryWrapper = new QueryWrapper<>();
+        videosEntityQueryWrapper.in("id", videoIdList);
+        IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, videosEntityQueryWrapper);
+        return processData(videosEntityIPage::getRecords, "获取分类视频成功", this::processException);
     }
 }

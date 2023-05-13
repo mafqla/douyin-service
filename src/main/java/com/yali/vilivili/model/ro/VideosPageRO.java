@@ -14,7 +14,7 @@ import lombok.Data;
 public class VideosPageRO {
     private long currentPage;
     private long pageSize;
-    private long s;
+    private long tagId;
 
 
 
