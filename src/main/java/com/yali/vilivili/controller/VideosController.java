@@ -95,20 +95,21 @@ public class VideosController extends BaseController {
     public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
-        if (StringUtils.equals(ro.getTagName(), "全部")) {
+        if (StringUtils.equals(ro.getTagName(), "全部")||StringUtils.isBlank(ro.getTagName())) {
             Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
             IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, null);
-
             List<VideosEntity> videosEntities = videosEntityIPage.getRecords();
             videosEntities.forEach(videosEntity -> {
                 QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper1 = new QueryWrapper<>();
                 videosInfoEntityQueryWrapper1.eq("video_id", videosEntity.getId());
                 List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper1);
-                long userId = videosInfoEntities.get(0).getUserId();
-                UserEntity user = userEntityMapper.selectById(userId);
                 VideosEntityVO videosEntityVO = new VideosEntityVO();
+                if(videosInfoEntities.size()!=0){
+                    long userId = videosInfoEntities.get(0).getUserId();
+                    UserEntity user = userEntityMapper.selectById(userId);
+                    videosEntityVO.setAuthorName(user.getUsername());
+                }
                 BeanUtils.copyProperties(videosEntity, videosEntityVO);
-                videosEntityVO.setAuthorName(user.getUsername());
                 videosEntityVOS.add(videosEntityVO);
             });
             return processData(() -> videosEntityVOS, "获取分类视频成功", this::processException);

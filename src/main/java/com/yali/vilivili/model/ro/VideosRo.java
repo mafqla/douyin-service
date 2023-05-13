@@ -29,5 +29,8 @@ public class VideosRo {
     @ApiModelProperty("视频状态")
     private String status;
 
+    @ApiModelProperty("标签名")
+    private String tagName;
+
 
 }

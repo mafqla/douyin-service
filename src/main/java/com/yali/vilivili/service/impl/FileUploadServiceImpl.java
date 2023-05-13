@@ -1,9 +1,11 @@
 package com.yali.vilivili.service.impl;
 
 import com.yali.vilivili.mapper.VideosInfoEntityMapper;
+import com.yali.vilivili.mapper.VideosTagMapper;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.entity.VideosInfoEntity;
+import com.yali.vilivili.model.entity.VideosTagEntity;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.FileUploadVO;
 import com.yali.vilivili.repository.VideosRepository;
@@ -44,6 +46,9 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Resource
     private VideosRepository videosRepository;
+
+    @Resource
+    VideosTagMapper videosTagMapper;
 
 
     @Value("${file.upload.path}")
@@ -276,6 +281,13 @@ public class FileUploadServiceImpl implements FileUploadService {
             VideosInfoEntity videosInfoEntity = new VideosInfoEntity();
             videosInfoEntity.setVideoId(videosEntity.getId());
             videosInfoEntity.setUserId(user.getId());
+
+            //保存视频标签
+            VideosTagEntity videosTagEntity=new VideosTagEntity();
+            videosTagEntity.setTagName(videosRo.getTagName());
+            videosTagEntity.setCreateTime(new Date());
+            videosTagMapper.insert(videosTagEntity);
+            videosInfoEntity.setTagId(videosTagEntity.getId());
             videosInfoEntityMapper.insert(videosInfoEntity);
 
         } catch (Exception e) {
