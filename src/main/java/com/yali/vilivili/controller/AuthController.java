@@ -5,34 +5,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.*;
-<<<<<<< HEAD
 import com.yali.vilivili.model.entity.*;
-=======
-import com.yali.vilivili.model.entity.CollectionEntity;
-import com.yali.vilivili.model.entity.LikeEntity;
-import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.entity.VideosEntity;
-import com.yali.vilivili.model.entity.VideosInfoEntity;
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
 import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
 import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
-<<<<<<< HEAD
 import com.yali.vilivili.model.vo.VideosEntityVO;
-=======
-import com.yali.vilivili.repository.LikeRepository;
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
 import com.yali.vilivili.service.AuthService;
 import com.yali.vilivili.utils.HostHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-<<<<<<< HEAD
 import org.springframework.beans.BeanUtils;
-=======
-import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -129,29 +113,17 @@ public class AuthController extends BaseController {
 
 
     @ApiOperation(value = "验证码登录")
-
     @PostMapping("/emailLogin")
-<<<<<<< HEAD
-    public ResponseEntity<OR<AddUserRO>> emailLogin(String email, String code) {
-        AddUserRO addUserRO = authService.emailLogin(email, code);
+    public ResponseEntity<OR<LoginVO>> emailLogin(String email, String code) {
+        LoginVO addUserRO = authService.emailLogin(email, code);
         return processData(() -> addUserRO, this::processException);
-=======
-    public ResponseEntity<OR<LoginVO>> emailLogin(String email, String code){
-        LoginVO loginVO = authService.emailLogin(email, code);
-
-        return processData(()->loginVO,this::processException);
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
 
     }
 
 
     @ApiOperation(value = "收藏视频")
     @PostMapping("/collect")
-<<<<<<< HEAD
     public ResponseEntity<OR<Void>> emailLogin(String ffid) {
-=======
-    public ResponseEntity<OR<Void>> collect (String ffid){
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
         UserEntity userEntity = hostHolder.get();
         CollectionEntity entity = new CollectionEntity();
         entity.setUserId(userEntity.getId());
@@ -165,22 +137,14 @@ public class AuthController extends BaseController {
         wrapper.eq(VideosEntity::getId, Long.parseLong(ffid));
         VideosEntity videosEntity = videosEntityMapper.selectOne(wrapper);
 
-<<<<<<< HEAD
         redisTemplate.opsForSet().add(userEntity.getUsername() + "收藏", videosEntity);
-=======
-        redisTemplate.opsForSet().add(userEntity.getUsername()+"收藏",entity);
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
 
         return process(this::successResult);
     }
 
     @ApiOperation(value = "查询收藏")
     @PostMapping("/selectCollection")
-<<<<<<< HEAD
     public ResponseEntity<OR<List<VideosEntityVO>>> emailLogin() {
-=======
-    public ResponseEntity<OR<List<VideosEntity>>> selectCollection (){
->>>>>>> 69a92288226655b3337c780138fd63c5f25ffae5
         UserEntity userEntity = hostHolder.get();
 
         Set<Object> members = redisTemplate.opsForSet().members(userEntity.getUsername() + "收藏");
@@ -223,40 +187,6 @@ public class AuthController extends BaseController {
 
 
         return processData(() -> videosEntityVOS, "操作成功", this::processException);
-    }
-
-    @Autowired
-    LikeMapper likeMapper;
-
-    @ApiOperation(value = "喜欢视频")
-    @PostMapping("/like")
-    public ResponseEntity<OR<Void>> like (Long vid) {
-        VideosEntity videosEntity = videosEntityMapper.selectById(vid);
-        LikeEntity like = new LikeEntity();
-        like.setLikeTime(new Date());
-        UserEntity user = hostHolder.get();
-        like.setUserId(user.getId());
-        like.setVideoId(videosEntity.getId());
-        likeMapper.insert(like);
-
-        redisTemplate.opsForSet().add(user.getUsername()+"喜欢",like);
-
-        return process(this::successResult);
-    }
-
-    @ApiOperation(value = "查询喜欢")
-    @PostMapping("/selectLike")
-    public ResponseEntity<OR<List<LikeEntity>>> mylike (){
-        UserEntity userEntity = hostHolder.get();
-
-        Set<Object> members = redisTemplate.opsForSet().members(userEntity.getUsername() + "喜欢");
-        ArrayList<LikeEntity> list = new ArrayList<>();
-
-        for (Object member : members) {
-            list.add((LikeEntity) member);
-        }
-
-        return processData(()->list,"操作成功",this::processException);
     }
 
 
