@@ -22,7 +22,7 @@ public class VideosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
