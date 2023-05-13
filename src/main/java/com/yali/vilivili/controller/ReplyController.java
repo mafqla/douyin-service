@@ -9,11 +9,11 @@ import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.utils.HostHolder;
 import com.yali.vilivili.utils.IpUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -26,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/reply")
+@Api(value = "回复接口", tags = {"回复接口"})
 public class ReplyController extends BaseController {
 
     @Autowired
@@ -42,7 +43,8 @@ public class ReplyController extends BaseController {
      * @param reply
      * @return
      */
-    @RequestMapping("/add")
+    @PostMapping("/add")
+    @ApiOperation(value = "增加回复")
     private ResponseEntity<OR<Void>> add(@RequestBody Reply reply, HttpServletRequest request){
         UserEntity user = hostHolder.get();
         reply.setFromUid(user.getId());
@@ -57,7 +59,8 @@ public class ReplyController extends BaseController {
      * @param cid
      * @return
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
+    @ApiOperation(value = "当前评论下的所有回复")
     private ResponseEntity<OR<List<Reply>>> list(Integer cid){
         LambdaQueryWrapper<Reply> replyLambdaQueryWrapper = new LambdaQueryWrapper<>();
         replyLambdaQueryWrapper.eq(Reply::getCid, cid);

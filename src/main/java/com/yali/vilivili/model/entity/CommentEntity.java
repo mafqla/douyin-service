@@ -27,8 +27,14 @@ public class CommentEntity {
     private long videoId;
 
 
-    @Column(name = "commentator_id")
-    private String commentator;
+    @Column(name = "uid")
+    private Integer uid;
+
+    @Transient
+    private UserEntity user;
+
+    @Transient
+    private VideosEntity videosEntity;
 
     @Column(name = "comment_time")
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
