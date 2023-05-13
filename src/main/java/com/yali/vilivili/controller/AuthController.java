@@ -122,7 +122,7 @@ public class AuthController extends BaseController {
 
     @ApiOperation(value = "收藏视频")
     @PostMapping("/collect")
-    public ResponseEntity<OR<Void>> emailLogin (String ffid){
+    public ResponseEntity<OR<Void>> collect (String ffid){
         UserEntity userEntity = hostHolder.get();
         CollectionEntity entity = new CollectionEntity();
         entity.setUserId(userEntity.getId());
@@ -143,7 +143,7 @@ public class AuthController extends BaseController {
 
     @ApiOperation(value = "查询收藏")
     @PostMapping("/selectCollection")
-    public ResponseEntity<OR<List<VideosEntity>>> emailLogin (){
+    public ResponseEntity<OR<List<VideosEntity>>> selectCollection (){
         UserEntity userEntity = hostHolder.get();
 
         Set<Object> members = redisTemplate.opsForSet().members(userEntity.getUsername() + "收藏");
