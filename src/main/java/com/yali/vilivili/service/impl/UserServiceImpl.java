@@ -47,8 +47,9 @@ public class UserServiceImpl implements UserService {
         String userAvatar = "/static/default_logo/1.png";
         String ipAddress = IpUtils.getIpAddress(request);
         //生成随机的用户账号num
-        String num = UUID.randomUUID().toString().substring(0, 11);
-
+        //String num = UUID.randomUUID().toString().substring(0, 11);
+        Random random = new Random();
+        int num = random.nextInt(11);
         //判断用户邮箱是否存在
         UserEntity existingUser = userRepository.findByEmail(ro.getEmail());
 
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
             newUser.setUsername(ro.getUsername());
             newUser.setPassword(ro.getPassword());
             newUser.setEmail(ro.getEmail());
-            newUser.setUserNum(num);
+            newUser.setUserNum(String.valueOf(num));
             userRepository.save(newUser);
         } else {
             //邮箱已经存在，抛出异常或者返回错误信息
