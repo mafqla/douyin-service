@@ -11,11 +11,10 @@ import lombok.Data;
  **/
 
 @Data
-public class VideosPageRO {
+public class PageRO {
+    @ApiModelProperty(name = "currentPage", value = "当前页", required = true)
     private long currentPage;
+    @ApiModelProperty(name = "pageSize", value = "当前页数据条数", required = true)
     private long pageSize;
-    private long tagId;
-
-
 
 }
