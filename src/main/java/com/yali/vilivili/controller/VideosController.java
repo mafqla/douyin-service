@@ -13,7 +13,7 @@ import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.model.entity.VideosTagEntity;
-import com.yali.vilivili.model.ro.VideosPageRO;
+import com.yali.vilivili.model.ro.VideosClassifyRO;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.VideosEntityVO;
 import com.yali.vilivili.service.FileUploadService;
@@ -92,7 +92,7 @@ public class VideosController extends BaseController {
 
     @ApiOperation(value = "分类视频")
     @PostMapping("/getVideosByTag")
-    public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosPageRO ro) {
+    public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         VideosTagEntity videosTag = videosTagMapper.selectById(ro.getTagId());
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
