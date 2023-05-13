@@ -89,7 +89,7 @@ public class VideosController extends BaseController {
 
     @ApiOperation(value = "分类视频")
     @PostMapping("/getVideosByTag")
-    public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
+    public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
         if (StringUtils.equals(ro.getCategoriesName(), "全部") || StringUtils.isBlank(ro.getCategoriesName())) {
