@@ -5,14 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
-import com.yali.vilivili.mapper.UserEntityMapper;
-import com.yali.vilivili.mapper.VideosEntityMapper;
-import com.yali.vilivili.mapper.VideosInfoEntityMapper;
-import com.yali.vilivili.mapper.VideosTagMapper;
-import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.entity.VideosEntity;
-import com.yali.vilivili.model.entity.VideosInfoEntity;
-import com.yali.vilivili.model.entity.VideosTagEntity;
+import com.yali.vilivili.mapper.*;
+import com.yali.vilivili.model.entity.*;
 import com.yali.vilivili.model.ro.VideosClassifyRO;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.VideosEntityVO;
@@ -62,6 +56,9 @@ public class VideosController extends BaseController {
     @Resource
     UserEntityMapper userEntityMapper;
 
+    @Resource
+    VideosCategoriesMapper videosCategoriesEntityMapper;
+
     @ApiOperation(value = "视频上传")
     @PostMapping("/addVideo")
     public ResponseEntity<OR<Void>> videoUpload(@RequestParam("videos") MultipartFile videos, VideosRo videosRo) {
@@ -95,7 +92,7 @@ public class VideosController extends BaseController {
     public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
-        if (StringUtils.equals(ro.getTagName(), "全部") || StringUtils.isBlank(ro.getTagName())) {
+        if (StringUtils.equals(ro.getCategoriesName(), "全部") || StringUtils.isBlank(ro.getCategoriesName())) {
             Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
             IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, null);
             List<VideosEntity> videosEntities = videosEntityIPage.getRecords();
@@ -114,10 +111,10 @@ public class VideosController extends BaseController {
             });
             return processData(() -> videosEntityVOS, "获取分类视频成功", this::processException);
         }
-        QueryWrapper<VideosTagEntity> videosTagEntityQueryWrapper=new QueryWrapper<>();
-        videosTagEntityQueryWrapper.eq("tag_name",ro.getTagName());
-        VideosTagEntity videosTagEntity = videosTagMapper.selectOne(videosTagEntityQueryWrapper);
-        videosInfoEntityQueryWrapper.eq("tag_id", videosTagEntity.getId());
+        QueryWrapper<VideosCategoriesEntity> videosCategoriesEntityQueryWrapper=new QueryWrapper<>();
+        videosCategoriesEntityQueryWrapper.eq("categories_name",ro.getCategoriesName());
+        VideosCategoriesEntity videosCategoriesEntity = videosCategoriesEntityMapper.selectOne(videosCategoriesEntityQueryWrapper);
+        videosInfoEntityQueryWrapper.eq("categories_id", videosCategoriesEntity.getId());
 
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
         List<Long> videoIdList = new ArrayList<>();
