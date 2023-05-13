@@ -11,6 +11,7 @@ import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.IpUtils;
 import com.yali.vilivili.utils.MyException;
+import io.netty.util.internal.ObjectUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Description 用户管理
@@ -169,5 +167,14 @@ public class UserServiceImpl implements UserService {
     public void cancel(String username, String fansname) {
         redisTemplate.opsForSet().remove(username+"关注",fansname);
         redisTemplate.opsForSet().remove(fansname+"粉丝",username);
+    }
+
+    @Override
+    public List<UserEntity> selectAttention(String username) {
+        Set<String> attention = redisTemplate.opsForSet().members(username + "粉丝");
+        if(Objects.isNull(attention)){
+            return null;
+        }
+        return userRepository.findAllByUsernameIn(new ArrayList<>(attention));
     }
 }

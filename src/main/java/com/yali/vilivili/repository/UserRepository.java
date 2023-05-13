@@ -47,6 +47,8 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     UserEntity findById(Integer userId);
 
+    List<UserEntity> findAllByUsernameIn(List<String> username);
+
     /**
      * 根据用户email重置密码
      * @param email 用户email
