@@ -3,6 +3,7 @@ package com.yali.vilivili.config;
 import com.yali.vilivili.interceptor.UserInterceptor;
 import com.yali.vilivili.interceptor.UtilityInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,12 +19,11 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Configuration
-
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Resource
+    @Autowired
     UserInterceptor userInterceptor;
 
-    @Resource
+    @Autowired
     UtilityInterceptor utilityInterceptor;
 
     @Value("${file.upload.path}")
@@ -48,8 +48,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(userInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(utilityInterceptor).addPathPatterns("/util/**");
+        registry.addInterceptor(userInterceptor).addPathPatterns("/**").order(1);
+        registry.addInterceptor(utilityInterceptor).addPathPatterns("/util/**").order(2);
     }
 
     @Override

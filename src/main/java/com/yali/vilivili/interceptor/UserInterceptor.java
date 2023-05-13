@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -28,7 +29,7 @@ import java.util.Objects;
  */
 @Component
 @Slf4j
-public class UserInterceptor implements AsyncHandlerInterceptor {
+public class UserInterceptor implements HandlerInterceptor {
 
     @Value("${jwt.login.response.header}")
     private String jwtHeader;
@@ -46,7 +47,7 @@ public class UserInterceptor implements AsyncHandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception {
         if (handler instanceof HandlerMethod method) {
             RequireLogin requireLogin = method.getMethodAnnotation(RequireLogin.class);
-            if (Objects.nonNull(requireLogin) && requireLogin.required()) {
+            if (Objects.isNull(requireLogin)) {
                 String token = request.getHeader(jwtHeader);
                 if (StringUtils.isBlank(token)) {
                     toolService.failedResponse(response, "401", "未登录，请登录！");
@@ -65,11 +66,6 @@ public class UserInterceptor implements AsyncHandlerInterceptor {
             return true;
         }
         return true;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        AsyncHandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
     @Override
