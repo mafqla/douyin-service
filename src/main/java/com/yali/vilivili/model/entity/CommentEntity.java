@@ -30,8 +30,10 @@ public class CommentEntity {
     @Column(name = "uid")
     private Integer uid;
 
+    @Transient
     private UserEntity user;
 
+    @Transient
     private VideosEntity videosEntity;
 
     @Column(name = "comment_time")
