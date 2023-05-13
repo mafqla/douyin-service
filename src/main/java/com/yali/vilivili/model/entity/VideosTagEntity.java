@@ -1,5 +1,7 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -29,6 +31,7 @@ public class VideosTagEntity {
 
     @Id
     @Column(name = "id") // 主键 ID
+    @TableId(value = "id",type = IdType.AUTO)
     private long id;
 
     @Column(name = "tag_name") // 标签名称
@@ -40,5 +43,5 @@ public class VideosTagEntity {
 
     @Column(name = "update_time") // 更新时间
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date updateTime;
+    private Date updateTime=new Date();
 }

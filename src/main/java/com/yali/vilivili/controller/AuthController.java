@@ -1,25 +1,22 @@
 package com.yali.vilivili.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
-import com.yali.vilivili.mapper.CollectionMapper;
-import com.yali.vilivili.mapper.UserEntityMapper;
-import com.yali.vilivili.mapper.VideosEntityMapper;
-import com.yali.vilivili.mapper.VideosInfoEntityMapper;
-import com.yali.vilivili.model.entity.CollectionEntity;
-import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.entity.VideosEntity;
-import com.yali.vilivili.model.entity.VideosInfoEntity;
+import com.yali.vilivili.mapper.*;
+import com.yali.vilivili.model.entity.*;
 import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
 import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
+import com.yali.vilivili.model.vo.VideosEntityVO;
 import com.yali.vilivili.service.AuthService;
 import com.yali.vilivili.utils.HostHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -49,7 +46,7 @@ public class AuthController extends BaseController {
     private AuthService authService;
 
     @Resource
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource
     private VideosEntityMapper videosEntityMapper;
@@ -66,15 +63,21 @@ public class AuthController extends BaseController {
     @Resource
     private VideosInfoEntityMapper videosInfoEntityMapper;
 
+    @Resource
+    CommentMapper commentMapper;
+
+    @Resource
+    VideosTagMapper videosTagMapper;
+
     @ApiOperation(value = "登录")
     @PostMapping("/login")
-    public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br){
-        return this.processData(()->authService.login(ro),br,"登录成功",this::processException);
+    public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br) {
+        return this.processData(() -> authService.login(ro), br, "登录成功", this::processException);
     }
 
     @ApiOperation(value = "退出登录")
     @PostMapping("/logout")
-    public ResponseEntity<OR<Void>> logout(HttpServletRequest request){
+    public ResponseEntity<OR<Void>> logout(HttpServletRequest request) {
         String token = request.getHeader("loginToken");
         authService.logout(token);
         return process(this::successResult);
@@ -82,45 +85,45 @@ public class AuthController extends BaseController {
 
     @ApiOperation(value = "发送验证码")
     @PostMapping("/sendCode")
-    public ResponseEntity<OR<Void>> sendCode(@Valid EmailRO ro){
+    public ResponseEntity<OR<Void>> sendCode(@Valid EmailRO ro) {
         authService.sendEmailCode(ro);
         return process(this::successResult);
     }
 
     @ApiOperation(value = "注册")
     @PostMapping("/register")
-    public ResponseEntity<OR<Void>> register(@Valid RegisterRO ro){
+    public ResponseEntity<OR<Void>> register(@Valid RegisterRO ro) {
         authService.register(ro);
         return process(this::successResult);
     }
 
     @ApiOperation(value = "重置密码")
     @PostMapping("/resetPassword")
-    public ResponseEntity<OR<Void>> resetPassword(String email,  String password, String code){
-        authService.resetPassword(email,password,code);
+    public ResponseEntity<OR<Void>> resetPassword(String email, String password, String code) {
+        authService.resetPassword(email, password, code);
         return process(this::successResult);
     }
 
     @ApiOperation(value = "修改用户头像")
     @PostMapping("/updateAvatar")
-    public ResponseEntity<OR<Void>> updateAvatar(String email, String avatar){
-        authService.updateAvatar(email,avatar);
+    public ResponseEntity<OR<Void>> updateAvatar(String email, String avatar) {
+        authService.updateAvatar(email, avatar);
         return process(this::successResult);
     }
 
 
     @ApiOperation(value = "验证码登录")
     @PostMapping("/emailLogin")
-    public ResponseEntity<OR<AddUserRO>> emailLogin(String email, String code){
+    public ResponseEntity<OR<AddUserRO>> emailLogin(String email, String code) {
         AddUserRO addUserRO = authService.emailLogin(email, code);
-        return processData(()->addUserRO,this::processException);
+        return processData(() -> addUserRO, this::processException);
 
     }
 
 
     @ApiOperation(value = "收藏视频")
     @PostMapping("/collect")
-    public ResponseEntity<OR<Void>> emailLogin (String ffid){
+    public ResponseEntity<OR<Void>> emailLogin(String ffid) {
         UserEntity userEntity = hostHolder.get();
         CollectionEntity entity = new CollectionEntity();
         entity.setUserId(userEntity.getId());
@@ -131,17 +134,17 @@ public class AuthController extends BaseController {
 
         LambdaQueryWrapper<VideosEntity> wrapper = new LambdaQueryWrapper<>();
 
-        wrapper.eq(VideosEntity::getId,Long.parseLong(ffid));
+        wrapper.eq(VideosEntity::getId, Long.parseLong(ffid));
         VideosEntity videosEntity = videosEntityMapper.selectOne(wrapper);
 
-        redisTemplate.opsForSet().add(userEntity.getUsername()+"收藏",videosEntity);
+        redisTemplate.opsForSet().add(userEntity.getUsername() + "收藏", videosEntity);
 
         return process(this::successResult);
     }
 
     @ApiOperation(value = "查询收藏")
     @PostMapping("/selectCollection")
-    public ResponseEntity<OR<List<VideosEntity>>> emailLogin (){
+    public ResponseEntity<OR<List<VideosEntityVO>>> emailLogin() {
         UserEntity userEntity = hostHolder.get();
 
         Set<Object> members = redisTemplate.opsForSet().members(userEntity.getUsername() + "收藏");
@@ -151,27 +154,59 @@ public class AuthController extends BaseController {
             list.add((VideosEntity) member);
         }
 
-       return processData(()->list,"操作成功",this::processException);
+        List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
+        list.forEach(videosEntity -> {
+            QueryWrapper<CommentEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("video_id", videosEntity.getId());
+            List<CommentEntity> commentEntities = commentMapper.selectList(queryWrapper);
+            VideosEntityVO videosEntityVO = new VideosEntityVO();
+            BeanUtils.copyProperties(videosEntity, videosEntityVO);
+
+            if (commentEntities.size() != 0) {
+                List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
+                videosEntityVO.setCommentList(commentInfoList);
+                videosEntityVO.setCommentCount(commentInfoList.size());
+            }
+            QueryWrapper<CollectionEntity> collectionEntityQueryWrapper = new QueryWrapper<>();
+            collectionEntityQueryWrapper.eq("video_id", videosEntity.getId());
+            Long collectionCount = collectionMapper.selectCount(collectionEntityQueryWrapper);
+            videosEntityVO.setCollectionCount(collectionCount);
+            QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
+            videosInfoEntityQueryWrapper.eq("video_id", videosEntity.getId());
+            List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
+            if (videosInfoEntities.size() != 0) {
+                long userId = videosInfoEntities.get(0).getUserId();
+                UserEntity user = userEntityMapper.selectById(userId);
+                videosEntityVO.setAuthorAvatar(user.getUserAvatar());
+                List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
+                List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
+                videosEntityVO.setTagNameList(tagNameList);
+            }
+            videosEntityVOS.add(videosEntityVO);
+        });
+
+
+        return processData(() -> videosEntityVOS, "操作成功", this::processException);
     }
 
 
     @ApiOperation(value = "查询是否是关注")
     @PostMapping("/selectguanzhu")
-    public ResponseEntity<OR<Boolean>> selectguanzhu (Long ffid){
+    public ResponseEntity<OR<Boolean>> selectguanzhu(Long ffid) {
 
         LambdaQueryWrapper<VideosInfoEntity> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(VideosInfoEntity::getVideoId,ffid);
+        wrapper.eq(VideosInfoEntity::getVideoId, ffid);
         VideosInfoEntity videosInfoEntity = videosInfoEntityMapper.selectOne(wrapper);
 
         long userId = videosInfoEntity.getUserId();
         LambdaQueryWrapper<UserEntity> wrapper1 = new LambdaQueryWrapper<>();
-        wrapper1.eq(UserEntity::getId,userId);
+        wrapper1.eq(UserEntity::getId, userId);
 
         UserEntity userEntity = userEntityMapper.selectOne(wrapper1);
 
         UserEntity user = hostHolder.get();
         Boolean member = redisTemplate.opsForSet().isMember(userEntity.getUsername() + "粉丝", user.getId());
-        return processData(()-> member,"操作成功",this::processException);
+        return processData(() -> member, "操作成功", this::processException);
 
 
     }

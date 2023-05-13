@@ -95,7 +95,7 @@ public class VideosController extends BaseController {
     public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
-        if (StringUtils.equals(ro.getTagName(), "全部")||StringUtils.isBlank(ro.getTagName())) {
+        if (StringUtils.equals(ro.getTagName(), "全部") || StringUtils.isBlank(ro.getTagName())) {
             Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
             IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, null);
             List<VideosEntity> videosEntities = videosEntityIPage.getRecords();
@@ -104,7 +104,7 @@ public class VideosController extends BaseController {
                 videosInfoEntityQueryWrapper1.eq("video_id", videosEntity.getId());
                 List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper1);
                 VideosEntityVO videosEntityVO = new VideosEntityVO();
-                if(videosInfoEntities.size()!=0){
+                if (videosInfoEntities.size() != 0) {
                     long userId = videosInfoEntities.get(0).getUserId();
                     UserEntity user = userEntityMapper.selectById(userId);
                     videosEntityVO.setAuthorName(user.getUsername());
@@ -158,5 +158,14 @@ public class VideosController extends BaseController {
             videosEntityVOS.add(videosEntityVO);
         });
         return processData(() -> videosEntityVOS, "获取成功", this::processException);
+    }
+
+    @ApiOperation(value = "增加观看次数")
+    @PostMapping("/addPlayCount")
+    public ResponseEntity<OR<String>> getVideosByCursor(long videoId) {
+        VideosEntity videosEntity = videosEntityMapper.selectById(videoId);
+        videosEntity.setPlayCount(videosEntity.getPlayCount()+1);
+        videosEntityMapper.updateById(videosEntity);
+        return processData(() -> "增加观看次数成功", this::processException);
     }
 }

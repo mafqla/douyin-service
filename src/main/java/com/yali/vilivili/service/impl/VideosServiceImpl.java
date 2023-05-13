@@ -147,11 +147,14 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 QueryWrapper<CommentEntity> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("video_id", videosEntity.getId());
                 List<CommentEntity> commentEntities = commentMapper.selectList(queryWrapper);
-                List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
                 VideosEntityVO videosEntityVO = new VideosEntityVO();
                 BeanUtils.copyProperties(videosEntity, videosEntityVO);
-                videosEntityVO.setCommentList(commentInfoList);
-                videosEntityVO.setCommentCount(commentInfoList.size());
+
+                if (commentEntities.size() != 0) {
+                    List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
+                    videosEntityVO.setCommentList(commentInfoList);
+                    videosEntityVO.setCommentCount(commentInfoList.size());
+                }
                 QueryWrapper<CollectionEntity> collectionEntityQueryWrapper = new QueryWrapper<>();
                 collectionEntityQueryWrapper.eq("video_id", videosEntity.getId());
                 Long collectionCount = collectionMapper.selectCount(collectionEntityQueryWrapper);
@@ -159,12 +162,14 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
                 videosInfoEntityQueryWrapper.eq("video_id", videosEntity.getId());
                 List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
-                long userId = videosInfoEntities.get(0).getUserId();
-                UserEntity user = userEntityMapper.selectById(userId);
-                videosEntityVO.setAuthorAvatar(user.getUserAvatar());
-                List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
-                List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
-                videosEntityVO.setTagNameList(tagNameList);
+                if (videosInfoEntities.size() != 0) {
+                    long userId = videosInfoEntities.get(0).getUserId();
+                    UserEntity user = userEntityMapper.selectById(userId);
+                    videosEntityVO.setAuthorAvatar(user.getUserAvatar());
+                    List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
+                    List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
+                    videosEntityVO.setTagNameList(tagNameList);
+                }
                 videosEntityVOS.add(videosEntityVO);
             });
             return videosEntityVOS;

@@ -1,5 +1,6 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -33,9 +34,11 @@ public class CommentEntity {
     private Integer uid;
 
     @Transient
+    @TableField(exist = false)
     private UserEntity user;
 
     @Transient
+    @TableField(exist = false)
     private VideosEntity videosEntity;
 
     @Column(name = "comment_time")

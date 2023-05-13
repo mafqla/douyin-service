@@ -44,7 +44,7 @@ public class VideosEntity {
 
     @Column(name = "upload_time")
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date uploadTime;
+    private Date uploadTime=new Date();
 
     @Column(name = "play_count")
     private long playCount;

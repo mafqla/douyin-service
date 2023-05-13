@@ -282,10 +282,12 @@ public class FileUploadServiceImpl implements FileUploadService {
             videosInfoEntity.setVideoId(videosEntity.getId());
             videosInfoEntity.setUserId(user.getId());
 
+
             //保存视频标签
             VideosTagEntity videosTagEntity=new VideosTagEntity();
             videosTagEntity.setTagName(videosRo.getTagName());
             videosTagEntity.setCreateTime(new Date());
+            videosTagEntity.setUpdateTime(new Date());
             videosTagMapper.insert(videosTagEntity);
             videosInfoEntity.setTagId(videosTagEntity.getId());
             videosInfoEntityMapper.insert(videosInfoEntity);
