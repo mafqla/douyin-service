@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.CollectionMapper;
+import com.yali.vilivili.mapper.UserEntityMapper;
 import com.yali.vilivili.mapper.VideosEntityMapper;
+import com.yali.vilivili.mapper.VideosInfoEntityMapper;
 import com.yali.vilivili.model.entity.CollectionEntity;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
+import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.EmailRO;
 import com.yali.vilivili.model.ro.LoginRO;
@@ -55,7 +58,13 @@ public class AuthController extends BaseController {
     private HostHolder hostHolder;
 
     @Resource
+    private UserEntityMapper userEntityMapper;
+
+    @Resource
     private CollectionMapper collectionMapper;
+
+    @Resource
+    private VideosInfoEntityMapper videosInfoEntityMapper;
 
     @ApiOperation(value = "登录")
     @PostMapping("/login")
@@ -146,6 +155,25 @@ public class AuthController extends BaseController {
     }
 
 
+    @ApiOperation(value = "查询是否是关注")
+    @PostMapping("/selectguanzhu")
+    public ResponseEntity<OR<Boolean>> selectguanzhu (Long ffid){
 
+        LambdaQueryWrapper<VideosInfoEntity> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(VideosInfoEntity::getVideoId,ffid);
+        VideosInfoEntity videosInfoEntity = videosInfoEntityMapper.selectOne(wrapper);
+
+        long userId = videosInfoEntity.getUserId();
+        LambdaQueryWrapper<UserEntity> wrapper1 = new LambdaQueryWrapper<>();
+        wrapper1.eq(UserEntity::getId,userId);
+
+        UserEntity userEntity = userEntityMapper.selectOne(wrapper1);
+
+        UserEntity user = hostHolder.get();
+        Boolean member = redisTemplate.opsForSet().isMember(userEntity.getUsername() + "粉丝", user.getId());
+        return processData(()-> member,"操作成功",this::processException);
+
+
+    }
 
 }
