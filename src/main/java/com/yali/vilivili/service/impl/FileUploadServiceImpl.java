@@ -1,15 +1,20 @@
 package com.yali.vilivili.service.impl;
 
+import com.yali.vilivili.mapper.VideosInfoEntityMapper;
+import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
+import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.model.ro.VideosRo;
 import com.yali.vilivili.model.vo.FileUploadVO;
 import com.yali.vilivili.repository.VideosRepository;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.utils.FFmpegUtils;
+import com.yali.vilivili.utils.HostHolder;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -192,6 +197,12 @@ public class FileUploadServiceImpl implements FileUploadService {
         }
     }
 
+    @Autowired
+    private HostHolder hostHolder;
+
+    @Autowired
+    private VideosInfoEntityMapper videosInfoEntityMapper;
+
     /**
      * 视频上传
      *
@@ -260,6 +271,12 @@ public class FileUploadServiceImpl implements FileUploadService {
             videosEntity.setUploadTime(new Date());
 
             videosRepository.save(videosEntity);
+
+            UserEntity user = hostHolder.get();
+            VideosInfoEntity videosInfoEntity = new VideosInfoEntity();
+            videosInfoEntity.setVideoId(videosEntity.getId());
+            videosInfoEntity.setUserId(user.getId());
+            videosInfoEntityMapper.insert(videosInfoEntity);
 
         } catch (Exception e) {
             log.error("服务器错误", e);
