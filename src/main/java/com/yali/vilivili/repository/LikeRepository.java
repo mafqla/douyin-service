@@ -11,7 +11,7 @@ import java.util.List;
  * @author fuqianlin
  * @date 2023-01-22 15:48
  **/
-public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
+public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
 
 
 }

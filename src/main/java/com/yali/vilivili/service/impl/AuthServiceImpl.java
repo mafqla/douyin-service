@@ -1,5 +1,6 @@
 package com.yali.vilivili.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.AES;
 import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.ro.*;
 import com.yali.vilivili.model.vo.LoginVO;
@@ -12,6 +13,7 @@ import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
@@ -64,35 +66,7 @@ public class AuthServiceImpl implements AuthService {
         if (user.getIsValid() != 0){
             throw new MyException(HttpStatus.FORBIDDEN.toString(),"用户已被禁用，请联系管理员");
         }
-        TokenInfoVO tokenInfoVO = new TokenInfoVO();
-        String loginUUID = UUID.randomUUID().toString();
-        tokenInfoVO.setLoginUUID(loginUUID);
-        tokenInfoVO.setUserId(user.getId());
-        String token = JwtUtils.getToken(tokenInfoVO);
-        // 将token存入redis中，设置过期时间为2小时）
-        redisTemplate.opsForValue().set(loginUUID, token, 2, TimeUnit.HOURS);
-
-        // 获取用户头像url
-        String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
-
-        //获取ip属地
-        String ipLocation = getIpSource(user.getUIp());
-
-        LoginVO loginVO = new LoginVO();
-        loginVO.setUserId(user.getId());
-        loginVO.setUsername(user.getUsername());
-        loginVO.setEmail(user.getEmail());
-        loginVO.setUserAvatar(avatarUrl);
-        loginVO.setType(String.valueOf(user.getType()));
-        loginVO.setCreateTime(user.getCreateTime());
-        loginVO.setPhone(user.getPhone());
-        loginVO.setUserNum(user.getUserNum());
-        loginVO.setIpLocation(ipLocation);
-        loginVO.setBirthdate(user.getBirthdate());
-        loginVO.setGender(user.getGender());
-        loginVO.setSignature(user.getSignature());
-        loginVO.setToken(token);
-        return loginVO;
+        return getLoginVO(user);
     }
 
     /**
@@ -192,29 +166,75 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AddUserRO emailLogin(String email, String code) {
+    public LoginVO emailLogin(String email, String code) {
         String redisCode = redisTemplate.opsForValue().get(email);
 
 
         if(StringUtils.equals(code,redisCode)){
             AddUserRO addUserRO = new AddUserRO();
             addUserRO.setEmail(email);
-            addUserRO.setUsername(RandomStringUtils.random(6));
-            addUserRO.setPassword(RandomStringUtils.random(11));
+            Random random = new Random();
+            addUserRO.setUsername("用户"+random.nextInt(10));
+            addUserRO.setPassword(AESUtil.encrypt("123456"));
+            UserEntity user = userRepository.findTopByEmail(email);
 
-            userService.addUser(addUserRO);
+            try {
+                userService.addUser(addUserRO);
+            }catch (MyException e){
+
+                return getLoginVO(user);
+            }
 
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("sendmail_post@qq.com");
             message.setTo(email);
             message.setSubject("账户注册成功");
-            message.setText("邮箱密码为:"+addUserRO.getPassword());
+            message.setText("邮箱密码为:123456");
             javaMailSender.send(message);
 
-           return addUserRO;
+
+
+
+
+            return getLoginVO(user);
+
+
         }else {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
         }
+    }
+
+    @NotNull
+    private LoginVO getLoginVO(UserEntity user) {
+        TokenInfoVO tokenInfoVO = new TokenInfoVO();
+        String loginUUID = UUID.randomUUID().toString();
+        tokenInfoVO.setLoginUUID(loginUUID);
+        tokenInfoVO.setUserId(user.getId());
+        String token = JwtUtils.getToken(tokenInfoVO);
+        // 将token存入redis中，设置过期时间为2小时）
+        redisTemplate.opsForValue().set(loginUUID, token, 2, TimeUnit.HOURS);
+
+        // 获取用户头像url
+        String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
+
+        //获取ip属地
+        String ipLocation = getIpSource(user.getUIp());
+
+        LoginVO loginVO = new LoginVO();
+        loginVO.setUserId(user.getId());
+        loginVO.setUsername(user.getUsername());
+        loginVO.setEmail(user.getEmail());
+        loginVO.setUserAvatar(avatarUrl);
+        loginVO.setType(String.valueOf(user.getType()));
+        loginVO.setCreateTime(user.getCreateTime());
+        loginVO.setPhone(user.getPhone());
+        loginVO.setUserNum(user.getUserNum());
+        loginVO.setIpLocation(ipLocation);
+        loginVO.setBirthdate(user.getBirthdate());
+        loginVO.setGender(user.getGender());
+        loginVO.setSignature(user.getSignature());
+        loginVO.setToken(token);
+        return loginVO;
     }
 
 

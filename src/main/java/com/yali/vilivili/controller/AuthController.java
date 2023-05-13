@@ -3,10 +3,7 @@ package com.yali.vilivili.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yali.vilivili.controller.base.BaseController;
 import com.yali.vilivili.controller.base.OR;
-import com.yali.vilivili.mapper.CollectionMapper;
-import com.yali.vilivili.mapper.UserEntityMapper;
-import com.yali.vilivili.mapper.VideosEntityMapper;
-import com.yali.vilivili.mapper.VideosInfoEntityMapper;
+import com.yali.vilivili.mapper.*;
 import com.yali.vilivili.model.entity.CollectionEntity;
 import com.yali.vilivili.model.entity.LikeEntity;
 import com.yali.vilivili.model.entity.UserEntity;
@@ -113,10 +110,12 @@ public class AuthController extends BaseController {
 
 
     @ApiOperation(value = "验证码登录")
+
     @PostMapping("/emailLogin")
-    public ResponseEntity<OR<AddUserRO>> emailLogin(String email, String code){
-        AddUserRO addUserRO = authService.emailLogin(email, code);
-        return processData(()->addUserRO,this::processException);
+    public ResponseEntity<OR<LoginVO>> emailLogin(String email, String code){
+        LoginVO loginVO = authService.emailLogin(email, code);
+
+        return processData(()->loginVO,this::processException);
 
     }
 
@@ -158,7 +157,7 @@ public class AuthController extends BaseController {
     }
 
     @Autowired
-    LikeRepository likeRepository;
+    LikeMapper likeMapper;
 
     @ApiOperation(value = "喜欢视频")
     @PostMapping("/like")
@@ -169,7 +168,7 @@ public class AuthController extends BaseController {
         UserEntity user = hostHolder.get();
         like.setUserId(user.getId());
         like.setVideoId(videosEntity.getId());
-        likeRepository.save(like);
+        likeMapper.insert(like);
 
         redisTemplate.opsForSet().add(user.getUsername()+"喜欢",videosEntity);
 
