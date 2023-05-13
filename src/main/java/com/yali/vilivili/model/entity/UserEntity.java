@@ -1,5 +1,6 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -19,6 +20,7 @@ import java.util.List;
 @Table(name = "user")
 @DynamicInsert
 @DynamicUpdate
+@TableName("user")
 public class UserEntity {
 
     /**

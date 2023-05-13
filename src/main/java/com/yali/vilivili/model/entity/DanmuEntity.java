@@ -1,5 +1,6 @@
 package com.yali.vilivili.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Table(name = "danmu")
 @DynamicInsert
 @DynamicUpdate
+@TableName(value="danmu")
 public class DanmuEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

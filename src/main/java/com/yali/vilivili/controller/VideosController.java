@@ -85,7 +85,7 @@ public class VideosController extends BaseController {
 
     @ApiOperation(value = "视频滚动加载接口")
     @PostMapping("/getVideosByCursor")
-    public ResponseEntity<OR<List<VideosEntity>>> getVideosByCursor(Integer cursor, Integer size, Integer status) {
+    public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByCursor(Integer cursor, Integer size, Integer status) {
         videosService.getVideosListByCursor(cursor, size, status);
         return processData(() -> videosService.getVideosListByCursor(cursor, size, status), "获取成功", this::processException);
     }
@@ -94,27 +94,27 @@ public class VideosController extends BaseController {
     @PostMapping("/getVideosByTag")
     public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByTag(@RequestBody VideosClassifyRO ro) {
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
-        VideosTagEntity videosTag = videosTagMapper.selectById(ro.getTagId());
         List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
-        if (StringUtils.equals(videosTag.getTagName(), "全部")) {
+        if (StringUtils.equals(ro.getTagName(), "全部")||StringUtils.isBlank(ro.getTagName())) {
             Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
             IPage<VideosEntity> videosEntityIPage = videosEntityMapper.selectPage(page, null);
-
             List<VideosEntity> videosEntities = videosEntityIPage.getRecords();
             videosEntities.forEach(videosEntity -> {
                 QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper1 = new QueryWrapper<>();
                 videosInfoEntityQueryWrapper1.eq("video_id", videosEntity.getId());
                 List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper1);
-                long userId = videosInfoEntities.get(0).getUserId();
-                UserEntity user = userEntityMapper.selectById(userId);
                 VideosEntityVO videosEntityVO = new VideosEntityVO();
+                if(videosInfoEntities.size()!=0){
+                    long userId = videosInfoEntities.get(0).getUserId();
+                    UserEntity user = userEntityMapper.selectById(userId);
+                    videosEntityVO.setAuthorName(user.getUsername());
+                }
                 BeanUtils.copyProperties(videosEntity, videosEntityVO);
-                videosEntityVO.setAuthorName(user.getUsername());
                 videosEntityVOS.add(videosEntityVO);
             });
             return processData(() -> videosEntityVOS, "获取分类视频成功", this::processException);
         }
-        videosInfoEntityQueryWrapper.eq("tag_id", ro.getTagId());
+        videosInfoEntityQueryWrapper.eq("tag_name", ro.getTagName());
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
         List<Long> videoIdList = new ArrayList<>();
         videosInfoEntities.forEach(videosInfoEntity -> {
@@ -137,5 +137,26 @@ public class VideosController extends BaseController {
             videosEntityVOS.add(videosEntityVO);
         });
         return processData(() -> videosEntityVOS, "获取分类视频成功", this::processException);
+    }
+
+    @ApiOperation(value = "热门视频")
+    @PostMapping("/hotVideos")
+    public ResponseEntity<OR<List<VideosEntityVO>>> hotVideos() {
+        QueryWrapper<VideosEntity> videosEntityQueryWrapper = new QueryWrapper<>();
+        videosEntityQueryWrapper.orderByDesc("play_count");
+        videosEntityQueryWrapper.last("limit 0,15");
+        List<VideosEntity> videosEntities = videosEntityMapper.selectList(videosEntityQueryWrapper);
+        List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
+        videosEntities.forEach(videosEntity -> {
+            VideosEntityVO videosEntityVO = new VideosEntityVO();
+            BeanUtils.copyProperties(videosEntity, videosEntityVO);
+            QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
+            List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
+            long userId = videosInfoEntities.get(0).getUserId();
+            UserEntity user = userEntityMapper.selectById(userId);
+            videosEntityVO.setAuthorName(user.getUsername());
+            videosEntityVOS.add(videosEntityVO);
+        });
+        return processData(() -> videosEntityVOS, "获取成功", this::processException);
     }
 }
