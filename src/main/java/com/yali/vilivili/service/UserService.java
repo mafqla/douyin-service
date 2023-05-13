@@ -56,6 +56,13 @@ public interface UserService {
      */
     void attention(String username,String fansname);
 
-
+    /**
+     * 用户取关
+     * @param username
+     * @param fansname
+     */
     void cancel(String username,String fansname);
+
+
+    List<UserEntity> selectAttention(String username);
 }

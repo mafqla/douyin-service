@@ -9,6 +9,7 @@ import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateUserRO;
 import com.yali.vilivili.service.UserService;
+import com.yali.vilivili.utils.HostHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class UserController extends BaseController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private HostHolder hostHolder;
 
     @ApiOperation(value = "更新用户")
     @PostMapping("/updateUser")
@@ -86,6 +90,14 @@ public class UserController extends BaseController {
     public ResponseEntity<OR<Void>> cancel(String username,String fansnams) {
         userService.cancel(username, fansnams);
         return process(this::successResult);
+    }
+
+    @ApiOperation(value = "查询粉丝")
+    @PostMapping("/selectAttention")
+    public ResponseEntity<OR<List<UserEntity>>> cancel() {
+        UserEntity userEntity = hostHolder.get();
+        List<UserEntity> userEntities = userService.selectAttention(userEntity.getUsername());
+        return processData(()->userEntities,this::processException);
     }
 
 }
