@@ -9,22 +9,26 @@ import com.yali.vilivili.mapper.*;
 import com.yali.vilivili.model.entity.*;
 import com.yali.vilivili.model.ro.VideosClassifyRO;
 import com.yali.vilivili.model.ro.VideosRo;
+import com.yali.vilivili.model.vo.ClassifyVideosVO;
 import com.yali.vilivili.model.vo.VideosEntityVO;
 import com.yali.vilivili.service.FileUploadService;
 import com.yali.vilivili.service.VideosService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.swing.text.html.parser.Entity;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 视频接口
@@ -58,6 +62,13 @@ public class VideosController extends BaseController {
 
     @Resource
     VideosCategoriesMapper videosCategoriesEntityMapper;
+
+    @Value("${server.port}")
+    private String port;
+
+    @Value("${file.upload.context-path}")
+    private String contextPath;
+
 
     @ApiOperation(value = "视频上传")
     @PostMapping("/addVideo")
@@ -145,23 +156,36 @@ public class VideosController extends BaseController {
 
     @ApiOperation(value = "热门视频")
     @PostMapping("/hotVideos")
-    public ResponseEntity<OR<List<VideosEntityVO>>> hotVideos() {
+    public ResponseEntity<OR<List<ClassifyVideosVO>>> hotVideos() {
         QueryWrapper<VideosEntity> videosEntityQueryWrapper = new QueryWrapper<>();
         videosEntityQueryWrapper.orderByDesc("play_count");
         videosEntityQueryWrapper.last("limit 0,15");
         List<VideosEntity> videosEntities = videosEntityMapper.selectList(videosEntityQueryWrapper);
-        List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
+        List<ClassifyVideosVO> classifyVideosVOS = new ArrayList<>();
+        final int[] rank = {videosEntities.size()};
         videosEntities.forEach(videosEntity -> {
-            VideosEntityVO videosEntityVO = new VideosEntityVO();
-            BeanUtils.copyProperties(videosEntity, videosEntityVO);
+            ClassifyVideosVO classifyVideosVO = new ClassifyVideosVO();
+            BeanUtils.copyProperties(videosEntity, classifyVideosVO);
+            String url="";
+            try {
+                url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
+            classifyVideosVO.setImg(url+videosEntity.getVideosCover());
+            classifyVideosVO.setDescribe(videosEntity.getDescription());
+            classifyVideosVO.setPlayNumber(videosEntity.getPlayCount());
+            classifyVideosVO.setPlayTime(videosEntity.getVideosTime());
+            classifyVideosVO.setRank(rank[0]);
+            rank[0] = rank[0] -1;
             QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
             List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
             long userId = videosInfoEntities.get(0).getUserId();
             UserEntity user = userEntityMapper.selectById(userId);
-            videosEntityVO.setAuthorName(user.getUsername());
-            videosEntityVOS.add(videosEntityVO);
+            classifyVideosVO.setAuthor(user.getUsername());
+            classifyVideosVOS.add(classifyVideosVO);
         });
-        return processData(() -> videosEntityVOS, "获取成功", this::processException);
+        return processData(() -> classifyVideosVOS, "获取成功", this::processException);
     }
 
     @ApiOperation(value = "增加观看次数")
@@ -171,5 +195,49 @@ public class VideosController extends BaseController {
         videosEntity.setPlayCount(videosEntity.getPlayCount()+1);
         videosEntityMapper.updateById(videosEntity);
         return processData(() -> "增加观看次数成功", this::processException);
+    }
+
+    @Resource
+    CommentMapper commentMapper;
+
+    @Resource
+    CollectionMapper collectionMapper;
+
+    @ApiOperation(value = "根据id获取视频信息")
+    @PostMapping("/getVideoInfoById")
+    public ResponseEntity<OR<VideosEntityVO>> getVideoInfoById(long videoId) {
+        VideosEntityVO videosEntityVO=new VideosEntityVO();
+        VideosEntity videosEntity = videosEntityMapper.selectById(videoId);
+        QueryWrapper<CommentEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("video_id", videoId);
+        long commentCount = commentMapper.selectCount(queryWrapper);
+        BeanUtils.copyProperties(videosEntity,videosEntityVO );
+        videosEntityVO.setCommentCount(commentCount);
+        QueryWrapper<CollectionEntity> collectionEntityQueryWrapper = new QueryWrapper<>();
+        collectionEntityQueryWrapper.eq("video_id", videosEntity.getId());
+        Long collectionCount = collectionMapper.selectCount(collectionEntityQueryWrapper);
+        videosEntityVO.setCollectionCount(collectionCount);
+        QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
+        videosInfoEntityQueryWrapper.eq("video_id", videoId);
+        List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
+        String url="";
+        try {
+            url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+        if (videosInfoEntities.size() != 0) {
+            long userId = videosInfoEntities.get(0).getUserId();
+            UserEntity user = userEntityMapper.selectById(userId);
+            videosEntityVO.setAuthorAvatar(fileUploadService.getImageUrl(user.getUserAvatar()));
+            videosEntityVO.setAuthorName(user.getUsername());
+            List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
+            List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
+            videosEntityVO.setTagNameList(tagNameList);
+            videosEntityVO.setVideosAddress(url+videosEntity.getVideosAddress());
+            videosEntityVO.setVideosCover(url+videosEntity.getVideosCover());
+        }
+
+        return processData(() -> videosEntityVO, this::processException);
     }
 }
