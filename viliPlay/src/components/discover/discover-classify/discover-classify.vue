@@ -2,13 +2,26 @@
 import {} from 'vue'
 import DiscoverItem from '../discover-item/discover-item.vue'
 import DiscoverBottom from '../discover-bottom/discover-bottom.vue'
+import { discoverStore } from '@/stores/discover'
+
+const store = discoverStore()
+console.log(store.categoriesList)
 </script>
 <template>
   <div class="discover-classify">
     <div class="discover-content">
       <div class="discover-main">
-        <template v-for="item in 20">
-          <discover-item />
+        <template v-for="item in store.categoriesList as any">
+          <discover-item
+            :id="item.id"
+            :img="item.authorAvatar"
+            :videoTime="item.videosTime"
+            :like="item.likeCount"
+            :title="item.title"
+            :author="item.authorName"
+            :comment="item.commentCount"
+            :time="item.uploadTime"
+          />
         </template>
       </div>
       <discover-bottom>

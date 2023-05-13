@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getCategoriesList } from '@/service/discover/discover'
+import { discoverStore } from '@/stores/discover'
 import { ref, watchEffect } from 'vue'
 
 let tagList: any = ref('')
@@ -9,7 +10,18 @@ watchEffect(async () => {
   const data = await getCategoriesList()
   tagList.value = data.data
 })
-console.log(tagList.value)
+// console.log(tagList.value)
+const store = discoverStore()
+//点击切换分类
+const changeTag = (item: any) => {
+  console.log(item)
+  store.getCategoriesList(1, 10, item)
+}
+
+//获取全部分类视频
+const getAllCategoriesList = () => {
+  store.getCategoriesList(1, 10, '')
+}
 </script>
 <template>
   <div class="discover-header">
@@ -33,15 +45,17 @@ console.log(tagList.value)
                     d="M10.571 6.786a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM10.571 14.214a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM18 6.786a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0zM18 14.214a2.786 2.786 0 11-5.571 0 2.786 2.786 0 015.571 0z"
                     fill="#fff"
                   ></path></svg
-                ><span class="tag-title">全部</span>
+                ><span class="tag-title" @click="getAllCategoriesList"
+                  >全部</span
+                >
               </div>
             </div>
             <template v-for="item in tagList">
               <div class="discover-list">
-                <img :src="item.img" class="discover-img" /><span
-                  class="tag-title"
-                  >{{ item.title }}</span
-                >
+                <img :src="item.img" class="discover-img" />
+                <span class="tag-title" @click="changeTag(item.title)">
+                  {{ item.title }}
+                </span>
               </div>
             </template>
           </ul>

@@ -2,13 +2,33 @@
 import {} from 'vue'
 import TitleBox from './title-box.vue'
 import DiscoverVideo from './discover-video.vue'
+
+const props = defineProps({
+  img: String,
+  videoTime: String,
+  like: Number,
+  title: String,
+  author: String,
+  fellow: Boolean,
+  comment: Number,
+  collect: Number,
+  time: String
+})
 </script>
 <template>
   <div class="discover-item">
     <a href="#" class="item-link">
       <div class="item-content">
-        <discover-video />
-        <title-box />
+        <discover-video
+          :img="props.img"
+          :videoTime="props.videoTime"
+          :like="props.like"
+        />
+        <title-box
+          :author="props.author"
+          :title="props.title"
+          :time="props.time"
+        />
       </div>
     </a>
   </div>

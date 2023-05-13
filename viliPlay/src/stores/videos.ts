@@ -1,16 +1,18 @@
 import type { IVideoListResult } from './../service/videos/videosType'
-import { getVideoList } from '@/service/videos/videos'
+import { getVideoScrollList } from '@/service/videos/videos'
 import { defineStore } from 'pinia'
 
 export const videoStore = defineStore('videos', {
   //获取视频列表
   state: () => ({
-    videos: [] as IVideoListResult[]
+    videos: [],
+    translateY: 0
   }),
   actions: {
-    async getVideos(video: any) {
-      const data = await getVideoList(video)
+    async getVideos(cursor: number, size: number) {
+      const data = await getVideoScrollList(cursor, size)
       // 返回状态码和消息
+      this.videos = data.data
       return {
         code: Number(data.code),
         msg: data.msg,

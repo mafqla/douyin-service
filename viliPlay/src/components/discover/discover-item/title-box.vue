@@ -1,16 +1,26 @@
 <script setup lang="ts">
 import {} from 'vue'
+import formatTime from '@/utils/date-format'
+
+const props = defineProps({
+  title: String,
+  author: String,
+  fellow: Boolean,
+  comment: Number,
+  collect: Number,
+  time: String
+})
 </script>
 <template>
   <div class="item-title-box">
     <div class="item-title-content">
-      <div class="item-title-content-title">test</div>
+      <div class="item-title-content-title">{{ props.title }}</div>
       <div class="item-title-author">
         <span class="item-title-bottom"
           ><span class="item-title-author-f">@</span
-          ><span class="item-title-author-name">小Lin说</span></span
+          ><span class="item-title-author-name">{{ props.title }}</span></span
         >
-        <span class="item-title-tag fellow">
+        <!-- <span class="item-title-tag fellow">
           <span class="item-title-tag-name">已关注</span>
         </span>
         <span class="item-title-tag comment">
@@ -18,9 +28,9 @@ import {} from 'vue'
         </span>
         <span class="item-title-tag collect">
           <span class="item-title-tag-name">收藏</span>
-        </span>
+        </span> -->
 
-        <span class="item-title-time"> · 23小时前</span>
+        <span class="item-title-time"> · {{ formatTime(props.time) }}</span>
       </div>
     </div>
   </div>
