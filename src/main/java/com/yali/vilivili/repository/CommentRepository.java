@@ -13,7 +13,7 @@ import java.util.Optional;
  * @author fuqianlin
  * @date 2023-04-17 2:27
  **/
-public interface CommentRepository extends JpaRepository<CommentEntity, String> {
+public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 
     List<CommentEntity> findAllByVideoId(long videoId);
 

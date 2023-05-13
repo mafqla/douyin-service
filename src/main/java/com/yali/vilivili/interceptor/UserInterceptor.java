@@ -47,8 +47,11 @@ public class UserInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception {
         if (handler instanceof HandlerMethod method) {
             RequireLogin requireLogin = method.getMethodAnnotation(RequireLogin.class);
-            if (Objects.isNull(requireLogin)) {
-                String token = request.getHeader(jwtHeader);
+            if(request.getRequestURI().contains("swagger-resources")){
+                return true;
+            }
+            String token = request.getHeader(jwtHeader);
+            if (Objects.nonNull(requireLogin)) {
                 if (StringUtils.isBlank(token)) {
                     toolService.failedResponse(response, "401", "未登录，请登录！");
                     return false;
@@ -58,6 +61,13 @@ public class UserInterceptor implements HandlerInterceptor {
                     toolService.failedResponse(response, "601", "token中用户id为空，请登录！");
                     return false;
                 }else{
+                    UserEntity user = userRepository.findById(tokenInfoVO.getUserId());
+                    hostHolder.setUser(user);
+                    return true;
+                }
+            }else{
+                if(StringUtils.isNotEmpty(token)){
+                    TokenInfoVO tokenInfoVO = JwtUtils.decodeJwt(token);
                     UserEntity user = userRepository.findById(tokenInfoVO.getUserId());
                     hostHolder.setUser(user);
                     return true;
