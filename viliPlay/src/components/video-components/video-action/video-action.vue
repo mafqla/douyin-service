@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { ref } from 'vue'
 import { ElAvatar } from 'element-plus'
 
 const props = defineProps({
@@ -8,6 +8,22 @@ const props = defineProps({
   comment: Number,
   shoucang: Number
 })
+
+const dianzan = ref(props.dianzan) as any
+const liked = ref(false)
+const addDianzan = () => {
+  if (liked.value) {
+    dianzan.value--
+    liked.value = false
+  } else {
+    dianzan.value++
+    liked.value = true
+  }
+}
+const shoucang = ref(props.shoucang) as any
+const addShoucang = () => {
+  shoucang.value++
+}
 </script>
 
 <template>
@@ -21,18 +37,18 @@ const props = defineProps({
         <svg-icon class="icon" icon="avfollow" />
       </div>
     </div>
-    <div class="video-action-item">
+    <div class="video-action-item" @click="addDianzan">
       <svg-icon class="icon" icon="dianzan" />
-      <span>{{ props.dianzan }}</span>
+      <span>{{ dianzan }}</span>
     </div>
     <div class="video-action-item" @click="$emit('toggleComments')">
-      <svg-icon class="icon" icon="comment" />
+      <svg-icon class="icon" icon="comment" :class="{ liked: liked }" />
       <span>{{ props.comment }}</span>
     </div>
-    <div class="video-action-item">
+    <div class="video-action-item" @click="addShoucang">
       <span class="iconfont icon-shoucang"></span>
       <svg-icon class="icon" icon="shoucang" />
-      <span>{{ props.shoucang }}</span>
+      <span>{{ shoucang }}</span>
     </div>
     <div class="video-action-item">
       <svg-icon class="icon" icon="fenxiang" />
@@ -99,6 +115,9 @@ const props = defineProps({
         height: 20px;
         width: 20px;
         opacity: 1;
+      }
+      .icon.liked {
+        fill: red;
       }
     }
   }

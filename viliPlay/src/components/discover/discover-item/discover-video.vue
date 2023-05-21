@@ -60,6 +60,8 @@ const props = defineProps({
     top: 0px;
     overflow: hidden;
     border-radius: 6px;
+    max-height: 100%;
+    max-width: 100%;
     .item-video-content-img {
       align-items: center;
       display: flex;
@@ -90,6 +92,8 @@ const props = defineProps({
         transition: all 0.3s linear 0s;
         object-fit: contain;
         border-radius: 6px 6px 0px 0px;
+        width: 238px;
+        height: 180px;
       }
     }
     .item-video-content-img-hover {

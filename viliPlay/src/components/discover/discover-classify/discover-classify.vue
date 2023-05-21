@@ -14,7 +14,7 @@ console.log(store.categoriesList)
         <template v-for="item in store.categoriesList as any">
           <discover-item
             :id="item.id"
-            :img="item.authorAvatar"
+            :img="item.videosCover"
             :videoTime="item.videosTime"
             :like="item.likeCount"
             :title="item.title"

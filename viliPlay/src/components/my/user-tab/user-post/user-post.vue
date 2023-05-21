@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElEmpty } from 'element-plus'
+import { videoStore } from '@/stores/videos'
 // 数据为空时的展示
-const isEmpty = ref(true)
+const isEmpty = ref(false)
+const store = videoStore()
+
+const videoListData = ref(store.getMyVideoList())
+console.log(videoListData.value)
 </script>
 <template>
   <div class="user-work">
@@ -11,6 +16,12 @@ const isEmpty = ref(true)
         image="https://lf1-cdn-tos.bytegoofy.com/goofy/ies/douyin_web/image/EmptySearch.19da93c9.png"
         description="暂无内容"
       />
+    </template>
+
+    <template v-else>
+      <div class="user-like-list">
+        <video-list />
+      </div>
     </template>
   </div>
 </template>

@@ -39,14 +39,14 @@ const handleNext = async () => {
     page.value++
 
     if (!next.value) {
-      const videoData = await videoStore().getVideos(page.value, pageSize.value)
-      console.log(videoData)
+      // const videoData = await videoStore().getVideos(page.value, pageSize.value)
+      // console.log(videoData)
 
-      // 如果不是true，则将data.list的值赋值给videosList.value
-      if (videoData.code === 200) {
-        //@ts-ignore
-        videosList.value.push(...videoData.list)
-      }
+      // // 如果不是true，则将data.list的值赋值给videosList.value
+      // if (videoData.code === 200) {
+      //   //@ts-ignore
+      //   videosList.value.push(...videoData.list)
+      // }
       //检查data的值是否为null，如果是，则调用ElMessage()函数，以弹出提示信息。
       if (videoData.code === 204) {
         ElMessage({
@@ -94,19 +94,19 @@ const handleNext = async () => {
 
 <style lang="scss" scoped>
 .carousel-controls {
-  // position: absolute;
-  // right: 13px;
-  // top: 5%;
-  // transform: translateY(-50%);
-  // //垂直居中
-  // display: flex;
-  // justify-content: center;
-
   position: absolute;
   right: 13px;
-  top: calc(50% + 60px);
-  transform: translateY(calc(-50% - 30px));
-  z-index: 20;
+  top: 5%;
+  transform: translateY(-50%);
+  //垂直居中
+  display: flex;
+  justify-content: center;
+
+  // position: absolute;
+  // right: 13px;
+  // top: calc(50% + 60px);
+  // transform: translateY(calc(-50% - 30px));
+  // z-index: 20;
 
   .carousel-controls-switch {
     background-color: rgb(50, 52, 66);

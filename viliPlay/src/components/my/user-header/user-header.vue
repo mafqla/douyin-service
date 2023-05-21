@@ -51,8 +51,8 @@ watchEffect(() => {
           />
           <span>{{ store.userInfo.gender }}</span>
         </span>
-                <span class="user-account-info">天津·南开</span>
-                <span class="user-account-info">南开大学</span>
+                <span class="user-account-info">未知</span>
+                <span class="user-account-info">未知</span>
             </p>
             <p v-if="isLogin" class="user-signature">
                 <span> 这个人很懒，什么都没有留下</span>

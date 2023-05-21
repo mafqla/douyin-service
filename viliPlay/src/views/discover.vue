@@ -14,7 +14,7 @@ import {
         <discover-header />
         <discover-classify />
         <discover-new />
-        <discover-recommend />
+        <!-- <discover-recommend /> -->
       </el-scrollbar>
     </div>
   </div>

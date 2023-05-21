@@ -54,6 +54,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     Entertainment: typeof import('./src/components/my/user-tab/entertainment/entertainment.vue')['default']
     EntertainmentItem: typeof import('./src/components/my/user-tab/entertainment/entertainment-item.vue')['default']
     EntertainmentList: typeof import('./src/components/my/user-tab/entertainment/entertainment-list.vue')['default']

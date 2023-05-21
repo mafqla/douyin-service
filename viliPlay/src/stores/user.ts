@@ -1,4 +1,4 @@
-import { AuthLogin } from '@/service/auth/auth'
+import { AuthLogin, PostAuthLogin, PostAuthSendCode } from '@/service/auth/auth'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 
@@ -78,6 +78,15 @@ export const userStore = defineStore('user', {
       localStorage.clear()
       //重新加载页面
       window.location.reload()
+    },
+
+    async postCode(email: string) {
+      const data = await PostAuthSendCode(email)
+      console.log(data)
+    },
+    async codeLogin(email: string, code: string) {
+      const data = await PostAuthLogin(email, code)
+      console.log(data)
     }
   },
   persist: {

@@ -4,7 +4,7 @@ import {} from 'vue'
 const props = defineProps<{
   title: string
   describe: string
-  playNumber: string
+  playNumber: number
   author: string
   rank: number
 }>()

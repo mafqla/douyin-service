@@ -26,13 +26,39 @@ export function AuthLogin(login: ILogin) {
     data: login
   })
 }
+/**
+ * 发送验证码
+ *
+ */
+
+export const PostAuthSendCode = (email: string) => {
+  return apiRequest.post<IDataType>({
+    url: AuthApi.AuthSendCode,
+    data: {
+      email
+    }
+  })
+}
+
+/**
+ * 邮箱验证码登录
+ */
+export const PostAuthLogin = (email: string, code: string) => { 
+  return apiRequest.post<IDataType>({
+    url: AuthApi.AuthLogin,
+    data: {
+      email,
+      code
+    }
+  })
+}
 
 export function AuthLogut() {}
 
 export function AuthRegister() {}
 
-export function AuthSendCode() { }
+export function AuthSendCode() {}
 
-export function AuthResetPassword() { }
+export function AuthResetPassword() {}
 
 export function AuthUpdateAvatar() {}

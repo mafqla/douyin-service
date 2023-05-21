@@ -24,6 +24,11 @@ watchEffect(() => {
     dialogTableVisible.value = false
   }
 })
+
+const handlePost = () => {
+  //跳转到发布页面
+  window.location.href = '/post'
+}
 </script>
 
 <template>
@@ -82,7 +87,7 @@ watchEffect(() => {
             </div>
             <p>私信</p>
           </div>
-          <div class="header-right-item">
+          <div class="header-right-item" @click="handlePost">
             <div class="header-right-item-overplay">
               <svg-icon class="icon" icon="post" />
             </div>

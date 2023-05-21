@@ -36,6 +36,11 @@ const routes: RouteRecordRaw[] = [
         ]
       }
     ]
+  },
+  {
+    path: '/post',
+    name: 'post',
+    component: () => import('@/views/post.vue')
   }
 
   // {

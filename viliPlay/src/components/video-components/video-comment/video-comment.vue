@@ -2,34 +2,58 @@
 import { ref, watchEffect } from 'vue'
 import CommentItem from './comment-item.vue'
 import { commentStore } from '@/stores/comment'
+import { addVideoComment } from '@/service/videos/videos'
 
 const commentCount = ref(0)
 const textarea = ref('')
+const loading = ref(false)
 const props = defineProps({
   id: Number
 })
 const store = commentStore()
 
-watchEffect(() => {
-  const list = store.getVideoCommentList(props.id as any)
-  console.log(list)
+const list = ref([]) as any
+watchEffect(async () => {
+  list.value = await store.getVideoCommentList(props.id as any)
+  commentCount.value = list.value.length
 })
+
+async function submitComment() {
+  //清空输入框
+  textarea.value = ''
+  if (!textarea.value) return
+
+  loading.value = true
+  await addVideoComment(props.id as any, textarea.value)
+  textarea.value = ''
+  list.value = await store.getVideoCommentList(props.id as any)
+  commentCount.value = list.value.length
+  console.log(list.value)
+}
 </script>
 <template>
   <div class="video-comment">
     <div class="video-comment-header">
       <div class="video-comment-header-title">
-        <span>全部评论({{ commentCount }})</span>
+        <span>全部评论({{ 2 }})</span>
       </div>
     </div>
 
     <div class="video-comment-list">
       <el-scrollbar height="712px">
-        <comment-item v-for="it in 30" />
+        <template v-for="it in store.comments as any" :key="it.id">
+          <comment-item
+            :srcd="it.user.userAvatar"
+            :username="it.user.username"
+            :likenum="it.commentLike"
+            :time="it.commentTime"
+            :comment="it.commentInfo"
+          />
+        </template>
+
         <list-footer />
       </el-scrollbar>
     </div>
-
     <div class="video-comment-footer">
       <div class="comment-input-linear-bg"></div>
       <div class="video-comment-footer-input">
@@ -38,6 +62,7 @@ watchEffect(() => {
             type="text"
             v-model="textarea"
             placeholder="留下你的精彩评论吧"
+            @keyup.enter="submitComment"
           />
         </div>
         <div class="commentInput-right-ct">
@@ -48,8 +73,14 @@ watchEffect(() => {
             <span class="">
               <svg-icon icon="emoji" class="icon" />
             </span>
-            <span class="submit">
+            <span
+              class="submit"
+              :class="{ 'is-loading': loading }"
+              @click="submitComment"
+            >
               <svg-icon icon="submit" class="submit-icon" />
+              <span v-if="!loading">发送</span>
+              <span v-else>发送中...</span>
             </span>
           </div>
         </div>

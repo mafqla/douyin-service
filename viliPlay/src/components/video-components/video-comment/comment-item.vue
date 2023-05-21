@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import {} from 'vue'
+
+const props = defineProps({
+  srcd: String,
+  username: String,
+  time: String,
+  comment: String,
+  likenum: Number
+})
 </script>
 <template>
   <div class="comment-item">
     <div class="comment-item-avatar">
       <a href="#" class="comment-item-avatar-link">
         <div class="avatar-container">
-          <img
-            src="//p3-pc.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_575b8eea9253436c96873397dd60266c.jpeg?from=2956013662"
-            alt="笙歌落头像"
-            class="img"
-          />
+          <img :src="props.srcd" alt="笙歌落头像" class="img" />
         </div>
       </a>
     </div>
@@ -19,7 +23,7 @@ import {} from 'vue'
         <div class="comment-item-info-wrap">
           <div class="comment-item-content-header-name">
             <a href="#" class="header-name-link">
-              <span class="header-name-text">test</span>
+              <span class="header-name-text">{{ props.username }}</span>
             </a>
             <div
               class="comment-item-reply-line"
@@ -37,11 +41,11 @@ import {} from 'vue'
         </div>
         <p class="comment-item-content-text">
           <span class="comment-item-content-text-text">
-            testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+            {{ props.comment }}
           </span>
         </p>
         <div class="comment-item-content-time">
-          <span class="comment-item-content-time-text">3天前</span>
+          <span class="comment-item-content-time-text">{{ props.time }}</span>
           <span class="comment-item-content-address-text">江苏</span>
         </div>
         <div class="comment-item-content-footer">
@@ -49,7 +53,7 @@ import {} from 'vue'
             <div class="comment-item-content-footer-like">
               <p class="like">
                 <svg-icon icon="small-like" class="icon" />
-                <span>288</span>
+                <span>{{ props.likenum }}</span>
               </p>
               <p class="dislike">
                 <svg-icon icon="small-dislike" class="icon" />
@@ -71,7 +75,7 @@ import {} from 'vue'
           </div>
         </div>
 
-        <comment-expand />
+        <!-- <comment-expand /> -->
       </div>
     </div>
   </div>

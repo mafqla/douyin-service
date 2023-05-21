@@ -106,6 +106,8 @@ const toggleComments = (id: any) => {
     //否则执行关闭评论操作
     closeComments()
   }
+  const store = commentStore()
+  store.getVideoCommentList(id) as any
 }
 </script>
 
