@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Type Checking */
-    "strict": false
+    "strict": false,
+    "ignoreDeprecations": "5.0"
   }
 }

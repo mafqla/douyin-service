@@ -10,11 +10,11 @@ import {
 <template>
   <div class="discover">
     <div class="discover-container-in">
-      <el-scrollbar height="886px">
+      <el-scrollbar height="600px">
         <discover-header />
         <discover-classify />
         <discover-new />
-        <!-- <discover-recommend /> -->
+        <discover-recommend />
       </el-scrollbar>
     </div>
   </div>

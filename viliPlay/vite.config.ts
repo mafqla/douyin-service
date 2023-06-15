@@ -30,7 +30,7 @@ export default defineConfig(({ command, mode }) => {
       ElementPlus(),
       AutoImport({
         // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-        imports: ['vue', 'vue-router', 'vuex'],
+        imports: ['vue', 'vue-router', 'pinia'],
         resolvers: [ElementPlusResolver()]
       }),
       Components({
