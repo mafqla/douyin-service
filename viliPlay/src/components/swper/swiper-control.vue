@@ -13,8 +13,8 @@ const pageSize = ref(5)
 
 console.log(currentIndex.value)
 
-const videoData = await videoStore().getVideos(page.value, pageSize.value)
-console.log(videoData)
+// const videoData = await videoStore().getVideos(page.value, pageSize.value)
+// console.log(videoData)
 
 //点击上一张 ，当前索引为0时，不能再点击
 const handlePrev = () => {
@@ -48,15 +48,15 @@ const handleNext = async () => {
       //   videosList.value.push(...videoData.list)
       // }
       //检查data的值是否为null，如果是，则调用ElMessage()函数，以弹出提示信息。
-      if (videoData.code === 204) {
-        ElMessage({
-          message: `${videoData.msg}🤣🤣🤣，没有更多视频了！`,
-          type: 'warning'
-        })
-        next.value = true
-        //停止执行
-        return
-      }
+      // if (videoData.code === 204) {
+      //   ElMessage({
+      //     message: `${videoData.msg}🤣🤣🤣，没有更多视频了！`,
+      //     type: 'warning'
+      //   })
+      //   next.value = true
+      //   //停止执行
+      //   return
+      // }
     }
   }
 
@@ -94,19 +94,19 @@ const handleNext = async () => {
 
 <style lang="scss" scoped>
 .carousel-controls {
-  position: absolute;
-  right: 13px;
-  top: 5%;
-  transform: translateY(-50%);
-  //垂直居中
-  display: flex;
-  justify-content: center;
-
   // position: absolute;
   // right: 13px;
-  // top: calc(50% + 60px);
-  // transform: translateY(calc(-50% - 30px));
-  // z-index: 20;
+  // top: 5%;
+  // transform: translateY(-50%);
+  // //垂直居中
+  // display: flex;
+  // justify-content: center;
+
+  position: absolute;
+  right: 13px;
+  top: calc(50% + 60px);
+  transform: translateY(calc(-50% - 30px));
+  z-index: 20;
 
   .carousel-controls-switch {
     background-color: rgb(50, 52, 66);

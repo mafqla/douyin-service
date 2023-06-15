@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { } from 'vue'
-import CarouselControls from '@/components/swper/carousel-controls.vue'
+import CarouselControls from '@/components/swper/swiper-control.vue'
 </script>
 <style lang="scss" scoped>
 .follow {

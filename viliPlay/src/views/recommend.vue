@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { } from 'vue'
-import CarouselControls from '@/components/swper/carousel-controls.vue'
+import SwiperControl from '@/components/swper/swiper-control.vue'
 </script>
 <template>
   <div class="recommend">
     <swiper-video />
-    <carousel-controls />
+    <swiper-control />
   </div>
 </template>
 
@@ -14,6 +14,5 @@ import CarouselControls from '@/components/swper/carousel-controls.vue'
   width: 100%;
   height: 100%;
   position: relative;
-
 }
 </style>

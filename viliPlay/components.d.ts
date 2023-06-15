@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    CarouselControls: typeof import('./src/components/swper/carousel-controls.vue')['default']
     CodeLogin: typeof import('./src/components/auth/login/code-login.vue')['default']
     CollectionsItem: typeof import('./src/components/my/user-tab/collections-list/collections-item.vue')['default']
     CollectionsList: typeof import('./src/components/my/user-tab/collections-list/collections-list.vue')['default']
@@ -59,6 +58,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SideItem: typeof import('./src/components/video-components/video-side-list/side-item.vue')['default']
     SvgIcon: typeof import('./src/components/svg-icon.vue')['default']
+    SwiperControl: typeof import('./src/components/swper/swiper-control.vue')['default']
     SwiperVideo: typeof import('./src/components/swper/swiper-video.vue')['default']
     SwitchButton: typeof import('./src/components/my/user-header/switch-button.vue')['default']
     TitleBox: typeof import('./src/components/discover/discover-item/title-box.vue')['default']
