@@ -19,9 +19,8 @@ watchEffect(() => {
 <template>
     <div class="user-detail-header">
         <div class="user-avatar">
-            <el-avatar v-if="isLogin" :size="112" :src="avatar">
-                <svg-icon class="icon" icon="user-avatar" />
-            </el-avatar>
+            <el-avatar v-if="isLogin" :size="112" :src="avatar" />
+            <svg-icon v-if="!isLogin" class="icon" icon="user-avatar" />
         </div>
         <div class="user-info">
             <div class="user-name">
