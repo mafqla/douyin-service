@@ -1,42 +1,42 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { UserHeader, LoginCode, UserTab, UserFooter } from '@/components/my'
-import { useElScrollbarScroll } from '@/hooks'
+import { useElScrollbarScroll, useScroll } from '@/hooks'
 import type { ElScrollbar } from 'element-plus'
 
 const backgroundurlLightURL = '../assets/user-background-light.png'
 const backgroundurlDarkURL = '../assets/user-background-dark.png'
 const background = ref(backgroundurlLightURL)
 const isLogin = ref(false)
-const scrollbarRef = ref<InstanceType<typeof ElScrollbar> | null>(null)
+const scrollbarRef = ref(null)
 const isDisplay = ref(false)
 const tabDisplay = ref(false)
 
-useElScrollbarScroll(
-  scrollbarRef,
-  (scrollTop) => {
-    if (scrollTop > 20) {
-      isDisplay.value = true
-    } else {
-      isDisplay.value = false
-    }
+// useElScrollbarScroll(
+//   scrollbarRef,
+//   (scrollTop) => {
+//     console.log(scrollTop)
+//     if (scrollTop > 20) {
+//       isDisplay.value = true
+//     } else {
+//       isDisplay.value = false
+//     }
 
-    if (scrollTop > 200) {
-      tabDisplay.value = true
-    } else {
-      tabDisplay.value = false
-    }
-  },
-  10
-)
+//     if (scrollTop > 200) {
+//       tabDisplay.value = true
+//     } else {
+//       tabDisplay.value = false
+//     }
+//   },
+//   10
+// )
+// useScroll(scrollbarRef, (scrollTop) => {
+//   console.log('scrollTop', scrollTop)
+// })
 </script>
 <template>
-  <div class="user-detail">
-    <el-scrollbar
-      height="904px"
-      ref="scrollbarRef"
-      :class="{ scrolled: isDisplay }"
-    >
+  <div class="user-detail" ref="scrollbarRef">
+    <el-scrollbar ref="scrollbarRef" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content">
         <user-header />
         <user-tab :isDisplay="tabDisplay" />

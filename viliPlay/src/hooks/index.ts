@@ -1,3 +1,3 @@
-import useElScrollbarScroll from './useScroll'
+import {useElScrollbarScroll , useElScroll, useScroll} from './useScroll'
 
-export { useElScrollbarScroll }
+export { useElScrollbarScroll, useElScroll, useScroll }

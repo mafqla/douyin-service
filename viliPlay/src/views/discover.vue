@@ -10,7 +10,7 @@ import {
 <template>
   <div class="discover">
     <div class="discover-container-in">
-      <el-scrollbar height="600px">
+      <el-scrollbar>
         <discover-header />
         <discover-classify />
         <discover-new />

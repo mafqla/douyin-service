@@ -32,175 +32,187 @@ const activeMenu = computed(() => {
 console.log(activeMenu.value)
 </script>
 <template>
-  <div class="aside-bar">
-    <div class="aside-top">
-      <div class="aside-logo"></div>
-    </div>
+  <div class="aside">
+    <div class="aside-bar">
+      <div class="aside-top">
+        <div class="aside-logo"></div>
+      </div>
 
-    <div class="aside-container">
-      <el-scrollbar>
-        <el-menu class="el-menu-container" :default-active="activeMenu">
-          <el-menu-item index="1" @click="handleSelect">
-            <template #title>
-              <svg-icon class="icon" icon="discover" />
-              <span class="title">首页</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="2" @click="handleSelect">
-            <template #title>
-              <svg-icon class="icon" icon="recommend" />
-              <span class="title">推荐</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="3" @click="handleSelect">
-            <template #title>
-              <svg-icon class="icon" icon="follow" />
-              <span class="title">关注</span>
-            </template>
-          </el-menu-item>
-          <el-menu-item index="4" @click="handleSelect">
-            <template #title>
-              <svg-icon class="icon" icon="my" />
-              <span class="title">我的</span>
-            </template>
-          </el-menu-item>
-        </el-menu>
-      </el-scrollbar>
+      <div class="aside-container">
+        <el-scrollbar>
+          <el-menu class="el-menu-container" :default-active="activeMenu">
+            <el-menu-item index="1" @click="handleSelect">
+              <template #title>
+                <svg-icon class="icon" icon="discover" />
+                <span class="title">首页</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="2" @click="handleSelect">
+              <template #title>
+                <svg-icon class="icon" icon="recommend" />
+                <span class="title">推荐</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="3" @click="handleSelect">
+              <template #title>
+                <svg-icon class="icon" icon="follow" />
+                <span class="title">关注</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="4" @click="handleSelect">
+              <template #title>
+                <svg-icon class="icon" icon="my" />
+                <span class="title">我的</span>
+              </template>
+            </el-menu-item>
+          </el-menu>
+        </el-scrollbar>
 
-      <div class="aside-bottom"></div>
+        <div class="aside-bottom"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.aside-bar {
-  width: 100%;
-  height: 100vh;
-  background: $color-navigation-bg;
-  position: relative;
-
-  .aside-top {
-    height: 60px;
-    width: 100%;
-    position: relative;
-    .aside-logo {
-      align-items: center;
-      background: linear-gradient(180deg, #eff0f3 80%, rgba(241, 242, 245, 0));
-      background-image: url(@/assets/icons/douyin.svg);
-      background-repeat: no-repeat;
-      display: flex;
-      flex-basis: 72px;
-      justify-content: center;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-20%, -20%);
-      width: 100%;
-      height: 60px;
-      z-index: 2;
-
-      .icon {
-        height: 34px;
-        opacity: 1;
-        width: 91px;
-      }
-    }
-  }
-
-  .aside-container {
-    background-position: 0 100%;
-    background-size: cover;
-    bottom: 0;
-    height: calc(100vh - 60px);
-    outline: none;
-    position: fixed;
-    width: $sidebar-width;
-    z-index: 20;
-
-    .el-menu-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      user-select: none;
-      background: $color-navigation-bg;
-
-      .el-menu-item {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-        transition: all 0.3s;
-
-        .icon {
-          width: 36px;
-          height: 36px;
-          opacity: 0.5;
-        }
-        .title {
-          font-family: 'PingFang SC', DFPKingGothicGB-Medium, sans-serif;
-          font-size: 16px;
-          font-weight: 400;
-          max-width: 70px;
-          opacity: 0.6;
-          color: #2f3035;
-        }
-
-        &:hover {
-          background: transparent;
-        }
-      }
-
-      // 选中的样式
-      .el-menu-item.is-active {
-        color: #000;
-        .icon {
-          opacity: 1;
-        }
-        span {
-          opacity: 1;
-          color: #000;
-        }
-      }
-    }
-
-    .aside-bottom {
-      width: $sidebar-width;
-      height: 540px;
-      display: block;
-      position: absolute;
-      bottom: -400px;
-      z-index: 1;
-    }
-  }
-}
-
-@media screen and (max-width: 1240px) {
+.aside {
+  width: $sidebar-width;
+  position: fixed;
   .aside-bar {
+    width: 100%;
+    height: 100vh;
+    background: $color-navigation-bg;
+    position: relative;
+
     .aside-top {
+      height: 60px;
+      width: 100%;
+      position: relative;
       .aside-logo {
-        background-image: url(@/assets/icons/smalldouyin.svg);
+        align-items: center;
+        background: linear-gradient(
+          180deg,
+          #eff0f3 80%,
+          rgba(241, 242, 245, 0)
+        );
+        background-image: url(@/assets/icons/douyin.svg);
         background-repeat: no-repeat;
+        display: flex;
+        flex-basis: 72px;
+        justify-content: center;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-20%, -20%);
+        width: 100%;
+        height: 60px;
+        z-index: 2;
+
+        .icon {
+          height: 34px;
+          opacity: 1;
+          width: 91px;
+        }
       }
     }
+
     .aside-container {
-      width: $sidebar-width-min;
+      background-position: 0 100%;
+      background-size: cover;
+      bottom: 0;
+      height: calc(100vh - 60px);
+      outline: none;
+      width: $sidebar-width;
+      z-index: 20;
 
       .el-menu-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        user-select: none;
+        background: $color-navigation-bg;
+
         .el-menu-item {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 100%;
+          height: 100%;
+          transition: all 0.3s;
+
+          .icon {
+            width: 36px;
+            height: 36px;
+            opacity: 0.5;
+          }
           .title {
-            font-size: 12px;
+            font-family: 'PingFang SC', DFPKingGothicGB-Medium, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            max-width: 70px;
+            opacity: 0.6;
+            color: #2f3035;
+          }
+
+          &:hover {
+            background: transparent;
+          }
+        }
+
+        // 选中的样式
+        .el-menu-item.is-active {
+          color: #000;
+          .icon {
+            opacity: 1;
+          }
+          span {
+            opacity: 1;
+            color: #000;
           }
         }
       }
 
       .aside-bottom {
-        display: none;
+        width: $sidebar-width;
+        height: 540px;
+        display: block;
+        position: absolute;
+        bottom: -400px;
+        z-index: 1;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1240px) {
+  .aside {
+    width: $sidebar-width-min;
+
+    .aside-bar {
+      .aside-top {
+        .aside-logo {
+          background-image: url(@/assets/icons/smalldouyin.svg);
+          background-repeat: no-repeat;
+        }
+      }
+      .aside-container {
+        width: $sidebar-width-min;
+
+        .el-menu-container {
+          .el-menu-item {
+            display: flex;
+            flex-direction: column;
+            .title {
+              font-size: 12px;
+            }
+          }
+        }
+
+        .aside-bottom {
+          display: none;
+        }
       }
     }
   }
