@@ -33,9 +33,26 @@ const tabDisplay = ref(false)
 // useScroll(scrollbarRef, (scrollTop) => {
 //   console.log('scrollTop', scrollTop)
 // })
+
+// 滚动监听
+window.addEventListener("scroll", function () {
+  // console.log('window.scrollY', window.scrollY)
+  if (window.scrollY > 60) {
+    isDisplay.value = true
+  } else {
+    isDisplay.value = false
+  }
+
+  if (window.scrollY > 200) {
+    tabDisplay.value = true
+  } else {
+    tabDisplay.value = false
+  }
+})
+
 </script>
 <template>
-  <div class="user-detail" ref="scrollbarRef">
+  <div class="user-detail" :class="{ scrolled: isDisplay }">
     <el-scrollbar ref="scrollbarRef" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content">
         <user-header />
@@ -75,6 +92,20 @@ const tabDisplay = ref(false)
   flex-direction: column;
   user-select: none;
 
+  &::before {
+    background-image: url(../assets/user-background-light.png);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 1920px 172px;
+    content: '';
+    height: 172px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease-in-out;
+  }
   .user-detail-content {
     margin: 0 auto;
     max-width: 1208px;
