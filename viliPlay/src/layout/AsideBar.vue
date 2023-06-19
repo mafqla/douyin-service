@@ -26,10 +26,12 @@ const handleSelect = (index: string) => {
 const route = useRoute()
 const activeMenu = computed(() => {
   const { path } = route
-  const index = Object.values(routerIndex).findIndex((item) => item === path)
+  // console.log(path.split('/')[1])
+  const index = Object.values(routerIndex).findIndex((item) => item === `/${path.split('/')[1]}`)
+  // console.log(index)
   return index + 1 + ''
 })
-console.log(activeMenu.value)
+// console.log(activeMenu.value)
 </script>
 <template>
   <div class="aside">
@@ -103,7 +105,7 @@ console.log(activeMenu.value)
         left: 50%;
         position: absolute;
         top: 50%;
-        transform: translate(-20%, -20%);
+        transform: translate(-24%, -28%);
         width: 100%;
         height: 60px;
         z-index: 2;

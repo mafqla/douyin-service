@@ -1,7 +1,19 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { ref } from 'vue'
 import AsideBar from '@/layout/AsideBar.vue'
 import HeaderNav from '@/layout/HeaderNav.vue'
+
+// 设置背景颜色
+const backgroundColor = ref('none')
+
+// 滚动监听
+window.addEventListener("scroll", function () {
+  if (window.scrollY > 60) {
+    backgroundColor.value = '#fff'
+  } else {
+    backgroundColor.value = 'none'
+  }
+})
 </script>
 
 <template>
@@ -17,9 +29,9 @@ import HeaderNav from '@/layout/HeaderNav.vue'
         <el-main>
           <div class="page-info">
             <router-view v-slot="{ Component, route }">
-              <keep-alive>
+              <!-- <keep-alive> -->
                 <component :is="Component" :key="route.path" />
-              </keep-alive>
+              <!-- </keep-alive> -->
             </router-view>
           </div>
         </el-main>
@@ -44,8 +56,10 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 }
 .el-header {
   height: 60px;
+  position: sticky;
   z-index: 1;
   padding: 0;
+  background-color: v-bind(backgroundColor);
 }
 .el-main {
   padding: 0;

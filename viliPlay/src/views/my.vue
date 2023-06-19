@@ -12,27 +12,6 @@ const scrollbarRef = ref(null)
 const isDisplay = ref(false)
 const tabDisplay = ref(false)
 
-// useElScrollbarScroll(
-//   scrollbarRef,
-//   (scrollTop) => {
-//     console.log(scrollTop)
-//     if (scrollTop > 20) {
-//       isDisplay.value = true
-//     } else {
-//       isDisplay.value = false
-//     }
-
-//     if (scrollTop > 200) {
-//       tabDisplay.value = true
-//     } else {
-//       tabDisplay.value = false
-//     }
-//   },
-//   10
-// )
-// useScroll(scrollbarRef, (scrollTop) => {
-//   console.log('scrollTop', scrollTop)
-// })
 
 // 滚动监听
 window.addEventListener("scroll", function () {
@@ -42,48 +21,39 @@ window.addEventListener("scroll", function () {
   } else {
     isDisplay.value = false
   }
-
-  if (window.scrollY > 200) {
-    tabDisplay.value = true
-  } else {
-    tabDisplay.value = false
-  }
 })
 
 </script>
 <template>
   <div class="user-detail" :class="{ scrolled: isDisplay }">
-    <el-scrollbar ref="scrollbarRef" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content">
         <user-header />
-        <user-tab :isDisplay="tabDisplay" />
-
+        <user-tab />
         <login-code v-if="isLogin" />
       </div>
       <user-footer />
-    </el-scrollbar>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.el-scrollbar {
-  position: static;
-  &::before {
-    background-image: url(../assets/user-background-light.png);
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: 1920px 172px;
-    content: '';
-    height: 172px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: -1;
-    transition: opacity 0.3s ease-in-out;
-  }
-}
-.scrolled.el-scrollbar::before {
+// .el-scrollbar {
+//   position: static;
+//   &::before {
+//     background-image: url(../assets/user-background-light.png);
+//     background-position: 50%;
+//     background-repeat: no-repeat;
+//     background-size: 1920px 172px;
+//     content: '';
+//     height: 172px;
+//     left: 0;
+//     position: absolute;
+//     right: 0;
+//     top: 0;
+//     z-index: -1;
+//     transition: opacity 0.3s ease-in-out;
+//   }
+// }
+.scrolled::before {
   opacity: 0; // 滚动后使背景图片消失
 }
 .user-detail {
@@ -103,7 +73,7 @@ window.addEventListener("scroll", function () {
     position: absolute;
     right: 0;
     top: 0;
-    z-index: -1;
+    // z-index: -1;
     transition: opacity 0.3s ease-in-out;
   }
   .user-detail-content {

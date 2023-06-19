@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, watchEffect, type Ref, computed } from 'vue'
+import { ref, watchEffect, type Ref, computed, onMounted } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs, type TabsPaneContext } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 
-const props = defineProps<{ isDisplay: boolean }>()
 
 const route = useRoute()
 const router = useRouter()
@@ -25,12 +24,9 @@ const handleClick = (tab: TabsPaneContext) => {
   })
 }
 
-const isDisplay = computed(() => {
-  return props.isDisplay
-})
-watchEffect(() => {
-  // console.log('isDisplay', isDisplay.value)
-  if (isDisplay.value) {
+// 滚动监听
+window.addEventListener("scroll", function () {
+  if (window.scrollY > 160) {
     document.querySelector('.el-tabs__header')?.classList.add('header-scroll')
   } else {
     document
@@ -38,6 +34,7 @@ watchEffect(() => {
       ?.classList.remove('header-scroll')
   }
 })
+
 </script>
 
 <template>
