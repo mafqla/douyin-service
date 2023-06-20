@@ -12,7 +12,9 @@ import SwiperControl from '@/components/swper/swiper-control.vue'
 <style lang="scss" scoped>
 .recommend {
   width: 100%;
-  height: 100%;
+  height: 90vh;
   position: relative;
+
+
 }
 </style>

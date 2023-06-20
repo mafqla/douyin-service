@@ -39,24 +39,24 @@ const handleNext = async () => {
     page.value++
 
     if (!next.value) {
-      // const videoData = await videoStore().getVideos(page.value, pageSize.value)
-      // console.log(videoData)
+      const videoData = await videoStore().getVideos(page.value, pageSize.value)
+      console.log(videoData)
 
-      // // 如果不是true，则将data.list的值赋值给videosList.value
-      // if (videoData.code === 200) {
-      //   //@ts-ignore
-      //   videosList.value.push(...videoData.list)
-      // }
+      // 如果不是true，则将data.list的值赋值给videosList.value
+      if (videoData.code === 200) {
+        //@ts-ignore
+        videosList.value.push(...videoData.list)
+      }
       //检查data的值是否为null，如果是，则调用ElMessage()函数，以弹出提示信息。
-      // if (videoData.code === 204) {
-      //   ElMessage({
-      //     message: `${videoData.msg}🤣🤣🤣，没有更多视频了！`,
-      //     type: 'warning'
-      //   })
-      //   next.value = true
-      //   //停止执行
-      //   return
-      // }
+      if (videoData.code === 204) {
+        ElMessage({
+          message: `${videoData.msg}🤣🤣🤣，没有更多视频了！`,
+          type: 'warning'
+        })
+        next.value = true
+        //停止执行
+        return
+      }
     }
   }
 
@@ -104,7 +104,8 @@ const handleNext = async () => {
 
   position: absolute;
   right: 13px;
-  top: calc(50% + 60px);
+  // top: calc(50% + 60px);
+  top: 50%;
   transform: translateY(calc(-50% - 30px));
   z-index: 20;
 
