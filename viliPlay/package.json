@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "run-p type-check build-only",
+    "dev": "vite --mode dev",
+    "build:prod": "run-p type-check && vite build --mode prod  ",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
-    "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^9.13.0",
     "axios": "^1.2.2",
     "element-plus": "^2.2.28",
@@ -22,7 +22,7 @@
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
-    "xgplayer": "^2.32.2"
+    "xgplayer": "^2.32.3"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",

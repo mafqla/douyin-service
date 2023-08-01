@@ -5,7 +5,7 @@ import { VideoList } from '@/components/video-components'
 import UserFavorites from '../user-favorites/user-favorites.vue'
 import CollectList from '../collect-list/collect-list.vue'
 import CollectionsList from '../collections-list/collections-list.vue'
-
+import {videoStore} from '@/stores/videos'
 // 数据为空时的展示
 const isEmpty = ref(false)
 const activeName = ref('videos')
@@ -17,7 +17,7 @@ const handleClick = (tab: any) => {
 </script>
 <template>
   <div class="user-collect">
-    <template v-if="isEmpty">
+    <template v-if="videoStore().isEmpty.collect">
       <el-empty
         image="https://lf1-cdn-tos.bytegoofy.com/goofy/ies/douyin_web/image/EmptySearch.19da93c9.png"
         description="暂无内容"
@@ -33,7 +33,7 @@ const handleClick = (tab: any) => {
             </user-favorites>
           </el-tab-pane>
           <el-tab-pane label="视频" name="videos">
-            <video-list />
+            <video-list :videoList="videoStore().userCollectVideos"/>
           </el-tab-pane>
           <el-tab-pane label="合集" name="collections">
             <user-favorites>

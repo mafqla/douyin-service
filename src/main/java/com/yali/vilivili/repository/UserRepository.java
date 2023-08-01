@@ -14,6 +14,14 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<UserEntity, String> {
 
+    /**
+     * 根据用户id查询用户
+     *
+     * @param id 用户id
+     * @return UserEntity
+     */
+    UserEntity findUserById(Integer id);
+
     UserEntity findByEmail(String email);
 
     /**

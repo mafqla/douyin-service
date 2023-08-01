@@ -31,8 +31,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public VideosTagEntity addTag(String tagName) {
 
+        String tag = "#" + tagName;
         VideosTagEntity videosTagEntity = new VideosTagEntity();
-        videosTagEntity.setTagName(tagName);
+        videosTagEntity.setTagName(tag);
         videosTagEntity.setCreateTime(new Date());
         videosTagEntity.setUpdateTime(new Date());
         return tagRepository.save(videosTagEntity);

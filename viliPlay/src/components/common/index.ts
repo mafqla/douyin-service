@@ -1,3 +1,5 @@
-import ListFooter from './list-footer/list-footer.vue'
+import ListFooter from './list-footer.vue'
+import SvgIcon from './svg-icon.vue'
+import Loading from './loading.vue'
 
-export { ListFooter }
+export {ListFooter, SvgIcon, Loading}

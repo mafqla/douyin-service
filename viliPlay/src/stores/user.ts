@@ -1,13 +1,14 @@
+import router from '@/router'
 import { AuthLogin, PostAuthLogin, PostAuthSendCode } from '@/service/auth/auth'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 
 export const userStore = defineStore('user', {
   state: () => ({
+      token: localStorage.getItem('token') || '',
     userInfo: {
       userId: 0,
       username: '',
-      token: '',
       type: '',
       userAvatar: '',
       email: '',
@@ -16,67 +17,49 @@ export const userStore = defineStore('user', {
       ipLocation: '',
       gender: '',
       birthdate: '',
+        school: '',
+        location: '',
       signature: '',
       createTime: ''
-    },
-    message: ''
+    }
   }),
 
   actions: {
     // 设置用户信息, 调用登录接口
     async login(userInfo: any) {
-      const data = await AuthLogin(userInfo)
+        try {
+            const data = await AuthLogin(userInfo)
+            const {token, ...userData} = data.data
 
-      this.message = data.msg
+            // 存储到 state
+            this.userInfo = Object.assign(this.userInfo, userData)
 
-      ElMessage({
-        message: data.msg
-      })
-
-      const {
-        userId,
-        username,
-        token,
-        type,
-        userAvatar,
-        email,
-        phone,
-        userNum,
-        ipLocation,
-        gender,
-        birthdate,
-        signature,
-        createTime
-      } = data.data
-
-      // 存储到 state
-      this.userInfo = {
-        userId,
-        username,
-        token,
-        type,
-        userAvatar,
-        email,
-        phone,
-        userNum,
-        ipLocation,
-        gender,
-        birthdate,
-        signature,
-        createTime
+            // 存储到 localStorage
+            localStorage.setItem('token', token)
+            this.token = token
+            ElMessage({
+                message: data.msg,
+                type: 'success'
+            })
+            window.location.reload()
+        } catch (e: any) {
+            ElMessage({
+                message: e || '登录失败',
+                type: 'error'
+            })
       }
     },
 
     //判断是否登录
     isLogin() {
-      return this.userInfo.token !== ''
+        return this.token !== ''
     },
     logout() {
       // 清空用户信息为空对象
       this.userInfo = {} as any
+        this.token = ''
       // 清空本地存储
       localStorage.clear()
-      //重新加载页面
       window.location.reload()
     },
 
@@ -90,6 +73,13 @@ export const userStore = defineStore('user', {
     }
   },
   persist: {
-    enabled: true
+      enabled: true,
+      strategies: [
+          {
+              key: 'pinia-state',
+              paths: ['userInfo'],
+              storage: localStorage
+          }
+      ]
   }
 })

@@ -2,6 +2,7 @@ package com.yali.vilivili.service;
 
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.vo.VideosEntityVO;
+import com.yali.vilivili.model.vo.VideosParamsVO;
 
 import java.util.List;
 
@@ -33,4 +34,16 @@ public interface VideosService {
      */
     List<VideosEntityVO> getVideosListByCursor(Integer cursor, Integer size, Integer status);
 
+    String handleAddress(String address);
+
+    /**
+     * 根据参数获取视频列表
+     *
+     * @param showTab
+     * @param user_id
+     * @param page
+     * @param size
+     * @return
+     */
+    VideosParamsVO getVideosListByParam(String showTab, int user_id, Integer page, Integer size);
 }

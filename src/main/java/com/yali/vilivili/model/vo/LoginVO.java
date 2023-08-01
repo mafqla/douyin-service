@@ -77,6 +77,18 @@ public class LoginVO {
     private String signature;
 
     /**
+     * 用户学校
+     */
+    @ApiModelProperty(value = "school")
+    private String school;
+
+    /**
+     * 用户所在地
+     */
+    @ApiModelProperty(value = "location")
+    private String location;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty(value = "createtime")

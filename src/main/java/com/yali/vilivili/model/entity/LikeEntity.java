@@ -19,10 +19,10 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "like_")
+@Table(name = "applaud")
 @DynamicInsert
 @DynamicUpdate
-@TableName("like_")
+@TableName("applaud")
 public class LikeEntity implements Serializable {
 
     @Id
@@ -32,7 +32,7 @@ public class LikeEntity implements Serializable {
     private Integer id;
 
     @Column(name = "user_id")
-    private long userId;
+    private int userId;
 
     @Column(name = "video_id")
     private long videoId;

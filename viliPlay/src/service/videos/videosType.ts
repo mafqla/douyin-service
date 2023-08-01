@@ -1,15 +1,14 @@
-export interface IVideoList {
-  page: number
-  size: number
-  status?: number
-}
+// export interface IVideoList {
+//   page: number
+//   size: number
+//   status?: number
+// }
 
-export interface IVideoListResult {
+export interface IVideoList {
   id: number
   title: string
   videosCover: string
   description: string
-  username: string
   videosTime: string
   videosAddress: string
   uploadTime: string
@@ -18,4 +17,34 @@ export interface IVideoListResult {
   dislikeCount: 0
   commentCount: 0
   status: 0
+
+    isTop: boolean
+    isAttention: boolean
+    isLike: boolean
+    isDislike: boolean
+    isCollect: boolean
+    userName: string
+    userAvatar: string
+}
+
+export interface IVideoListResult {
+    videosList: IVideoList[]
+    publishCount: number
+    likeCount: number
+    collectCount: number
+}
+
+
+/**
+ * 跟据参数获取视频
+ * @param showTab
+ * @param page
+ * @param size
+ * @param userId
+ */
+export interface IVideoParams {
+    showTab: string
+    page: number
+    size: number
+    userId?: number
 }

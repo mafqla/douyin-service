@@ -2,16 +2,10 @@
 import { ref } from 'vue'
 import { ElEmpty } from 'element-plus'
 import { videoStore } from '@/stores/videos'
-// 数据为空时的展示
-const isEmpty = ref(false)
-const store = videoStore()
-
-const videoListData = ref(store.getMyVideoList())
-console.log(videoListData.value)
 </script>
 <template>
   <div class="user-work">
-    <template v-if="isEmpty">
+    <template v-if="videoStore().isEmpty.post">
       <el-empty
         image="https://lf1-cdn-tos.bytegoofy.com/goofy/ies/douyin_web/image/EmptySearch.19da93c9.png"
         description="暂无内容"
@@ -20,7 +14,7 @@ console.log(videoListData.value)
 
     <template v-else>
       <div class="user-like-list">
-        <video-list />
+        <video-list :videoList="videoStore().userPostVideos"/>
       </div>
     </template>
   </div>
@@ -30,6 +24,7 @@ console.log(videoListData.value)
 .user-work {
   width: 100%;
   height: 100%;
+  margin-top: 12px;
   :deep(.el-empty__image) {
     background-size: 100% 100%;
     height: 158px;

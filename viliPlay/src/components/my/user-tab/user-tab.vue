@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, watchEffect, type Ref, computed, onMounted } from 'vue'
+import {ref, watchEffect, type Ref, reactive, onMounted} from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs, type TabsPaneContext } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-
-
+import {userStore} from '@/stores/user'
+import {videoStore} from '@/stores/videos'
 const route = useRoute()
 const router = useRouter()
 
-const activeName = ref(route.query.showTab || 'post') as Ref<
+const activeName = ref(router.currentRoute.value.query.showTab) as Ref<
   'post' | 'comments' | 'history' | string | undefined | number
 >
 
+// console.log(activeName.value, 'activeName.value')
 const handleClick = (tab: TabsPaneContext) => {
   // console.log(tab.paneName)
   activeName.value = tab.paneName
@@ -25,7 +26,7 @@ const handleClick = (tab: TabsPaneContext) => {
 }
 
 // 滚动监听
-window.addEventListener("scroll", function () {
+window.addEventListener('scroll', function () {
   if (window.scrollY > 160) {
     document.querySelector('.el-tabs__header')?.classList.add('header-scroll')
   } else {
@@ -35,25 +36,84 @@ window.addEventListener("scroll", function () {
   }
 })
 
+const tabData = reactive({
+  isHide: true
+})
+
+const isLogin = ref(false)
+const store = userStore()
+const video = videoStore()
+
+const postCount = ref(0)
+const likeCount = ref(0)
+const collectCount = ref(0)
+
+watchEffect(() => {
+  isLogin.value = store.isLogin()
+  postCount.value = video.postCount
+  likeCount.value = video.likeCount
+  collectCount.value = video.collectCount
+
+  activeName.value = router.currentRoute.value.query.showTab as any
+})
 </script>
 
 <template>
   <div class="user-tab">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="作品" name="post">
-        <user-post />
+      <el-tab-pane label="作品" name="post" :lazy="true">
+        <template #label v-if="isLogin">
+          <span class="tab-title">作品</span>
+          <span class="tab-video-num" v-if="isLogin || tabData.isHide">
+            {{ postCount }}
+          </span>
+          <!-- <svg-icon icon="lock" class="icon" v-if="tabData.isHide" /> -->
+        </template>
+
+        <template v-if="isLogin">
+          <Loading :show="videoStore().loading">
+            <user-post/>
+          </Loading>
+        </template>
       </el-tab-pane>
 
-      <el-tab-pane label="喜欢" name="like">
-        <user-like />
+      <el-tab-pane label="喜欢" name="like" :lazy="true">
+        <template #label v-if="isLogin">
+          <span class="tab-title">喜欢</span>
+          <span class="tab-video-num" v-if="tabData.isHide">
+            {{ likeCount }}
+          </span>
+          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide"/>
+        </template>
+
+        <template v-if="isLogin">
+          <Loading :show="videoStore().loading">
+            <user-like/>
+          </Loading>
+        </template>
       </el-tab-pane>
 
-      <el-tab-pane label="收藏" name="favorite_collection">
-        <user-collect />
+      <el-tab-pane label="收藏" name="favorite_collection" :lazy="true">
+        <template #label v-if="isLogin">
+          <span class="tab-title">收藏 </span>
+          <span class="tab-video-num" v-if="tabData.isHide">
+            {{ collectCount }}
+          </span>
+          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide"/>
+        </template>
+        <template v-if="isLogin">
+          <Loading :show="videoStore().loading">
+            <user-collect/>
+          </Loading>
+        </template>
       </el-tab-pane>
 
-      <el-tab-pane label="观看历史" name="record">
-        <user-history />
+      <el-tab-pane label="观看历史" name="record" :lazy="true">
+        <template v-if="isLogin">
+          <Loading :show="videoStore().loading">
+            <user-history/>
+          </Loading>
+        </template>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -63,6 +123,14 @@ window.addEventListener("scroll", function () {
 .user-tab {
   background-color: #fff;
 
+  .tab-title {
+    margin-right: 6px;
+  }
+
+  .icon {
+    width: 14px;
+    height: 16px;
+  }
   :deep(.el-tabs__header) {
     height: 64px;
     margin: 0 auto;

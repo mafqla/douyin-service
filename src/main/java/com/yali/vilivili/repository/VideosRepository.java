@@ -26,6 +26,7 @@ public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
     @Query(value = "select * from videos where status = ?3  limit ?1,?2", nativeQuery = true)
     List<VideosEntity> findAllByPage(Integer page, Integer size, Integer status);
 
+
     /**
      * 视频滚动加载接口
      *

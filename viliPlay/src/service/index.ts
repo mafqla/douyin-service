@@ -1,33 +1,33 @@
 import ApiRequest from './request'
-import localCache from '@/utils/cache'
-
 const apiRequest = new ApiRequest({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: import.meta.env.VITE_TIMEOUT,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Token: localStorage.getItem('token') || ''
   },
   interceptors: {
-    requestInterceptor: config => {
+      requestInterceptor: (config) => {
       //携带token拦截
       //解决Object is possibly 'undefined'.
       if (config.headers === undefined) {
         config.headers = {}
       }
-      // 从localStorage中获取token
-      const token = localCache.getCache('token')
-      if (token) {
-        config.headers.set = `${token}`
-      }
       return config
     },
-    requestInterceptorCatch: error => {
+      requestInterceptorCatch: (error) => {
       return error
     },
-    responseInterceptor: res => {
+      responseInterceptor: (res) => {
+          // console.log(res);
+
+          // ElMessage({
+          //   message: res.data.msg,
+          //   type: 'success'
+          // })
       return res
     },
-    responseInterceptorCatch: error => {
+      responseInterceptorCatch: (error) => {
       return error
     }
   }

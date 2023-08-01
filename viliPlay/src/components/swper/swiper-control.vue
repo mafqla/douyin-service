@@ -103,9 +103,10 @@ const handleNext = async () => {
   // justify-content: center;
 
   position: absolute;
-  right: 13px;
+  // right: 13px;
+  right: 8px;
   // top: calc(50% + 60px);
-  top: 50%;
+  // top: 50%;
   transform: translateY(calc(-50% - 30px));
   z-index: 20;
 

@@ -52,4 +52,5 @@ public class MyException extends RuntimeException{
     public MyException(String code, String message) {
         this(HttpStatus.OK.value(), code, message);
     }
+
 }

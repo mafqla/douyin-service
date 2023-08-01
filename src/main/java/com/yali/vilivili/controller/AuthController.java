@@ -71,7 +71,7 @@ public class AuthController extends BaseController {
 
     @ApiOperation(value = "登录")
     @PostMapping("/login")
-    public ResponseEntity<OR<LoginVO>> login(@Validated LoginRO ro, BindingResult br) {
+    public ResponseEntity<OR<LoginVO>> login(@Valid LoginRO ro, BindingResult br) {
         return this.processData(() -> authService.login(ro), br, "登录成功", this::processException);
     }
 

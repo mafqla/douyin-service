@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElEmpty } from 'element-plus'
-// 数据为空时的展示
-const isEmpty = ref(false)
+import {videoStore} from '@/stores/videos'
 const activeName = ref('videos')
-const isLogin = ref(false)
-
 const handleClick = (tab: any) => {
   console.log(tab)
 }
 </script>
 <template>
   <div class="user-history">
-    <template v-if="isEmpty">
+    <template v-if="videoStore().isEmpty.record">
       <el-empty
         image="https://lf1-cdn-tos.bytegoofy.com/goofy/ies/douyin_web/image/EmptySearch.19da93c9.png"
         description="暂无内容"
@@ -22,7 +19,7 @@ const handleClick = (tab: any) => {
       <div class="user-history-list">
         <el-tabs v-model="activeName" @tab-click="handleClick(activeName)">
           <el-tab-pane label="视频" name="videos">
-            <video-list />
+            <video-list :videoList="videoStore().userRecordVideos"/>
           </el-tab-pane>
           <el-tab-pane label="影视综" name="entertainment">
             <entertainment />

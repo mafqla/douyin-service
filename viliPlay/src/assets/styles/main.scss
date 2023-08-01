@@ -48,6 +48,39 @@ ul li {
   font-weight: normal;
 }
 
+//自定义滚动条
+* {
+  scrollbar-color: #f2f2f4 transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  width: 12px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+  width: 16px;
+}
+
+::-webkit-scrollbar-thumb:hover,
+:hover::-webkit-scrollbar-thumb {
+  background: #f2f2f4;
+}
+
 @media (prefers-color-scheme: dark) {
   $color-background: $color-black;
 

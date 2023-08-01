@@ -1,8 +1,11 @@
 package com.yali.vilivili.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.AES;
+import com.yali.vilivili.constant.ErrorCode;
 import com.yali.vilivili.model.entity.UserEntity;
-import com.yali.vilivili.model.ro.*;
+import com.yali.vilivili.model.ro.AddUserRO;
+import com.yali.vilivili.model.ro.EmailRO;
+import com.yali.vilivili.model.ro.LoginRO;
+import com.yali.vilivili.model.ro.RegisterRO;
 import com.yali.vilivili.model.vo.LoginVO;
 import com.yali.vilivili.model.vo.TokenInfoVO;
 import com.yali.vilivili.repository.UserRepository;
@@ -11,7 +14,6 @@ import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -50,32 +52,31 @@ public class AuthServiceImpl implements AuthService {
     private JavaMailSender javaMailSender;
 
     @Resource
-    private  FileUploadServiceImpl fileUploadService;
+    private FileUploadServiceImpl fileUploadService;
 
     @Override
     public LoginVO login(LoginRO ro) {
         UserEntity user = userRepository.findTopByEmail(ro.getEmail());
-        if (Objects.isNull(user)){
-            throw new MyException(HttpStatus.OK.toString(),"用户不存在！");
+        if (Objects.isNull(user)) {
+            throw new MyException("1001", ErrorCode.USER_NOT_FOUND.getMessage());
         }
         String pwd = AESUtil.encrypt(ro.getPassword());
         if (!StringUtils.equals(user.getPassword(), pwd)) {
             throw new MyException(HttpStatus.OK.toString(), "密码错误!");
         }
 
-        if (user.getIsValid() != 0){
-            throw new MyException(HttpStatus.FORBIDDEN.toString(),"用户已被禁用，请联系管理员");
+        if (user.getIsValid() != 0) {
+            throw new MyException(HttpStatus.FORBIDDEN.toString(), "用户已被禁用，请联系管理员");
         }
         return getLoginVO(user);
     }
 
     /**
      * 退出登录
-     *
      */
 
     @Override
-    public void logout(String token){
+    public void logout(String token) {
         TokenInfoVO tokenInfoVO = JwtUtils.decodeJwt(token);
         redisTemplate.delete(tokenInfoVO.getLoginUUID());
     }
@@ -134,7 +135,7 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void resetPassword(String email,  String password, String code) {
+    public void resetPassword(String email, String password, String code) {
         UserEntity user = userRepository.findByEmail(email);
         if (Objects.isNull(user)) {
             throw new MyException(HttpStatus.OK.toString(), "用户不存在!");
@@ -145,13 +146,13 @@ public class AuthServiceImpl implements AuthService {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
         }
         // 重置密码
-       userRepository.resetPasswordByEmail(email, AESUtil.encrypt(password));
+        userRepository.resetPasswordByEmail(email, AESUtil.encrypt(password));
     }
 
     /**
      * 根据用户id修改头像
      *
-     * @param email 用户邮箱
+     * @param email  用户邮箱
      * @param avatar 头像
      */
     @Override
@@ -170,17 +171,17 @@ public class AuthServiceImpl implements AuthService {
         String redisCode = redisTemplate.opsForValue().get(email);
 
 
-        if(StringUtils.equals(code,redisCode)){
+        if (StringUtils.equals(code, redisCode)) {
             AddUserRO addUserRO = new AddUserRO();
             addUserRO.setEmail(email);
             Random random = new Random();
-            addUserRO.setUsername("用户"+random.nextInt(10));
+            addUserRO.setUsername("用户" + random.nextInt(10));
             addUserRO.setPassword(AESUtil.encrypt("123456"));
             UserEntity user = userRepository.findTopByEmail(email);
 
             try {
                 userService.addUser(addUserRO);
-            }catch (MyException e){
+            } catch (MyException e) {
 
                 return getLoginVO(user);
             }
@@ -193,13 +194,10 @@ public class AuthServiceImpl implements AuthService {
             javaMailSender.send(message);
 
 
-
-
-
             return getLoginVO(user);
 
 
-        }else {
+        } else {
             throw new MyException(HttpStatus.OK.toString(), "验证码错误!");
         }
     }
@@ -233,6 +231,8 @@ public class AuthServiceImpl implements AuthService {
         loginVO.setBirthdate(user.getBirthdate());
         loginVO.setGender(user.getGender());
         loginVO.setSignature(user.getSignature());
+        loginVO.setSchool(user.getSchool());
+        loginVO.setLocation(user.getLocation());
         loginVO.setToken(token);
         return loginVO;
     }

@@ -27,11 +27,13 @@ const route = useRoute()
 const activeMenu = computed(() => {
   const { path } = route
   // console.log(path.split('/')[1])
-  const index = Object.values(routerIndex).findIndex((item) => item === `/${path.split('/')[1]}`)
+  const index = Object.values(routerIndex).findIndex(
+      (item) => item === `/${path.split('/')[1]}`
+  )
   // console.log(index)
   return index + 1 + ''
 })
-// console.log(activeMenu.value)
+console.log(activeMenu.value)
 </script>
 <template>
   <div class="aside">

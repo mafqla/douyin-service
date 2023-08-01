@@ -16,5 +16,7 @@ export interface ILoginResult {
   gender: string
   birthdate: string
   signature: string
+    school: string
+    location: string
   createTime: string
 }

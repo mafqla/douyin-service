@@ -61,4 +61,7 @@ public class VideosEntity {
     //默认为0对所有人可见，1仅粉丝可见，2仅自己可见，3置顶
     @Column(name = "status")
     private Integer status;
+
+    @Column(name = "is_top")
+    private Boolean isTop;
 }

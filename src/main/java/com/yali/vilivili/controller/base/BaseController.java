@@ -122,7 +122,7 @@ public class BaseController {
 
     public int currentUser() {
         HttpServletRequest request = request();
-        String token = this.request().getHeader("loginToken");
+        String token = this.request().getHeader("Token");
         if (StringUtils.isBlank(token)) {
             token = request.getParameter("token");
         }

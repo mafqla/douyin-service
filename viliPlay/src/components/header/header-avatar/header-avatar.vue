@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import SwitchButton from '@/components/my/user-header/switch-button.vue'
 import { userStore } from '@/stores/user'
+import {videoStore} from '@/stores/videos'
 
 //是否登录
 let isLogin: any = ref(false)
@@ -9,113 +10,146 @@ const src = ref('')
 const store = userStore()
 
 watchEffect(() => {
-    // console.log(store.isLogin())
-    isLogin.value = store.isLogin()
-    src.value = store.userInfo.userAvatar
+  // console.log(store.isLogin())
+  isLogin.value = store.isLogin()
+  src.value = store.userInfo.userAvatar
 })
 </script>
 <template>
-    <div class="header-right-avatar">
-        <el-popover :show-arrow="false" placement="bottom-end">
-            <template #reference>
-                <el-avatar size="small" :src="src" />
-            </template>
-            <template #default>
-                <div class="right-popover">
-                    <ul class="right-popover-content">
-                        <div class="popover-content">
-                            <div class="popover-content-header">
-                                <div class="content-header"></div>
-                                <switch-button />
-                            </div>
-                            <ul class="popover-content-center">
-                                <ul class="content-center-content">
-                                    <a href="#" class="content-center-link">
-                                        <li class="content-center-item">
-                                            <svg-icon class="icon" icon="zuopin" />
-                                            <p class="content-center-num">0</p>
-                                            <p class="content-center-subtitle">我的作品</p>
-                                        </li>
-                                    </a>
-                                    <div class="content-cneter-blank"></div>
-                                </ul>
-                                <ul class="content-center-content">
-                                    <a href="#" class="content-center-link">
-                                        <li class="content-center-item">
-                                            <svg-icon class="icon" icon="like" />
-                                            <p class="content-center-num">891</p>
-                                            <p class="content-center-subtitle">我的喜欢</p>
-                                        </li>
-                                    </a>
-                                    <div class="content-cneter-blank"></div>
-                                </ul>
-                                <ul class="content-center-content">
-                                    <a href="#" class="content-center-link">
-                                        <li class="content-center-item">
-                                            <svg-icon class="icon" icon="my-collect" />
-                                            <p class="content-center-num">185</p>
-                                            <p class="content-center-subtitle">我的收藏</p>
-                                        </li>
-                                    </a>
-                                    <div class="content-cneter-blank"></div>
-                                </ul>
-                                <ul class="content-center-content">
-                                    <a href="#" class="content-center-link">
-                                        <li class="content-center-item">
-                                            <svg-icon class="icon" icon="history" />
-                                            <p class="content-center-num">
-                                                <span>30</span><span class="num-title">天内</span>
-                                            </p>
-                                            <p class="content-center-subtitle">观看历史</p>
-                                        </li>
-                                    </a>
-                                </ul>
-                            </ul>
-                            <div class="popover-content-center-t"></div>
-                            <ul class="popover-content-footer">
-                                <li>
-                                    <div class="footer-item">
-                                        <a href="#" class="content-center-link">个人主页</a>
-                                        <div class="footer-item-b"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="footer-item">
-                                        <a href="#" class="content-center-link">抖币充值</a>
-                                        <div class="footer-item-b"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="footer-item">
-                                        <a href="#" class="content-center-link">直播伴侣</a>
-                                        <div class="footer-item-b"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="footer-item">
-                                        <span @click="store.logout()">退出登录</span>
-                                        <div class="footer-item-b"></div>
-                                    </div>
-                                </li>
-                                <li class="huanfu">
-                                    <div class="huanfu-content">
-                                        <svg-icon class="huanfu-icon" icon="huanfu" />
-                                        <span class="huanfu-title">换肤</span>
-                                    </div>
-                                </li>
-                                <li class="shezhi">
-                                    <div class="shezhi-content">
-                                        <svg-icon class="shezhi-icon" icon="shezhi" />
-                                        <span class="shezhi-title">设置</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </ul>
-                </div>
-            </template>
-        </el-popover>
-    </div>
+  <div class="header-right-avatar">
+    <el-popover :show-arrow="false" placement="bottom-end">
+      <template #reference>
+        <el-avatar size="small" :src="src"/>
+      </template>
+      <template #default>
+        <div class="right-popover">
+          <ul class="right-popover-content">
+            <div class="popover-content">
+              <div class="popover-content-header">
+                <div class="content-header"></div>
+                <switch-button/>
+              </div>
+              <ul class="popover-content-center">
+                <ul class="content-center-content">
+                  <router-link
+                      to="/user/self?showTab=post"
+                      class="content-center-link"
+                  >
+                    <li class="content-center-item">
+                      <svg-icon class="icon" icon="zuopin"/>
+                      <p class="content-center-num">
+                        {{ videoStore().postCount }}
+                      </p>
+                      <p class="content-center-subtitle">我的作品</p>
+                    </li>
+                  </router-link>
+                  <div class="content-cneter-blank"></div>
+                </ul>
+                <ul class="content-center-content">
+                  <router-link
+                      to="/user/self?showTab=like"
+                      class="content-center-link"
+                  >
+                    <li class="content-center-item">
+                      <svg-icon class="icon" icon="like"/>
+                      <p class="content-center-num">
+                        {{ videoStore().likeCount }}
+                      </p>
+                      <p class="content-center-subtitle">我的喜欢</p>
+                    </li>
+                  </router-link>
+                  <div class="content-cneter-blank"></div>
+                </ul>
+                <ul class="content-center-content">
+                  <router-link
+                      to="/user/self?showTab=favorite_collection"
+                      class="content-center-link"
+                  >
+                    <li class="content-center-item">
+                      <svg-icon class="icon" icon="my-collect"/>
+                      <p class="content-center-num">
+                        {{ videoStore().collectCount }}
+                      </p>
+                      <p class="content-center-subtitle">我的收藏</p>
+                    </li>
+                  </router-link>
+                  <div class="content-cneter-blank"></div>
+                </ul>
+                <ul class="content-center-content">
+                  <router-link
+                      to="/user/self?showTab=record"
+                      class="content-center-link"
+                  >
+                    <li class="content-center-item">
+                      <svg-icon class="icon" icon="history"/>
+                      <p class="content-center-num">
+                        <span>30</span><span class="num-title">天内</span>
+                      </p>
+                      <p class="content-center-subtitle">观看历史</p>
+                    </li>
+                  </router-link>
+                </ul>
+              </ul>
+              <div class="popover-content-center-t"></div>
+              <ul class="popover-content-footer">
+                <li>
+                  <div class="footer-item">
+                    <router-link
+                        to="/user/self?showTab=post"
+                        class="content-center-link"
+                    >
+                      个人主页
+                    </router-link>
+                    <div class="footer-item-b"></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="footer-item">
+                    <router-link
+                        to="/user/self?showTab=post"
+                        class="content-center-link"
+                    >抖币充值
+                    </router-link
+                    >
+                    <div class="footer-item-b"></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="footer-item">
+                    <router-link
+                        to="/user/self?showTab=post"
+                        class="content-center-link"
+                    >直播伴侣
+                    </router-link
+                    >
+                    <div class="footer-item-b"></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="footer-item">
+                    <span @click="store.logout()">退出登录</span>
+                    <div class="footer-item-b"></div>
+                  </div>
+                </li>
+                <li class="huanfu">
+                  <div class="huanfu-content">
+                    <svg-icon class="huanfu-icon" icon="huanfu"/>
+                    <span class="huanfu-title">换肤</span>
+                  </div>
+                </li>
+                <li class="shezhi">
+                  <div class="shezhi-content">
+                    <svg-icon class="shezhi-icon" icon="shezhi"/>
+                    <span class="shezhi-title">设置</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </template>
+    </el-popover>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -32,7 +32,11 @@ class ApiRequest {
         return config
       },
       (error) => {
-        return error
+          ElMessage({
+              message: error,
+              type: 'error'
+          })
+          // return error
       }
     )
     this.instance.interceptors.response.use(
@@ -48,6 +52,18 @@ class ApiRequest {
         //@ts-ignore
         const data = res.data
 
+          if (!data) {
+              return Promise.reject(data)
+          }
+
+          if (data.code === '401') {
+              ElMessage({
+                  message: '登录态失效，请重新登录',
+                  type: 'error'
+              })
+              localStorage.clear()
+          }
+
         if (data.code === '500') {
           ElMessage({
             message: data.msg || '请求失败',
@@ -58,10 +74,16 @@ class ApiRequest {
         }
       },
       (error) => {
+          console.log(error)
+          ElMessage({
+              message: error,
+              type: 'error'
+          })
         if (error.response.status === 404) {
-          console.log('页面不存在')
+            console.log('不存在')
         }
-        return error
+          return Promise.reject(error)
+          // return error
       }
     )
   }

@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/user',
         name: 'user',
-        redirect: '/user/self',
+          redirect: '/user/self?showTab=like',
         children: [
           {
             path: 'self',

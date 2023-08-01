@@ -10,9 +10,9 @@ const activeName = ref('pass')
 <template>
   <div class="login">
     <el-tabs v-model="activeName" class="demo-tabs">
-      <!-- <el-tab-pane label="扫码登录" name="qr">
+      <el-tab-pane label="扫码登录" name="qr">
         <qr-login />
-      </el-tab-pane> -->
+      </el-tab-pane>
 
       <el-tab-pane label="验证码登录" name="code">
         <code-login />

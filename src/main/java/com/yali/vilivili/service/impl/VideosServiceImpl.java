@@ -1,13 +1,20 @@
 package com.yali.vilivili.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yali.vilivili.controller.base.OR;
 import com.yali.vilivili.mapper.*;
 import com.yali.vilivili.model.entity.*;
 import com.yali.vilivili.model.vo.VideosEntityVO;
+import com.yali.vilivili.model.vo.VideosInfoVO;
+import com.yali.vilivili.model.vo.VideosParamsVO;
+import com.yali.vilivili.repository.CollectRepository;
+import com.yali.vilivili.repository.LikeRepository;
+import com.yali.vilivili.repository.VideosInfoRepository;
 import com.yali.vilivili.repository.VideosRepository;
+import com.yali.vilivili.service.CollectService;
+import com.yali.vilivili.service.LikeService;
+import com.yali.vilivili.service.VideosInfoService;
 import com.yali.vilivili.service.VideosService;
 import com.yali.vilivili.utils.MyException;
 import org.springframework.beans.BeanUtils;
@@ -17,8 +24,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.UnknownHostException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +63,25 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
     VideosTagMapper videosTagMapper;
 
     @Resource
-    private  FileUploadServiceImpl fileUploadService;
+    private FileUploadServiceImpl fileUploadService;
+
+    @Resource
+    private LikeService likeService;
+
+    @Resource
+    private VideosInfoService videosInfoService;
+
+    @Resource
+    private CollectService collectService;
+
+    @Resource
+    private LikeRepository likeRepository;
+
+    @Resource
+    private VideosInfoRepository videosInfoRepository;
+
+    @Resource
+    private CollectRepository collectRepository;
 
     /**
      * 获取视频列表
@@ -191,5 +216,103 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }
     }
+
+
+    /**
+     * 处理视频地址和封面地址
+     *
+     * @param address
+     */
+    @Override
+    public String handleAddress(String address) {
+        try {
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
+            if (!address.contains(url)) {
+                address = url + address;
+            }
+            return address;
+        } catch (UnknownHostException e) {
+            throw new MyException("获取本机ip失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        }
+    }
+
+    /**
+     * 根据参数获取视频列表
+     *
+     * @param showTab
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public VideosParamsVO getVideosListByParam(String showTab, int user_id, Integer page, Integer size) {
+        try {
+            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
+            List<VideosInfoVO> videosList = new ArrayList<>();
+
+            // 根据 用户id 统计点赞数、收藏数、发布数
+            long LikeCount = likeRepository.countbyUserId(user_id);
+            long CollectCount = collectRepository.countbyUserId(user_id);
+            long PublishCount = videosInfoRepository.countbyUserId(user_id);
+
+            System.out.println("LikeCount: " + LikeCount);
+            System.out.println("CollectCount: " + CollectCount);
+            System.out.println("PublishCount: " + PublishCount);
+
+
+            List<Long> videoIds = null;
+            if (Objects.equals(showTab, "post")) {
+                List<VideosInfoEntity> videosInfoEntityList = videosInfoService.getVideosInfoListByUserId(user_id, page, size);
+                videoIds = videosInfoEntityList.stream().map(VideosInfoEntity::getVideoId).collect(Collectors.toList());
+            } else if (Objects.equals(showTab, "like")) {
+                List<LikeEntity> likeList = likeService.getLikeList(user_id, page, size);
+                videoIds = likeList.stream().map(LikeEntity::getVideoId).collect(Collectors.toList());
+            } else if (Objects.equals(showTab, "favorite_collection")) {
+                List<CollectionEntity> collectionList = collectService.getCollectList(user_id, page, size);
+                videoIds = collectionList.stream().map(CollectionEntity::getVideoId).collect(Collectors.toList());
+            } else if (Objects.equals(showTab, "record")) {
+                // Handle 'record' case if needed
+            } else {
+                throw new MyException("参数错误", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+            }
+
+            if (videoIds != null) {
+                List<VideosEntity> videosEntities = videosRepository.findAllById(videoIds);
+
+                // 使用LinkedHashMap来保持顺序
+                Map<Long, VideosEntity> videosMap = new LinkedHashMap<>();
+                videosEntities.forEach(videosEntity -> videosMap.put(videosEntity.getId(), videosEntity));
+
+                videoIds.forEach(videoId -> {
+                    VideosInfoVO videosInfoVO = videosInfoService.getVideosInfoById(videoId, user_id);
+                    if (videosInfoVO != null) {
+                        videosList.add(videosInfoVO);
+                    }
+//                    VideosEntity videosEntity = videosMap.get(videoId);
+//                    if (videosEntity != null) {
+//                        // 格式化视频地址和封面地址
+//                        if (!videosEntity.getVideosAddress().contains(url) && !videosEntity.getVideosCover().contains(url)) {
+//                            videosEntity.setVideosAddress(url + videosEntity.getVideosAddress());
+//                            videosEntity.setVideosCover(url + videosEntity.getVideosCover());
+//                        }
+//                        videosList.add(videosEntity);
+//                    }
+                });
+            }
+
+            VideosParamsVO videosParamsVO = new VideosParamsVO();
+            videosParamsVO.setLikeCount(LikeCount);
+            videosParamsVO.setCollectCount(CollectCount);
+            videosParamsVO.setPublishCount(PublishCount);
+            videosParamsVO.setVideosList(videosList);
+            return videosParamsVO;
+        } catch (MyException e) {
+            throw new MyException(e.getMessage(), e.getCode());
+        } catch (Exception e) {
+            throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        }
+    }
+
+
 
 }

@@ -9,11 +9,11 @@ import com.yali.vilivili.mapper.*;
 import com.yali.vilivili.model.entity.*;
 import com.yali.vilivili.model.ro.VideosClassifyRO;
 import com.yali.vilivili.model.ro.VideosRo;
-import com.yali.vilivili.model.vo.ClassifyVideosVO;
-import com.yali.vilivili.model.vo.MyVideoVo;
-import com.yali.vilivili.model.vo.VideosEntityVO;
+import com.yali.vilivili.model.vo.*;
 import com.yali.vilivili.service.FileUploadService;
+import com.yali.vilivili.service.VideosInfoService;
 import com.yali.vilivili.service.VideosService;
+import com.yali.vilivili.utils.MyException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -27,11 +27,8 @@ import javax.annotation.Resource;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
  * 视频接口
@@ -53,6 +50,9 @@ public class VideosController extends BaseController {
 
     @Resource
     VideosInfoEntityMapper videosInfoEntityMapper;
+
+    @Resource
+    VideosInfoService videosInfoService;
 
     @Resource
     VideosEntityMapper videosEntityMapper;
@@ -99,6 +99,19 @@ public class VideosController extends BaseController {
     public ResponseEntity<OR<List<VideosEntityVO>>> getVideosByCursor(Integer cursor, Integer size, Integer status) {
         videosService.getVideosListByCursor(cursor, size, status);
         return processData(() -> videosService.getVideosListByCursor(cursor, size, status), "获取成功", this::processException);
+    }
+
+    @ApiOperation(value = "根据参数获取视频列表")
+    @GetMapping("/self")
+    public ResponseEntity<OR<VideosParamsVO>> getVideosListByParam(String showTab, Integer userId, Integer page, Integer size) {
+        if (StringUtils.isBlank(showTab)) {
+            throw new MyException("203", "showTab不能为空");
+        }
+        if (userId == null) {
+            userId = currentUser();
+        }
+        Integer finalUserId = userId;
+        return processData(() -> videosService.getVideosListByParam(showTab, finalUserId, page, size), "获取成功", this::processException);
     }
 
     @ApiOperation(value = "分类视频")
@@ -221,41 +234,11 @@ public class VideosController extends BaseController {
     @Resource
     CollectionMapper collectionMapper;
 
+
     @ApiOperation(value = "根据id获取视频信息")
     @PostMapping("/getVideoInfoById")
-    public ResponseEntity<OR<VideosEntityVO>> getVideoInfoById(long videoId) {
-        VideosEntityVO videosEntityVO = new VideosEntityVO();
-        VideosEntity videosEntity = videosEntityMapper.selectById(videoId);
-        QueryWrapper<CommentEntity> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("video_id", videoId);
-        long commentCount = commentMapper.selectCount(queryWrapper);
-        BeanUtils.copyProperties(videosEntity, videosEntityVO);
-        videosEntityVO.setCommentCount(commentCount);
-        QueryWrapper<CollectionEntity> collectionEntityQueryWrapper = new QueryWrapper<>();
-        collectionEntityQueryWrapper.eq("video_id", videosEntity.getId());
-        Long collectionCount = collectionMapper.selectCount(collectionEntityQueryWrapper);
-        videosEntityVO.setCollectionCount(collectionCount);
-        QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
-        videosInfoEntityQueryWrapper.eq("video_id", videoId);
-        List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
-        String url = "";
-        try {
-            url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-        if (videosInfoEntities.size() != 0) {
-            long userId = videosInfoEntities.get(0).getUserId();
-            UserEntity user = userEntityMapper.selectById(userId);
-            videosEntityVO.setAuthorAvatar(fileUploadService.getImageUrl(user.getUserAvatar()));
-            videosEntityVO.setAuthorName(user.getUsername());
-            List<Long> tagIdList = videosInfoEntities.stream().map(VideosInfoEntity::getTagId).toList();
-            List<String> tagNameList = videosTagMapper.selectBatchIds(tagIdList).stream().map(VideosTagEntity::getTagName).toList();
-            videosEntityVO.setTagNameList(tagNameList);
-            videosEntityVO.setVideosAddress(url + videosEntity.getVideosAddress());
-            videosEntityVO.setVideosCover(url + videosEntity.getVideosCover());
-        }
-        return processData(() -> videosEntityVO, this::processException);
+    public ResponseEntity<OR<VideosInfoVO>> getVideoInfoById(long videoId, Integer userId) {
+        return processData(() -> videosInfoService.getVideosInfoById(videoId, userId), this::processException);
     }
 
     @Resource
@@ -348,9 +331,9 @@ public class VideosController extends BaseController {
         if (videosInfoEntities.size() == 0) {
             throw new RuntimeException("你关注的人都没有过发布视频");
         }
-        String url ="";
+        String url = "";
         try {
-             url="http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
+            url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
@@ -366,8 +349,8 @@ public class VideosController extends BaseController {
             List<CommentEntity> commentEntities = commentMapper.selectList(queryWrapper);
             VideosEntityVO videosEntityVO = new VideosEntityVO();
             BeanUtils.copyProperties(videosEntity, videosEntityVO);
-            videosEntityVO.setVideosAddress(finalUrl +videosEntity.getVideosAddress());
-            videosEntityVO.setVideosCover(finalUrl +videosEntity.getVideosCover());
+            videosEntityVO.setVideosAddress(finalUrl + videosEntity.getVideosAddress());
+            videosEntityVO.setVideosCover(finalUrl + videosEntity.getVideosCover());
             if (commentEntities.size() != 0) {
                 List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
                 videosEntityVO.setCommentList(commentInfoList);
