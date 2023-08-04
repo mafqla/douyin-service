@@ -79,6 +79,7 @@ ul li {
 ::-webkit-scrollbar-thumb:hover,
 :hover::-webkit-scrollbar-thumb {
   background: #f2f2f4;
+  // background: rgba(242, 243, 243, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {

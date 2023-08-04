@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {onMounted, ref, watch, watchEffect} from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import { UserHeader, LoginCode, UserTab, UserFooter } from '@/components/my'
-import {userStore} from '@/stores/user'
-import {useRouter} from 'vue-router'
-import {videoStore} from '@/stores/videos'
+import { userStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+import { videoStore } from '@/stores/videos'
 import backgroundurlLightURL from '@/assets/user-background-light.png'
 import backgroundurlDarkURL from '@/assets/user-background-dark.png'
-import {useInfiniteScroll} from '@vueuse/core'
+import { useInfiniteScroll } from '@vueuse/core'
 
 const background = ref(`url('${backgroundurlLightURL}')`)
 
@@ -32,6 +32,9 @@ const size = ref(10)
 const allowScroll = ref(true)
 
 const fetchVideoData = async () => {
+  if (query.value === null) {
+    return
+  }
   const data = await video.getVideoDataByParams({
     showTab: query.value,
     page: page.value,
@@ -99,11 +102,11 @@ useInfiniteScroll(window, load, {
 <template>
   <div class="user-detail" :class="{ scrolled: isDisplay }">
     <div class="user-detail-content">
-      <user-header/>
-      <user-tab/>
-      <login-code v-if="!isLogin"/>
+      <user-header />
+      <user-tab />
+      <login-code v-if="!isLogin" />
     </div>
-    <user-footer/>
+    <user-footer />
   </div>
 </template>
 

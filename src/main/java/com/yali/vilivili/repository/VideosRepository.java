@@ -19,12 +19,11 @@ public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
     /**
      * 分页查询视频列表
      *
-     * @param page   页码
-     * @param size   每页数量
-     * @param status 状态
+     * @param page 页码
+     * @param size 每页数量
      */
-    @Query(value = "select * from videos where status = ?3  limit ?1,?2", nativeQuery = true)
-    List<VideosEntity> findAllByPage(Integer page, Integer size, Integer status);
+    @Query(value = "select id from videos where status = 0 and is_top = 0 order by upload_time desc limit ?1,?2", nativeQuery = true)
+    List<Long> findAllByPage(Integer page, Integer size);
 
 
     /**

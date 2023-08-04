@@ -88,10 +88,13 @@ public class VideosController extends BaseController {
     }
 
     @ApiOperation(value = "分页获取视频列表")
-    @PostMapping("/getVideosListByPage")
-    public ResponseEntity<OR<List<VideosEntity>>> getVideosListByPage(Integer page, Integer size, Integer status) {
-        videosService.getVideosListByPage(page, size, status);
-        return processData(() -> videosService.getVideosListByPage(page, size, status), "获取成功", this::processException);
+    @PostMapping("/feed")
+    public ResponseEntity<OR<List<VideosInfoVO>>> getVideosListByPage(Integer page, Integer size, Integer userId) {
+        if (userId == null) {
+            userId = currentUser();
+        }
+        Integer finalUserId = userId;
+        return processData(() -> videosService.getVideosListByPage(page, size, finalUserId), "获取成功", this::processException);
     }
 
     @ApiOperation(value = "视频滚动加载接口")

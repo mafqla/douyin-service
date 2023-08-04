@@ -128,6 +128,7 @@ const toggleComments = (id: any) => {
           :comment="props.comment "
           :shoucang="props.shoucang"
           :isLike="props.isLike"
+          :isCollect="props.isCollect"
           @toggleComments="toggleComments(props.id)"
       >
         <SwiperControl/>

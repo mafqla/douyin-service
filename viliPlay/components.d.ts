@@ -44,6 +44,7 @@ declare module '@vue/runtime-core' {
     EntertainmentItem: typeof import('./src/components/my/user-tab/entertainment/entertainment-item.vue')['default']
     EntertainmentList: typeof import('./src/components/my/user-tab/entertainment/entertainment-list.vue')['default']
     HeaderAvatar: typeof import('./src/components/header/header-avatar/header-avatar.vue')['default']
+    HotItem: typeof import('./src/components/discover/hot-item/index.vue')['default']
     ListFooter: typeof import('./src/components/common/list-footer.vue')['default']
     Loading: typeof import('./src/components/common/loading.vue')['default']
     Login: typeof import('./src/components/auth/login/login.vue')['default']

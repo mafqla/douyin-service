@@ -19,6 +19,7 @@ onMounted(() => {
     loop: true,
     width: '100%',
     height: '100%',
+    // autoplayMuted: true,
     // volume: 0,
     closeVideoClick: true,
     lang: 'zh-cn',

@@ -19,8 +19,7 @@ const props = defineProps({
         <span class="item-title-bottom"
           ><span class="item-title-author-f">@</span
           ><span class="item-title-author-name">{{ props.author }}</span>
-          </span
-        >
+        </span>
         <!-- <span class="item-title-tag fellow">
           <span class="item-title-tag-name">已关注</span>
         </span>
@@ -43,48 +42,56 @@ const props = defineProps({
   flex: 1 1 0%;
   padding: 12px 20px 22px;
   background: rgba(249, 249, 249, 1);
+  // background: rgba(37, 38, 50, 1);
   .item-title-content {
     position: relative;
+
+    .item-title-content-title,
+    .item-title-author {
+      cursor: pointer;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      overflow: hidden;
+    }
     .item-title-content-title {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       color: rgba(22, 24, 35, 1);
-      // color: rgb(255, 255, 255);
+      // color: rgb(255, 255, 255, .9);
       display: -webkit-box;
       font-size: 15px;
       height: 46px;
       line-height: 23px;
-      text-overflow: ellipsis;
-      word-break: break-all;
-      overflow: hidden;
     }
 
     .item-title-author {
       display: inline-flex;
       font-size: 14px;
       line-height: 22px;
-      margin-top: 4px;
-      text-overflow: ellipsis;
+      margin-top: 8px;
+      // white-space-collapse: collapse;
       white-space: nowrap;
+      // text-wrap: nowrap;
       width: 100%;
-      word-break: break-all;
-      overflow: hidden;
+
+      color: rgba(22, 24, 35, 0.34);
+      // color: rgba(255, 255, 255, 0.5);
       .item-title-bottom {
+        backface-visibility: hidden;
         display: inline-block;
         text-overflow: ellipsis;
+        // white-space-collapse: collapse;
         white-space: nowrap;
+        // text-wrap: nowrap;
         overflow: hidden;
-        color: rgba(22, 24, 35, 0.34);
-        // color: rgba(255, 255, 255, 0.6);
+
         .item-title-author-f {
-          font-size: 18px;
-          line-height: 22px;
           vertical-align: text-top;
         }
 
         .item-title-author-name {
-          position: relative;
-          top: 1px;
+          // position: relative;
+          // top: 1px;
           margin-left: 4px;
         }
       }
@@ -121,10 +128,10 @@ const props = defineProps({
 
       .item-title-time {
         color: rgba(22, 24, 35, 0.34);
+        // color: rgba(255, 255, 255, 0.5);
         font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
         font-size: 12px;
         font-weight: 400;
-        line-height: 20px;
         line-height: 23px;
         margin-left: 5px;
       }

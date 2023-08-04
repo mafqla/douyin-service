@@ -7,7 +7,8 @@ const props = defineProps({
   dianzan: Number,
   comment: Number,
   shoucang: Number,
-  isLike: Boolean
+  isLike: Boolean,
+  isCollect: Boolean
 })
 
 const dianzan = ref(props.dianzan) as any
@@ -21,25 +22,35 @@ const addDianzan = () => {
     liked.value = true
   }
 }
+
 const shoucang = ref(props.shoucang) as any
+const isCollect = ref(props.isCollect) as any
+
+console.log(isCollect.value)
 const addShoucang = () => {
-  shoucang.value++
+  if (isCollect.value) {
+    shoucang.value--
+    isCollect.value = false
+  } else {
+    shoucang.value++
+    isCollect.value = true
+  }
 }
 </script>
 
 <template>
   <div class="video-action">
     <div class="video-action-content">
-      <slot/>
+      <slot />
       <div class="video-action-avatar">
-        <ElAvatar size="small" :src="props.avatar"/>
+        <ElAvatar size="small" :src="props.avatar" />
       </div>
       <div class="video-action-avatar-follow">
         <svg-icon class="icon" icon="avfollow" />
       </div>
     </div>
     <div class="video-action-item" @click="addDianzan">
-      <svg-icon class="icon" :class="{ liked: liked }" icon="dianzan"/>
+      <svg-icon class="icon" :class="{ liked: liked }" icon="dianzan" />
       <span>{{ dianzan }}</span>
     </div>
     <div class="video-action-item" @click="$emit('toggleComments')">
@@ -47,7 +58,11 @@ const addShoucang = () => {
       <span>{{ props.comment }}</span>
     </div>
     <div class="video-action-item" @click="addShoucang">
-      <svg-icon class="icon" icon="shoucang" />
+      <svg-icon
+        class="icon-collect"
+        icon="collection"
+        :class="{ collect: isCollect }"
+      />
       <span>{{ shoucang }}</span>
     </div>
     <div class="video-action-item">
@@ -127,6 +142,7 @@ const addShoucang = () => {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
     cursor: pointer;
 
     span {
@@ -139,9 +155,19 @@ const addShoucang = () => {
       color: #fff;
       opacity: 1;
     }
+    .icon-collect {
+      height: 50px;
+      width: 26px;
+      color: #fff;
+      opacity: 1;
+      margin-left: 5px;
+    }
 
     .icon.liked {
-      color: red;
+      color: rgb(254, 44, 85);
+    }
+    .icon-collect.collect {
+      color: rgb(255, 184, 2) !important;
     }
   }
 }

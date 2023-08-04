@@ -1,23 +1,76 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { computed, ref } from 'vue'
+import miniPlayer from '@/components/video-player/mini-player.vue'
+import { useElementSize } from '@vueuse/core'
 
 const props = defineProps({
   img: String,
   videoTime: String,
-  like: Number
+  like: Number,
+  videoUrl: String,
+  itemWidth: Number
 })
+
+const isVideoVisible = ref(false)
+let timer: any = null
+const showVideo = () => {
+  timer = setTimeout(() => {
+    isVideoVisible.value = true
+  }, 1000)
+}
+const hideVideo = () => {
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    isVideoVisible.value = false
+  }, 200)
+}
+const heightImg = ref(0)
+const widthImg = ref(0)
+let img = new Image()
+img.onload = function () {
+  let width = img.width
+  let height = img.height
+  widthImg.value = width
+  heightImg.value = height
+  // console.log(width, height)
+}
+img.src = props.img as string
+
+const paddingTop = computed(() => {
+  return (heightImg.value / widthImg.value) * 100
+})
+
+const newWidth = Math.round(props.itemWidth as any)
+
+const renderedImg = ref()
+const { height } = useElementSize(renderedImg)
 </script>
 <template>
-  <div class="item-video">
-    <div class="item-video-content">
+  <div
+    class="item-video videoImage"
+    :style="{ paddingTop: `${paddingTop}%` }"
+    @mouseenter="showVideo"
+    @mouseleave="hideVideo"
+  >
+    <div class="item-video-content" ref="renderedImg">
       <div class="item-video-content-img item-video-content-img-hover">
         <div class="item-video-content-img-item-defalut"></div>
-        <img :src="props.img" alt="null" class="" />
+        <div class="item-video-content-img-item-block"></div>
+        <img
+          :src="props.img"
+          alt="null"
+          fetchpriority="high"
+          decoding="async"
+          :width="newWidth"
+          :height="Math.round(height)"
+        />
       </div>
 
-      <div class="item-video-info">
+      <div class="item-video-info" v-if="!isVideoVisible">
+        <div class="item-video-block"></div>
         <div class="item-video-info-content">
           <div class="info-content-blank"></div>
+          <div class="info-content-blank2"></div>
           <div class="video-time">{{ props.videoTime }}</div>
           <div class="likes">
             <svg
@@ -39,6 +92,8 @@ const props = defineProps({
           </div>
         </div>
       </div>
+
+      <miniPlayer v-if="isVideoVisible" class="video-player" :url="videoUrl" />
     </div>
   </div>
 </template>
@@ -47,10 +102,20 @@ const props = defineProps({
 .item-video {
   height: 0px;
   padding-top: 75%;
+  position: relative;
   width: 100%;
-  overflow: hidden;
   .item-video-content {
     align-items: center;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    // background-repeat-x: initial;
+    // background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    // background-color: rgba(37, 38, 50, 1);
     background-color: rgba(249, 249, 249, 1);
     cursor: pointer;
     display: flex;
@@ -59,9 +124,9 @@ const props = defineProps({
     position: absolute;
     top: 0px;
     overflow: hidden;
-    border-radius: 6px;
-    max-height: 100%;
-    max-width: 100%;
+
+    width: 100%;
+    height: 100%;
     .item-video-content-img {
       align-items: center;
       display: flex;
@@ -70,12 +135,7 @@ const props = defineProps({
       position: relative;
       width: 100%;
 
-      .item-video-content-img-item {
-        background-size: cover;
-        filter: blur(20px);
-        background-repeat: no-repeat;
-      }
-      .item-video-content-img-item,
+      .item-video-content-img-item-block,
       .item-video-content-img-item-defalut {
         bottom: 0px;
         left: 0px;
@@ -83,22 +143,31 @@ const props = defineProps({
         right: 0px;
         top: 0px;
       }
+      .item-video-content-img-item-defalut {
+        background-size: cover;
+        filter: blur(20px);
+        background-repeat: no-repeat;
+      }
+      .item-video-content-img-item-block {
+        background-color: rgba(0, 0, 0, 0.3);
+      }
 
       img {
+        width: 100%;
+        object-fit: contain;
+
         color: rgb(22, 23, 34);
         max-height: 100%;
         max-width: 100%;
         position: relative;
         transition: all 0.3s linear 0s;
-        object-fit: contain;
-        border-radius: 6px 6px 0px 0px;
-        width: 238px;
-        height: 180px;
       }
     }
     .item-video-content-img-hover {
-      transition: 0.3s;
-      transition-delay: 0.1s;
+      animation-timeline: unset !important;
+      // animation-range-start: unset !important;
+      // animation-range-end: unset !important;
+      animation: unset !important;
     }
 
     .item-video-info {
@@ -107,10 +176,24 @@ const props = defineProps({
       position: absolute;
       top: 0px;
       width: 100%;
+
+      .item-video-block {
+        bottom: 0px;
+        height: 64px;
+        position: absolute;
+        width: 100%;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+      }
       .item-video-info-content {
         height: 100%;
         position: relative;
         width: 100%;
+        .info-content-blank2 {
+          display: flex;
+          left: 12px;
+          position: absolute;
+          top: 12px;
+        }
         .info-content-blank {
           display: flex;
           left: 8px;
@@ -119,17 +202,16 @@ const props = defineProps({
         }
         .video-time {
           background-color: rgba(0, 0, 0, 0.7);
-          bottom: 6px;
-          line-height: 26px;
+          bottom: 10px;
+          color: rgb(255, 255, 255);
+          font-size: 12px;
+          line-height: 20px;
           min-width: 43px;
           position: absolute;
           right: 8px;
           text-align: center;
-          padding: 0px 5px;
           border-radius: 4px;
-          color: #fff;
-          font-size: 12px;
-          line-height: 20px;
+          padding: 0px 5px;
         }
         .likes {
           align-items: center;
@@ -146,12 +228,22 @@ const props = defineProps({
         }
       }
     }
+
+    .video-player {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      z-index: 1;
+    }
   }
 }
 
-.item-content:hover {
-  .item-video-content-img-hover {
-    transform: scale(1.05);
-  }
-}
+// .item-content:hover {
+//   .item-video-content-img-hover {
+//     transform: scale(1.05);
+//   }
+// }
 </style>

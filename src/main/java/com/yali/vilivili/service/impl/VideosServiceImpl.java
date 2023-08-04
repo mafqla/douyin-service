@@ -112,27 +112,27 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
      *
      * @param page   页码
      * @param size   每页数量
-     * @param status 状态
+     * @param user_id 状态
      * @return videoList 视频列表
      */
     @Override
-    public List<VideosEntity> getVideosListByPage(Integer page, Integer size, Integer status) {
+    public List<VideosInfoVO> getVideosListByPage(Integer page, Integer size, Integer user_id) {
         // 计算分页起始位置
         page = (page - 1) * size;
         try {
-            String url = "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + contextPath + "/";
-            List<VideosEntity> videosList = videosRepository.findAllByPage(page, size, status);
-            for (VideosEntity video : videosList) {
-                if (!video.getVideosAddress().contains(url) && !video.getVideosCover().contains(url)) {
-                    video.setVideosAddress(url + video.getVideosAddress());
-                    video.setVideosCover(url + video.getVideosCover());
-                }
-            }
-            if (videosList.size() == 0)
+            List<VideosInfoVO> videosList = new ArrayList<>();
+            List<Long> videosListId = videosRepository.findAllByPage(page, size);
+            System.out.println(videosListId);
+            if (videosListId.isEmpty())
             //返回空数值的状态码
             {
                 throw new MyException("没有更多数据了", String.valueOf(HttpStatus.NO_CONTENT.value()));
             }
+            videosListId.forEach(videoId -> {
+                VideosInfoVO videosInfoVO = videosInfoService.getVideosInfoById(videoId, user_id);
+                videosList.add(videosInfoVO);
+            });
+
             return videosList;
 
         }//返回空数值的状态码
@@ -143,8 +143,6 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
         }
     }
 
-    @Resource
-    VideosEntityMapper videosEntityMapper;
 
 
     /**
@@ -288,15 +286,6 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                     if (videosInfoVO != null) {
                         videosList.add(videosInfoVO);
                     }
-//                    VideosEntity videosEntity = videosMap.get(videoId);
-//                    if (videosEntity != null) {
-//                        // 格式化视频地址和封面地址
-//                        if (!videosEntity.getVideosAddress().contains(url) && !videosEntity.getVideosCover().contains(url)) {
-//                            videosEntity.setVideosAddress(url + videosEntity.getVideosAddress());
-//                            videosEntity.setVideosCover(url + videosEntity.getVideosCover());
-//                        }
-//                        videosList.add(videosEntity);
-//                    }
                 });
             }
 

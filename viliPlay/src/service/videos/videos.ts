@@ -1,10 +1,15 @@
 import apiRequest from '../index'
 import type { IDataType } from '../types'
-import type {IVideoList, IVideoListResult, IVideoParams} from './videosType'
+import type {
+  IFeedParams,
+  IVideoList,
+  IVideoListResult,
+  IVideoParams
+} from './videosType'
 
 enum VideoApi {
   //获取分页视频列表
-  getVideoList = '/video/getVideosListByPage',
+  getVideoList = '/video/feed',
   //获取视频滚动列表
   getVideoScrollList = '/video/getVideosByCursor',
   //获取视频评论列表
@@ -32,20 +37,20 @@ enum VideoApi {
  * @url /video/self
  */
 export function getVideoByParams(params: IVideoParams) {
-    return apiRequest.get<IDataType<IVideoListResult>>({
-        url: VideoApi.getVideoByParams,
-        params
-    })
+  return apiRequest.get<IDataType<IVideoListResult>>({
+    url: VideoApi.getVideoByParams,
+    params
+  })
 }
 
 /**
  * 获取分页视频列表
  * @param IVideoList
  */
-export function getVideoList(video: IVideoList) {
-  return apiRequest.post<IDataType<IVideoListResult>>({
+export function getVideoList(params: IFeedParams) {
+  return apiRequest.post<IDataType<IVideoList[]>>({
     url: VideoApi.getVideoList,
-    data: video
+    data: params
   })
 }
 
@@ -121,11 +126,11 @@ export const getVideoById = (videoId: number) => {
 
 //视频上传
 export const uploadVideo = (
-    video: any,
-    title: any,
-    desciption: any,
-    cover: any,
-    status: any
+  video: any,
+  title: any,
+  desciption: any,
+  cover: any,
+  status: any
 ) => {
   return apiRequest.post<IDataType>({
     url: VideoApi.uploadVideo,

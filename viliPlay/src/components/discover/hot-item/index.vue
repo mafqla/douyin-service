@@ -1,22 +1,78 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { ref, type PropType, computed } from 'vue'
 
-const titleItems = ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
+import hot_boom from '@/assets/hot/hot_boom.png'
+import hot_first from '@/assets/hot/hot_first.png'
+import hot_hot from '@/assets/hot/hot_hot.png'
+import hot_exclusive from '@/assets/hot/hot_exclusive.png'
+
+import hot_top1 from '@/assets/hot/hot_top1.png'
+import hot_top2 from '@/assets/hot/hot_top2.png'
+import hot_top3 from '@/assets/hot/hot_top3.png'
+
+interface ITopData {
+  id: number
+  title: string
+}
+
+interface IListData {
+  id: number
+  title: string
+  hotNum: number
+  imgType?: string
+}
+const props = defineProps({
+  titleItems: {
+    type: Array,
+    default: () => ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
+  },
+  topData: {
+    type: Object as PropType<ITopData>,
+    required: true
+  },
+  listData: {
+    type: Array<IListData>,
+    required: true
+  }
+})
+
+const imgTypeToSrc = {
+  hot_boom: hot_boom,
+  hot_first: hot_first,
+  hot_hot: hot_hot,
+  hot_exclusive: hot_exclusive
+}
+
+//使用计算属性，处理图片路径
+const list = computed(() => {
+  return props.listData.map((item) => {
+    //@ts-ignore
+    item.imgType = imgTypeToSrc[item.imgType]
+    return item
+  })
+})
+
+//处理1-3名的图片路径
+const getImgSrc = (id: number) => {
+  if (id === 1) {
+    return hot_top1
+  } else if (id === 2) {
+    return hot_top2
+  } else if (id === 3) {
+    return hot_top3
+  }
+}
+
+// const titleItems = ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
 const selectedIndex = ref(0)
 
-const selectItem = (index) => {
+const selectItem = (index: number) => {
   selectedIndex.value = index
 }
+
 </script>
 <template>
-  <div
-    class="hot-item"
-    style="
-      height: 698.062px;
-      width: 328.5px;
-      transform: translate(352.5px, 16px);
-    "
-  >
+  <div class="hot-item">
     <div class="hot-item-main">
       <div class="hot-item-blank"></div>
       <div class="hot-item-content">
@@ -39,55 +95,61 @@ const selectItem = (index) => {
           <ul class="hot-item-list-content hotChangableList">
             <li class="hot-item-list-content-item">
               <div class="hot-item-list-content-text listStyle">
-                <img
-                  src="//lf3-cdn-tos.bytegoofy.com/obj/goofy/ies/douyin_web//icons/hot/up.png"
-                  alt=""
-                />
+                <img src="../../../assets/hot/up.png" alt="" />
               </div>
               <div class="hot-item-list-content-item-title-content">
                 <div class="custom-link">
-                  <a
-                    href="/hot/1339865/%E6%9C%AC%E8%BD%AE%E5%BC%BA%E9%99%8D%E9%9B%A8%E6%8E%A5%E4%B8%8B%E6%9D%A5%E4%BC%9A%E5%BD%B1%E5%93%8D%E5%93%AA"
+                  <RouterLink
+                    :to="{ name: 'discover', query: { modal_id: topData.id } }"
                     class="custom-title active"
-                    target="_blank"
                   >
-                    <h3>本轮强降雨接下来会影响哪</h3></a
-                  >
-                  <img
-                    src="//lf3-cdn-tos.bytegoofy.com/obj/goofy/ies/douyin_web//icons/hot/hot_boom.png"
-                    alt=""
-                  />
+                    <h3>{{ topData.title }}</h3>
+                  </RouterLink>
                 </div>
               </div>
             </li>
 
-            <li class="hot-item-list-content-item">
-              <div class="hot-item-list-content-text listStyle">
-                <img
-                  src="//lf3-cdn-tos.bytegoofy.com/obj/goofy/ies/douyin_web//icons/hot/hot_top1.png"
-                  alt=""
-                />
-              </div>
-              <div class="hot-item-list-content-item-title-content">
-                <div class="custom-link">
-                  <a
-                    href="/hot/1339865/%E6%9C%AC%E8%BD%AE%E5%BC%BA%E9%99%8D%E9%9B%A8%E6%8E%A5%E4%B8%8B%E6%9D%A5%E4%BC%9A%E5%BD%B1%E5%93%8D%E5%93%AA"
-                    class="custom-title active"
-                    target="_blank"
-                  >
-                    <h3>中国女足1:6不敌英格兰</h3></a
-                  >
-                  <img
-                    src="//lf3-cdn-tos.bytegoofy.com/obj/goofy/ies/douyin_web//icons/hot/hot_boom.png"
-                    alt=""
+            <template v-for="item in list" :key="item.id">
+              <li class="hot-item-list-content-item">
+                <div class="hot-item-list-content-text listStyle">
+                  <img :src="getImgSrc(item.id)" alt="" v-if="item.id <= 3" />
+
+                  <svg-icon
+                    :icon="`icon-${parseInt(item.id.toString()[0], 10)}`"
+                    class="icon"
+                    v-if="item.id > 3"
+                  />
+                  <svg-icon
+                    :icon="`icon-${parseInt(item.id.toString()[1], 10)}`"
+                    class="icon"
+                    v-if="item.id >= 10"
                   />
                 </div>
+                <div class="hot-item-list-content-item-title-content">
+                  <div class="custom-link">
+                    <RouterLink
+                      :to="{ name: 'discover', query: { modal_id: item.id } }"
+                      class="custom-title active"
+                    >
+                      <h3>{{ item.title }}</h3>
+                    </RouterLink>
+                    <img :src="item.imgType" alt="" />
+                  </div>
 
-                <div class="hot-du">
-                  <span class="hot-num">1136.2万</span><span>热度</span>
+                  <div class="hot-du">
+                    <span class="hot-num">{{ item.hotNum }}</span>
+                    <span>热度</span>
+                  </div>
                 </div>
-              </div>
-            </li>
+
+                <div
+                  class="hot-item-content-show"
+                  style="text-align: center; width: 202px"
+                >
+                  {{ item.title }}
+                </div>
+              </li>
+            </template>
           </ul>
         </div>
       </div>
@@ -101,13 +163,13 @@ const selectItem = (index) => {
   will-change: transform;
 
   .hot-item-main {
-    // background-color: #fff;
-    background-color: rgba(37, 38, 50, 1);
-    // border: 0.5px solid rgba(22, 24, 35, 0.06);
-    border: 0.5px solid rgba(255, 255, 255, 0.04);
+    background-color: #fff;
+    // background-color: rgba(37, 38, 50, 1);
+    border: 0.5px solid rgba(22, 24, 35, 0.06);
+    // border: 0.5px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
-    // box-shadow: 0 0 0.5px 0 #f2f2f4;
-    box-shadow: 0 0 0.5px 0 rgba(242, 242, 243, 0.08);
+    box-shadow: 0 0 0.5px 0 #f2f2f4;
+    // box-shadow: 0 0 0.5px 0 rgba(242, 242, 243, 0.08);
     overflow: hidden;
     position: relative;
     width: 100%;
@@ -134,8 +196,8 @@ const selectItem = (index) => {
 
         .hot-item-content-title-item {
           align-items: center;
-          // color: rgba(22, 24, 35, 0.75);
-          color: rgba(255, 255, 255, 0.75);
+          color: rgba(22, 24, 35, 0.75);
+          // color: rgba(255, 255, 255, 0.75);
           cursor: pointer;
           display: flex;
           font-family: PingFang SC;
@@ -149,15 +211,15 @@ const selectItem = (index) => {
         .hot-item-content-title-item.selected {
           border-bottom: 3px solid #fe2c55;
           border-top: 3px solid transparent;
-          // color: #000;
-          color: rgba(255, 255, 255, 1);
+          color: #000;
+          // color: rgba(255, 255, 255, 1);
           font-weight: 600;
         }
       }
 
       .hot-itme-line {
-        // background-color: rgba(22, 24, 35, 0.06);
-        background-color: rgba(255, 255, 255, 0.04);
+        background-color: rgba(22, 24, 35, 0.06);
+        // background-color: rgba(255, 255, 255, 0.04);
         display: block;
         height: 1px;
         min-height: 1px;
@@ -178,9 +240,19 @@ const selectItem = (index) => {
             padding-bottom: 18px;
             position: relative;
             width: 100%;
+
+            &:hover {
+              h3 {
+                color: #ff2c55 !important;
+              }
+
+              .hot-item-content-show {
+                display: block;
+              }
+            }
             .hot-item-list-content-text {
-              // color: rgba(22, 24, 35, 0.6);
-              color: rgba(255, 255, 255, 0.5);
+              color: rgba(22, 24, 35, 0.6);
+              // color: rgba(255, 255, 255, 0.5);
               flex-shrink: 0;
               font-size: 21px;
               font-weight: 700;
@@ -194,8 +266,8 @@ const selectItem = (index) => {
                 width: 24px;
               }
             }
-            .hot-item-list-content-text.listStyle {
-            }
+            // .hot-item-list-content-text.listStyle {
+            // }
 
             .hot-item-list-content-item-title-content {
               overflow: hidden;
@@ -208,8 +280,8 @@ const selectItem = (index) => {
                 .custom-title {
                   position: relative;
                   h3 {
-                    // color: #161823;
-                    color: rgba(255, 255, 255, 0.9);
+                    color: #161823;
+                    // color: rgba(255, 255, 255, 0.9);
                     font-size: 16px;
                     line-height: 24px;
                     margin-right: 5px;
@@ -228,8 +300,8 @@ const selectItem = (index) => {
               }
 
               .hot-du {
-                // color: rgba(22, 24, 35, 0.6);
-                color: rgba(255, 255, 255, 0.5);
+                color: rgba(22, 24, 35, 0.6);
+                // color: rgba(255, 255, 255, 0.5);
                 font-size: 14px;
                 line-height: 22px;
                 .hot-num {
@@ -238,6 +310,29 @@ const selectItem = (index) => {
                   padding-right: 4px;
                 }
               }
+            }
+
+            .hot-item-content-show {
+              background-color: #f2f2f4;
+              // background-color: rgba(51,52,63,1);
+              border: 1px solid rgba(22, 24, 35, 0.2);
+              // border: 1px solid rgba(255, 255, 255, 0.12);
+              border-radius: 4px;
+              color: #161823;
+              // color: rgba(255, 255, 255, 0.9);
+              display: none;
+              filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.04));
+              // filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+              font-size: 12px;
+              left: 50%;
+              line-height: 20px;
+              max-width: 100%;
+              padding: 0 10px;
+              position: absolute;
+              text-align: center;
+              top: 24px;
+              transform: translateX(-50%);
+              z-index: 1;
             }
           }
         }
@@ -258,6 +353,13 @@ const selectItem = (index) => {
         }
       }
     }
+  }
+
+  .icon {
+    width: 12px;
+    height: 24px;
+    color: rgba(22, 24, 35, 0.6);
+    // color: rgba(255, 255, 255, 0.5);
   }
 }
 </style>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import { reactive, ref } from 'vue'
 import videoItem from './video-item.vue'
 import modelPlayer from '@/components/video-player/modal-player.vue'
-import {useRouter} from 'vue-router'
-import {videoStore} from '@/stores/videos'
-import type {IVideoList} from '@/service/videos/videosType'
+import { useRouter } from 'vue-router'
+import { videoStore } from '@/stores/videos'
+import type { IVideoList } from '@/service/videos/videosType'
 
 const props = defineProps({
   videoList: {
@@ -35,7 +35,6 @@ const modalData = reactive({
   isAttention: false
 })
 const handleModal = (item: IVideoList) => {
-  console.log(item)
   modalData.id = item.id
   modalData.username = item.userName
   modalData.uploadTime = item.uploadTime
@@ -77,30 +76,30 @@ const handleClose = () => {
 <template>
   <div class="video-list">
     <video-item
-        v-for="item in props.videoList"
-        :key="item.id"
-        :modal_id="item.id"
-        :imgSrc="item.videosCover"
-        :videoUrl="item.videosAddress"
-        :title="item.title"
-        :dianzan="item.likeCount"
-        @click.stop="handleModal(item)"
-        @openModal="handleModal(item)"
+      v-for="item in props.videoList"
+      :key="item.id"
+      :modal_id="item.id"
+      :imgSrc="item.videosCover"
+      :videoUrl="item.videosAddress"
+      :title="item.title"
+      :dianzan="item.likeCount"
+      @click.stop="handleModal(item)"
+      @openModal="handleModal(item)"
     />
     <el-dialog
-        v-model="visible"
-        :show-close="false"
-        :modal="false"
-        :fullscreen="true"
-        top="0vh"
-        :append-to-body="true"
-        :destroy-on-close="true"
+      v-model="visible"
+      :show-close="false"
+      :modal="false"
+      :fullscreen="true"
+      top="0vh"
+      :append-to-body="true"
+      :destroy-on-close="true"
     >
-      <model-player v-bind="modalData" @closeBtn="handleClose"/>
+      <model-player v-bind="modalData" @closeBtn="handleClose" />
     </el-dialog>
 
-    <Loading v-if="videoStore().bottomLoading"/>
-    <list-footer v-if="videoStore().isEmpty"/>
+    <Loading v-if="videoStore().bottomLoading" />
+    <list-footer v-if="videoStore().isEmpty" />
   </div>
 </template>
 

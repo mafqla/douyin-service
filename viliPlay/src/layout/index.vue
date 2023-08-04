@@ -7,13 +7,15 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 const backgroundColor = ref('none')
 
 // 滚动监听
-window.addEventListener("scroll", function () {
+window.addEventListener('scroll', function () {
   if (window.scrollY > 60) {
     backgroundColor.value = '#fff'
   } else {
     backgroundColor.value = 'none'
   }
 })
+
+
 </script>
 
 <template>
@@ -30,7 +32,7 @@ window.addEventListener("scroll", function () {
           <div class="page-info">
             <router-view v-slot="{ Component, route }">
               <!-- <keep-alive> -->
-                <component :is="Component" :key="route.path" />
+              <component :is="Component" :key="route.path" />
               <!-- </keep-alive> -->
             </router-view>
           </div>
@@ -72,6 +74,7 @@ window.addEventListener("scroll", function () {
 .page-info {
   width: 100%;
   height: 100%;
+  // min-height: 450px;
 }
 
 @media screen and (max-width: 1240px) {

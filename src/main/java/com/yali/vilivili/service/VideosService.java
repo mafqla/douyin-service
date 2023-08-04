@@ -2,6 +2,7 @@ package com.yali.vilivili.service;
 
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.vo.VideosEntityVO;
+import com.yali.vilivili.model.vo.VideosInfoVO;
 import com.yali.vilivili.model.vo.VideosParamsVO;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface VideosService {
      * @param size   每页数量
      * @param status 状态
      */
-    List<VideosEntity> getVideosListByPage(Integer page, Integer size, Integer status);
+    List<VideosInfoVO> getVideosListByPage(Integer page, Integer size, Integer status);
 
     /**
      * 视频滚动加载接口

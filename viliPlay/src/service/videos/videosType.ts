@@ -18,22 +18,21 @@ export interface IVideoList {
   commentCount: 0
   status: 0
 
-    isTop: boolean
-    isAttention: boolean
-    isLike: boolean
-    isDislike: boolean
-    isCollect: boolean
-    userName: string
-    userAvatar: string
+  isTop: boolean
+  isAttention: boolean
+  isLike: boolean
+  isDislike: boolean
+  isCollect: boolean
+  userName: string
+  userAvatar: string
 }
 
 export interface IVideoListResult {
-    videosList: IVideoList[]
-    publishCount: number
-    likeCount: number
-    collectCount: number
+  videosList: IVideoList[]
+  publishCount: number
+  likeCount: number
+  collectCount: number
 }
-
 
 /**
  * 跟据参数获取视频
@@ -43,8 +42,19 @@ export interface IVideoListResult {
  * @param userId
  */
 export interface IVideoParams {
-    showTab: string
-    page: number
-    size: number
-    userId?: number
+  showTab: string
+  page: number
+  size: number
+  userId?: number
+}
+
+/**
+ * 获取分页视频列表
+ * @param page
+ * @param size
+ *
+ */
+export interface IFeedParams {
+  page: number
+  size: number
 }
