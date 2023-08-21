@@ -1,0 +1,106 @@
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import xgplayer from 'xgplayer'
+
+import { v4 as uuidv4 } from 'uuid'
+const props = defineProps({
+  options: {
+    type: Object,
+    required: true
+  }
+})
+
+const player = ref<any>(null)
+const uniqueId = uuidv4()
+onMounted(() => {
+  //@ts-ignore
+  player.value = new xgplayer({
+    ...props.options,
+    id: `xgplayer-${uniqueId}`
+  })
+  const playerRef = ref<HTMLDivElement | null>(null)
+  playerRef.value?.appendChild(player.value.root)
+})
+
+onBeforeUnmount(() => {
+  player.value.destroy()
+})
+
+const playerId = ref(`xgplayer-${uniqueId}`)
+const poster = ref(props.options.poster || '')
+</script>
+<template>
+  <div class="modal" ref="player" :id="playerId"></div>
+</template>
+
+<style lang="scss" scoped>
+.modal {
+  position: relative;
+  background: transparent;
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2560px) {
+  .modal {
+    width: 71.4285714286%;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .modal {
+    width: calc(100% - 656px);
+  }
+}
+</style>
+
+<style lang="scss">
+.modal video {
+  position: absolute;
+  bottom: 48px;
+}
+
+// .xgplayer-volume-active,
+// .xgplayer-playbackrate-active {
+//   video {
+//     position: absolute;
+//     z-index: 100;
+//   }
+// }
+
+.xgplayer-skin-default .xgplayer-playbackrate {
+  margin-top: unset;
+  height: 30px;
+
+  .name {
+    font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
+
+    color: #e4e4e6;
+    background: unset;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 32px;
+    text-align: center;
+    vertical-align: top;
+    opacity: 1;
+
+    border-radius: unset;
+    bottom: 6px;
+  }
+}
+
+.xgplayer-skin-default .xgplayer-progress-played {
+  background: rgba(255, 255, 255, 0.4);
+}
+.xgplayer-skin-default .xgplayer-progress-cache {
+  background: transparent;
+}
+.xgplayer-skin-default .xgplayer-playbackrate ul {
+  width: 48px;
+  border-radius: 4px;
+}
+
+.xgplayer-skin-default .xgplayer-playbackrate ul li.selected,
+.xgplayer-skin-default .xgplayer-playbackrate ul li:hover {
+  color: rgb(210, 27, 70);
+  pointer-events: all;
+}
+</style>
