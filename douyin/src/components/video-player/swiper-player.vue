@@ -1,0 +1,545 @@
+<script setup lang="ts">
+import {
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  toRefs,
+  watch,
+  watchEffect
+} from 'vue'
+import xgplayer from 'xgplayer'
+import { Events } from 'xgplayer'
+import 'xgplayer/dist/index.min.css'
+import startPlay from '@/assets/videos-player-icon/all-play.svg'
+import startPause from '@/assets/videos-player-icon/all-pause.svg'
+import play from '@/assets/videos-player-icon/play.svg'
+import pause from '@/assets/videos-player-icon/pause.svg'
+import fullscreen from '@/assets/videos-player-icon/get-fullscreen.svg'
+import fullscreenExit from '@/assets/videos-player-icon/exit-fullscreen.svg'
+import volume from '@/assets/videos-player-icon/volume.svg'
+import volumeMute from '@/assets/videos-player-icon/volume-mute.svg'
+import volumeSmall from '@/assets/videos-player-icon/volume-small.svg'
+import cssFullScreen from '@/assets/videos-player-icon/cssFullscreen.svg'
+import exitCssFullScreen from '@/assets/videos-player-icon/exit-cssFullscreen.svg'
+
+import { v4 as uuidv4 } from 'uuid'
+
+import {
+  VideoInfo,
+  VideoSidebar,
+  VideoSideBarBtn
+} from '@/components/video-components'
+import { commentStore } from '@/stores/comment'
+
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  uploadTime: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  poster: {
+    type: String,
+    required: true
+  },
+  isPlay: {
+    type: Boolean,
+    required: true
+  },
+  img: {
+    type: String,
+    required: true
+  },
+  dianzan: {
+    type: Number,
+    required: true
+  },
+  comment: {
+    type: Number,
+    required: true
+  },
+  shoucang: {
+    type: Number,
+    required: false
+  },
+  globalVolume: {
+    type: Number,
+    required: false,
+    default: 0
+  },
+  isLike: {
+    type: Boolean,
+    required: false
+  },
+  isCollect: {
+    type: Boolean,
+    required: false
+  },
+  isAttention: {
+    type: Boolean,
+    required: false
+  }
+})
+
+const player = ref<any>(null)
+const uniqueId = uuidv4()
+
+const { isPlay } = toRefs(props)
+//西瓜播放器选项
+const playerOptions = ref({
+  id: `xgplayer-${uniqueId}`,
+  url: props.url,
+  width: '100%',
+  height: '100%',
+  playsinline: true,
+  autoplay: isPlay.value,
+
+  loop: true,
+  lang: 'zh-cn',
+  volume: props.globalVolume,
+  keyShortcut: 'on',
+  playbackRate: [0.75, 1.0, 1.25, 1.5, 2.0],
+  closeInactive: true,
+  allowSeekPlayed: true,
+  allowPlayAfterEnded: true,
+  allowSeekAfterEnded: true,
+  enableContextmenu: true,
+  marginControls: true,
+  cssfullscreen: {
+    position: 'root'
+  },
+  controls: {
+    autoHide: false,
+    initShow: true
+  },
+  icons: {
+    startPlay: startPlay,
+    startPause: startPause,
+    play: play,
+    pause: pause,
+    fullscreen: fullscreen,
+    exitFullscreen: fullscreenExit,
+    volumeLarge: volume,
+    volumeMuted: volumeMute,
+    volumeSmall: volumeSmall,
+    fullscreenExit: fullscreenExit,
+    cssFullscreen: cssFullScreen,
+    exitCssFullscreen: exitCssFullScreen
+  }
+})
+onMounted(() => {
+  //@ts-ignore
+  player.value = new xgplayer(playerOptions.value)
+  const playerRef = ref<HTMLDivElement | null>(null)
+  playerRef.value?.appendChild(player.value.root)
+})
+
+console.log(props.isPlay)
+// 监听 isPlay 变化，更新播放器选项
+
+watch(isPlay, () => {
+  // console.log(isPlay)
+  playerOptions.value.autoplay = isPlay.value
+  playerOptions.value.id = `xgplayer-${uniqueId}`
+  playerOptions.value.volume = 0.6
+
+  // console.log(player.value.config.autoplay)
+  // player.value.config.autoplay = isPlay.value
+  //  player.value.config.autoplay = isPlay.value
+  //@ts-ignore
+  player.value = new xgplayer(playerOptions.value)
+
+  // console.log(playerOptions.value)
+})
+onBeforeUnmount(() => {
+  player.value.destroy()
+})
+// //@ts-ignore
+// player.on(Events.VOLUME_CHANGE, () => {
+//   // TODO
+//   console.log('音量改变')
+// })
+
+const playerId = ref(`xgplayer-${uniqueId}`)
+
+let isShow = ref(true)
+let currentWidth = ref('100%')
+//打开评论
+const openComments = () => {
+  //隐藏按钮
+  isShow.value = false
+  //设置宽度
+  currentWidth.value = 'calc(100% - 336px)'
+
+  //获取屏幕宽度
+  const screenWidth = document.body.clientWidth
+  // console.log(screenWidth)
+
+  //如果屏幕宽度大于等于2560px，就设置宽度为100%-28.5714285714%
+  if (screenWidth >= 1440) {
+    currentWidth.value = 'calc(100% - 28.5714285714%)'
+  }
+}
+
+//关闭评论
+const closeComments = () => {
+  //显示按钮
+  isShow.value = true
+  //设置宽度
+  currentWidth.value = '100%'
+}
+
+//切换评论区的显示状态
+const toggleComments = (id: any) => {
+  isShow.value = !isShow.value
+  if (!isShow.value) {
+    //如果评论区关闭，就执行打开评论操作
+    openComments()
+  } else {
+    //否则执行关闭评论操作
+    closeComments()
+  }
+  const store = commentStore()
+  store.getVideoCommentList(id) as any
+}
+</script>
+
+<template>
+  <div class="swiper-player">
+    <div
+      class="videos-container"
+      :style="{ width: currentWidth }"
+      id="videos-controll"
+    >
+      <!-- <ViliPlayer :options="playerOptions" :isPlay="isPlay" /> -->
+
+      <div class="modal" ref="player" :id="playerId"></div>
+      <video-info
+        :username="props.username"
+        :uploadTime="props.uploadTime"
+        :description="props.description"
+      />
+      <video-action
+        :avatar="props.img"
+        :dianzan="props.dianzan"
+        :comment="props.comment"
+        :shoucang="props.shoucang"
+        :isLike="props.isLike"
+        :isCollect="props.isCollect"
+        @toggleComments="toggleComments(props.id)"
+      >
+      </video-action>
+    </div>
+
+    <video-side-bar-btn @click="openComments" v-show="isShow" />
+
+    <video-sidebar
+      :id="props.id"
+      :username="props.username"
+      @closeComments="closeComments"
+      v-show="!isShow"
+    />
+
+    <div class="video-blur">
+      <img :src="props.poster" :alt="props.description" />
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.swiper-player {
+  border-radius: 4px;
+  flex-grow: 1;
+  height: 100%;
+  opacity: 1;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.15s linear;
+  width: 100%;
+
+  .videos-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 64px;
+      height: 64px;
+      background-color: rgba(0, 0, 0, 0.18);
+      border: 0.5px solid hsla(0, 0%, 100%, 0.15);
+      border-radius: 32px;
+      z-index: 100;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.35);
+
+        .icon {
+          color: #fff;
+        }
+      }
+
+      .icon {
+        height: 18px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 18px;
+        color: hsla(0, 0%, 100%, 0.25);
+      }
+    }
+  }
+
+  .video-blur {
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    overflow: hidden;
+    z-index: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      filter: blur(60px);
+      opacity: 0.8;
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2560px) {
+  .videos-container {
+    width: 71.4285714286%;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .videos-container {
+    width: calc(100% - 656px);
+  }
+}
+
+.modal {
+  position: relative;
+  background: transparent;
+}
+
+@media screen and (min-width: 1440px) and (max-width: 2560px) {
+  .modal {
+    width: 71.4285714286%;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .modal {
+    width: calc(100% - 656px);
+  }
+}
+</style>
+
+<style lang="scss">
+.xgplayer xg-start-inner {
+  background: none;
+}
+.xgplayer .xgplayer-start .xg-icon-play,
+.xg-icon-pause {
+  width: 100%;
+  height: 100%;
+}
+.xgplayer-skin-default .xgplayer-progress-played {
+  background: rgba(255, 255, 255, 0.4);
+}
+.xgplayer-skin-default .xgplayer-progress-cache {
+  background: transparent;
+}
+.xgplayer-skin-default .xgplayer-playbackrate ul {
+  width: 48px;
+  border-radius: 4px;
+}
+
+.xgplayer-skin-default .xgplayer-playbackrate ul li.selected,
+.xgplayer-skin-default .xgplayer-playbackrate ul li:hover {
+  color: rgb(210, 27, 70);
+  pointer-events: all;
+}
+</style>
+
+<style>
+.xgplayer .btn-text span {
+  font-size: 14px;
+  font-weight: 500;
+  /* line-height: 32px; */
+  text-align: center;
+  color: #e4e4e6;
+  background: unset;
+}
+.xgplayer .xg-options-list {
+  width: 57px;
+  background-color: #41424c;
+  border-radius: 4px;
+  /* bottom: 40px; */
+  bottom: 53px;
+  color: #fff;
+  font-size: 14px;
+  opacity: 1;
+  /* padding: 20px 0 0; */
+  top: auto;
+}
+.xgplayer .xg-options-list li {
+  cursor: pointer;
+  line-height: 18px;
+  margin-bottom: 16px;
+  opacity: 0.7;
+  text-align: center;
+  width: 100%;
+}
+.xgplayer.xgplayer-pc .xgplayer-progress-outer {
+  height: 2px;
+}
+.xgplayer-progress-inner .xgplayer-progress-played {
+  background: hsla(0, 0%, 100%, 0.4);
+}
+.xgplayer-skin-default .xgplayer-progress-inner {
+  background: transparent;
+}
+.xgplayer-progress-inner .xgplayer-progress-cache {
+  background: transparent;
+}
+.xgplayer-progress-inner .xgplayer-progress-played {
+  background: hsla(0, 0%, 100%, 0.4);
+}
+
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-outer,
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-outer {
+  height: 12px;
+  margin: 0;
+  transition: none;
+}
+
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-inner,
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-inner {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    transparent 3px,
+    hsla(0, 0%, 100%, 0.4) 0,
+    hsla(0, 0%, 100%, 0.4) 9px,
+    transparent 0,
+    transparent
+  );
+}
+
+.xgplayer.xgplayer-pc
+  .xgplayer-progress.active
+  .xgplayer-progress-inner
+  .xgplayer-progress-cache,
+.xgplayer.xgplayer-pc
+  .xgplayer-progress.active
+  .xgplayer-progress-inner
+  .xgplayer-progress-cache {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    transparent 3px,
+    hsla(0, 0%, 100%, 0.6) 0,
+    hsla(0, 0%, 100%, 0.6) 9px,
+    transparent 0,
+    transparent
+  );
+}
+
+.xgplayer.xgplayer-pc
+  .xgplayer-progress.active
+  .xgplayer-progress-inner
+  .xgplayer-progress-played,
+.xgplayer.xgplayer-pc
+  .xgplayer-progress.active
+  .xgplayer-progress-inner
+  .xgplayer-progress-played {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    transparent 3px,
+    #fff 0,
+    #fff 9px,
+    transparent 0,
+    transparent
+  );
+}
+
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-btn:before,
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-btn:before {
+  background-clip: content-box;
+  border: 5px solid hsla(0, 0%, 100%, 0.2);
+}
+.xgplayer.xgplayer-pc .xgplayer-progress-btn {
+  background: none;
+  box-shadow: none;
+}
+.xgplayer .xgplayer-progress-btn {
+  background: rgba(255, 94, 94, 0.304);
+  border: 0.5px solid rgba(255, 94, 94, 0.057);
+  border-radius: 30px;
+  box-shadow: 0 0 1px rgba(255, 0, 0, 0.383);
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 20px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 20px;
+  z-index: 1;
+}
+.xgplayer .xgplayer-progress-btn:before {
+  background: #fff;
+  border-radius: 30px;
+  content: ' ';
+  /* height: 12px; */
+  width: 20px;
+  height: 20px;
+  left: 50%;
+  position: relative;
+  /* width: 12px; */
+}
+.xgplayer .xgplayer-progress-btn,
+.xgplayer .xgplayer-progress-btn:before {
+  display: block;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.xgplayer.xgplayer-pc .xgplayer-progress-btn {
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  -ms-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+}
+.xgplayer.xgplayer-pc .xgplayer-progress.active .xgplayer-progress-btn {
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  -ms-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+.xgplayer.xgplayer-pc .xg-inner-controls {
+  left: 0 !important;
+  right: 0 !important;
+}
+</style>

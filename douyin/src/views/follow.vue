@@ -2,16 +2,19 @@
 import { ref } from 'vue'
 import CarouselControls from '@/components/swper/swiper-control.vue'
 
-const loading = ref(true)
+const loading = ref(false)
 </script>
 <template>
   <div class="follow">
     <Loading :show="loading" :isShowText="true" :center="true">
-      <swiper-video>
+      <!-- <swiper-video>
         <template #slide>
           <carousel-controls />
         </template>
-      </swiper-video>
+      </swiper-video> -->
+      <mini-player
+        :url="'http://192.168.227.1:8081/res/458e6bd5-a8cc-492f-a924-e264d7b2eb9e.mp4'"
+      />
     </Loading>
   </div>
 </template>

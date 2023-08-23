@@ -43,19 +43,15 @@ const fetchVideoData = async () => {
   })
   if (data) {
     if (query.value === 'post') {
-      video.userPostVideos = []
       video.userPostVideos.push(...data)
     }
     if (query.value === 'like') {
-      video.userLikeVideos = []
       video.userLikeVideos.push(...data)
     }
     if (query.value === 'favorite_collection') {
-      video.userCollectVideos = []
       video.userCollectVideos.push(...data)
     }
     if (query.value === 'record') {
-      video.userRecordVideos = []
       video.userRecordVideos.push(...data)
     }
   }
@@ -75,7 +71,10 @@ onMounted(() => {
 
 watch(query, () => {
   page.value = 1
-
+  video.userPostVideos = []
+  video.userLikeVideos = []
+  video.userCollectVideos = []
+  video.userRecordVideos = []
   // fetchVideoData()
 })
 watchEffect(() => {
@@ -94,7 +93,7 @@ const load = () => {
   video.bottomLoading = false
 }
 
-console.log(page.value)
+// console.log(page.value)
 
 useInfiniteScroll(window, load, {
   distance: 500

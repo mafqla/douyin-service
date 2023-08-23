@@ -2,6 +2,17 @@
 import ViliPlayer from './vili-player.vue'
 import SwiperControl from '@/components/swper/swiper-control.vue'
 import { ref } from 'vue'
+import startPlay from '@/assets/videos-player-icon/all-play.svg'
+import startPause from '@/assets/videos-player-icon/all-pause.svg'
+import play from '@/assets/videos-player-icon/play.svg'
+import pause from '@/assets/videos-player-icon/pause.svg'
+import fullscreen from '@/assets/videos-player-icon/get-fullscreen.svg'
+import fullscreenExit from '@/assets/videos-player-icon/exit-fullscreen.svg'
+import volume from '@/assets/videos-player-icon/volume.svg'
+import volumeMute from '@/assets/videos-player-icon/volume-mute.svg'
+import volumeSmall from '@/assets/videos-player-icon/volume-small.svg'
+import cssFullScreen from '@/assets/videos-player-icon/cssFullscreen.svg'
+import exitCssFullScreen from '@/assets/videos-player-icon/exit-cssFullscreen.svg'
 
 import {
   VideoInfo,
@@ -62,7 +73,6 @@ const playerOptions = {
   height: '100%',
   playsinline: true,
   autoplay: true,
-  controls: true,
   loop: true,
   lang: 'zh-cn',
   volume: props.globalVolume,
@@ -73,7 +83,26 @@ const playerOptions = {
   closeInactive: true,
   allowSeekPlayed: true,
   allowPlayAfterEnded: true,
-  allowSeekAfterEnded: true
+  allowSeekAfterEnded: true,
+  marginControls: true,
+  controls: {
+    autoHide: false,
+    initShow: true
+  },
+  icons: {
+    startPlay: startPlay,
+    startPause: startPause,
+    play: play,
+    pause: pause,
+    fullscreen: fullscreen,
+    exitFullscreen: fullscreenExit,
+    volumeLarge: volume,
+    volumeMuted: volumeMute,
+    volumeSmall: volumeSmall,
+    fullscreenExit: fullscreenExit,
+    cssFullscreen: cssFullScreen,
+    exitCssFullscreen: exitCssFullScreen
+  }
 } as any
 
 let isShow = ref(true)
@@ -140,7 +169,9 @@ const toggleComments = (id: any) => {
         :isCollect="props.isCollect"
         @toggleComments="toggleComments(props.id)"
       >
-        <SwiperControl />
+        <div class="switch-control">
+          <SwiperControl />
+        </div>
       </video-action>
     </div>
 
@@ -170,6 +201,14 @@ const toggleComments = (id: any) => {
     width: 100%;
     height: 100%;
     z-index: 2;
+
+    .switch-control {
+      position: absolute;
+      // right: 13px;
+      right: 8px;
+      transform: translateY(calc(-50% - 30px));
+      z-index: 20;
+    }
 
     .close-btn {
       position: fixed;

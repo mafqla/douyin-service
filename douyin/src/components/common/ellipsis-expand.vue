@@ -22,18 +22,23 @@ onMounted(() => {
       spanHeight.value = entry.target.scrollHeight
       clientHeight.value = entry.target.clientHeight
       // console.log(spanHeight.value, clientHeight.value)
+
       shouldShowButton.value = spanHeight.value > clientHeight.value
-      if (shouldShowButton.value) {
-        addShow.value = true
+      addShow.value = spanHeight.value > clientHeight.value
+      if (expanded.value) {
+        shouldShowButton.value = true
       }
     }
   })
   resizeObserver.observe(spanText.value!)
 })
 
+// watchEffect(() => {
+//   console.log(shouldShowButton.value)
+// })
 const toggleExpand = () => {
   expanded.value = !expanded.value
-  addShow.value = !addShow.value
+  // addShow.value = !expanded.value
 }
 
 const formattedDescription = computed(() => {
@@ -65,7 +70,7 @@ const formattedDescription = computed(() => {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .video-title {
   display: flex;
   width: 100%;
@@ -97,17 +102,6 @@ const formattedDescription = computed(() => {
   &.text-expanded {
     max-height: 748px;
     -webkit-line-clamp: 34;
-  }
-
-  .tag {
-    color: #f1c40f;
-    text-decoration: none;
-    padding: 0 5px;
-
-    &:hover {
-      text-decoration: underline;
-      background-color: transparent;
-    }
   }
 }
 
@@ -142,6 +136,21 @@ const formattedDescription = computed(() => {
     padding: 0px !important;
     border-radius: 4px;
     cursor: pointer;
+  }
+}
+</style>
+
+<style lang="scss">
+.text {
+  .tag {
+    color: #f1c40f;
+    text-decoration: none;
+    padding: 0 5px;
+
+    &:hover {
+      text-decoration: underline;
+      background-color: transparent;
+    }
   }
 }
 </style>

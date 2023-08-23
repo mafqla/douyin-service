@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import xgplayer from 'xgplayer'
+import 'xgplayer/dist/index.min.css'
 
 import { v4 as uuidv4 } from 'uuid'
 const props = defineProps({
   options: {
     type: Object,
     required: true
+  },
+  isPlay: {
+    type: Boolean,
+    required: false
   }
 })
 
@@ -27,7 +32,20 @@ onBeforeUnmount(() => {
 })
 
 const playerId = ref(`xgplayer-${uniqueId}`)
-const poster = ref(props.options.poster || '')
+
+watch(
+  () => props.isPlay,
+  (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      if (newVal) {
+        player.value.play()
+      } else {
+        player.value.pause()
+      }
+    }
+  }
+)
+console.log(props.isPlay)
 </script>
 <template>
   <div class="modal" ref="player" :id="playerId"></div>
@@ -53,10 +71,10 @@ const poster = ref(props.options.poster || '')
 </style>
 
 <style lang="scss">
-.modal video {
-  position: absolute;
-  bottom: 48px;
-}
+// .modal video {
+//   position: absolute;
+//   bottom: 48px;
+// }
 
 // .xgplayer-volume-active,
 // .xgplayer-playbackrate-active {
@@ -66,41 +84,41 @@ const poster = ref(props.options.poster || '')
 //   }
 // }
 
-.xgplayer-skin-default .xgplayer-playbackrate {
-  margin-top: unset;
-  height: 30px;
+// .xgplayer-skin-default .xgplayer-playbackrate {
+//   margin-top: unset;
+//   height: 30px;
 
-  .name {
-    font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
+//   .name {
+//     font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
 
-    color: #e4e4e6;
-    background: unset;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 32px;
-    text-align: center;
-    vertical-align: top;
-    opacity: 1;
+//     color: #e4e4e6;
+//     background: unset;
+//     font-size: 14px;
+//     font-weight: 500;
+//     line-height: 32px;
+//     text-align: center;
+//     vertical-align: top;
+//     opacity: 1;
 
-    border-radius: unset;
-    bottom: 6px;
-  }
-}
+//     border-radius: unset;
+//     bottom: 6px;
+//   }
+// }
 
-.xgplayer-skin-default .xgplayer-progress-played {
-  background: rgba(255, 255, 255, 0.4);
-}
-.xgplayer-skin-default .xgplayer-progress-cache {
-  background: transparent;
-}
-.xgplayer-skin-default .xgplayer-playbackrate ul {
-  width: 48px;
-  border-radius: 4px;
-}
+// .xgplayer-skin-default .xgplayer-progress-played {
+//   background: rgba(255, 255, 255, 0.4);
+// }
+// .xgplayer-skin-default .xgplayer-progress-cache {
+//   background: transparent;
+// }
+// .xgplayer-skin-default .xgplayer-playbackrate ul {
+//   width: 48px;
+//   border-radius: 4px;
+// }
 
-.xgplayer-skin-default .xgplayer-playbackrate ul li.selected,
-.xgplayer-skin-default .xgplayer-playbackrate ul li:hover {
-  color: rgb(210, 27, 70);
-  pointer-events: all;
-}
+// .xgplayer-skin-default .xgplayer-playbackrate ul li.selected,
+// .xgplayer-skin-default .xgplayer-playbackrate ul li:hover {
+//   color: rgb(210, 27, 70);
+//   pointer-events: all;
+// }
 </style>

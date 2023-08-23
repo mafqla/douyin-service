@@ -26,7 +26,7 @@ const addDianzan = () => {
 const shoucang = ref(props.shoucang) as any
 const isCollect = ref(props.isCollect) as any
 
-console.log(isCollect.value)
+// console.log(isCollect.value)
 const addShoucang = () => {
   if (isCollect.value) {
     shoucang.value--

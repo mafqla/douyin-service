@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import { ElMessage } from 'element-plus'
 import { videoStore } from '@/stores/videos'
+import { videosCtrolStore } from '@/stores/videos-control'
 
 const currentIndex = ref(0)
 const prev = ref(false)
@@ -29,7 +30,7 @@ const handlePrev = () => {
   // 暂停上一个视频
   isPlay.value = false
   currentIndex.value--
-  videoStore().translateY += 893
+  videoStore().translateY += 876
   prev.value = false
   next.value = false
 }
@@ -65,7 +66,7 @@ const handleNext = async () => {
   // 暂停上一个视频
   isPlay.value = false
   currentIndex.value++
-  videoStore().translateY -= 893
+  videoStore().translateY -= 876
 }
 </script>
 
@@ -74,8 +75,8 @@ const handleNext = async () => {
     <div class="carousel-controls-switch">
       <div
         class="carousel-controls-switch-up"
-        :class="{ disabled: currentIndex === 0 || prev }"
-        @click="handlePrev"
+        :class="{ disabled: videosCtrolStore().activeVideoIndex === 0 || prev }"
+        @click="videosCtrolStore().handlePrev()"
       >
         <svg-icon class="icon" icon="video-switch-prev-arrow" />
       </div>
@@ -84,7 +85,7 @@ const handleNext = async () => {
         :class="{
           disabled: next
         }"
-        @click="next === true ? null : handleNext()"
+        @click="next === true ? null : videosCtrolStore().handleNext()"
       >
         <svg-icon class="icon" icon="video-switch-next-arrow" />
       </div>
@@ -94,21 +95,8 @@ const handleNext = async () => {
 
 <style lang="scss" scoped>
 .carousel-controls {
-  // position: absolute;
-  // right: 13px;
-  // top: 5%;
-  // transform: translateY(-50%);
-  // //垂直居中
-  // display: flex;
-  // justify-content: center;
-
-  position: absolute;
-  // right: 13px;
-  right: 8px;
-  // top: calc(50% + 60px);
-  // top: 50%;
-  transform: translateY(calc(-50% - 30px));
-  z-index: 20;
+  width: 100%;
+  height: 100%;
 
   .carousel-controls-switch {
     background-color: rgb(50, 52, 66);
