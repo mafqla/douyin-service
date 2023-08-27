@@ -10,13 +10,13 @@ const loading = ref(false)
 const props = defineProps({
   id: Number
 })
-const store = commentStore()
+// const store = commentStore()
 
 const list = ref([]) as any
-watchEffect(async () => {
-  list.value = await store.getVideoCommentList(props.id as any)
-  commentCount.value = list.value.length
-})
+// watchEffect(async () => {
+//   list.value = await store.getVideoCommentList(props.id as any)
+//   commentCount.value = list.value.length
+// })
 
 async function submitComment() {
   //清空输入框
@@ -26,7 +26,7 @@ async function submitComment() {
   loading.value = true
   await addVideoComment(props.id as any, textarea.value)
   textarea.value = ''
-  list.value = await store.getVideoCommentList(props.id as any)
+  // list.value = await store.getVideoCommentList(props.id as any)
   commentCount.value = list.value.length
   console.log(list.value)
 }
@@ -40,19 +40,19 @@ async function submitComment() {
     </div>
 
     <div class="video-comment-list">
-      <el-scrollbar height="712px">
-        <template v-for="it in store.comments as any" :key="it.id">
-          <comment-item
-            :srcd="it.user.userAvatar"
-            :username="it.user.username"
-            :likenum="it.commentLike"
-            :time="it.commentTime"
-            :comment="it.commentInfo"
-          />
-        </template>
+      <!-- <el-scrollbar height="712px"> -->
+      <template v-for="it in list as any" :key="it.id">
+        <comment-item
+          :srcd="it.user.userAvatar"
+          :username="it.user.username"
+          :likenum="it.commentLike"
+          :time="it.commentTime"
+          :comment="it.commentInfo"
+        />
+      </template>
 
-        <list-footer />
-      </el-scrollbar>
+      <list-footer />
+      <!-- </el-scrollbar> -->
     </div>
     <div class="video-comment-footer">
       <div class="comment-input-linear-bg"></div>

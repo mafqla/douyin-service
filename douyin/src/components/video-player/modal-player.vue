@@ -76,7 +76,7 @@ const playerOptions = {
   loop: true,
   lang: 'zh-cn',
   volume: props.globalVolume,
-  poster: props.poster,
+  // poster: props.poster,
   keyShortcut: 'on',
   cssFullscreen: true,
   playbackRate: [0.5, 1.0, 1.5, 1.75, 2],
@@ -85,13 +85,19 @@ const playerOptions = {
   allowPlayAfterEnded: true,
   allowSeekAfterEnded: true,
   marginControls: true,
+  ignores: ['cssfullscreen'],
   controls: {
     autoHide: false,
     initShow: true
   },
+  enter: {
+    innerHtml: `  
+      <div class="xg-douyin-loading"></div>`
+  },
   icons: {
     startPlay: startPlay,
-    startPause: startPause,
+    // startPause: startPause,
+    startPause: startPlay,
     play: play,
     pause: pause,
     fullscreen: fullscreen,
@@ -101,7 +107,10 @@ const playerOptions = {
     volumeSmall: volumeSmall,
     fullscreenExit: fullscreenExit,
     cssFullscreen: cssFullScreen,
-    exitCssFullscreen: exitCssFullScreen
+    exitCssFullscreen: exitCssFullScreen,
+    loadingIcon: `   <div class="loading-content">
+      <div class="loading-content-img"></div>
+    </div>`
   }
 } as any
 

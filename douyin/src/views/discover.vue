@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watchEffect } from 'vue'
+import { h, onMounted, reactive, ref, watchEffect } from 'vue'
 import HotItem from '@/components/discover/hot-item/index.vue'
 import DiscoverItem from '@/components/discover/discover-item/discover-item.vue'
 import { getVideoList } from '@/service/videos/videos'
@@ -10,7 +10,7 @@ import modelPlayer from '@/components/video-player/modal-player.vue'
 
 const loading = ref(true)
 const page = ref(1)
-const size = ref(10)
+const size = ref(20)
 const list = ref<IVideoList[]>([])
 const getData = async (params: IFeedParams) => {
   try {
@@ -94,7 +94,7 @@ function generateTranslateYValues(itemHeight: number, numItems: number) {
 
 //组件挂载前获取窗口大小
 onMounted(() => {
-  currentHeight.value = window.innerHeight
+  // currentHeight.value = window.innerHeight
   currentWidth.value = window.innerWidth
 
   getData({
@@ -105,9 +105,12 @@ onMounted(() => {
 // console.log(list.value)
 // 监听窗口大小变化
 window.addEventListener('resize', () => {
-  currentHeight.value = window.innerHeight
+  // currentHeight.value = window.innerHeight
   currentWidth.value = window.innerWidth
 })
+
+const el = ref(null)
+const { height } = useElementSize(el)
 
 //监听窗口大小变化
 watchEffect(() => {
@@ -119,8 +122,9 @@ watchEffect(() => {
     sidebarWidth.value = 172
   }
   // console.log(sidebarWidth.value)
-
   currentHeight.value = window.innerHeight
+
+  console.log('height:', height)
   // console.log(currentHeight.value, currentWidth.value)
   const minWidth = 512
   currentWidth.value = window.innerWidth - sidebarWidth.value - 44
@@ -402,6 +406,7 @@ const handleClose = () => {
 
     .discover-container {
       position: relative;
+      // min-height: 450px;
     }
   }
 }

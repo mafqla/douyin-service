@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import Player from 'xgplayer'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import Player, { Events } from 'xgplayer'
 import 'xgplayer/dist/index.min.css'
 import startPlay from '@/assets/videos-player-icon/all-play.svg'
 import startPause from '@/assets/videos-player-icon/all-pause.svg'
@@ -13,6 +13,7 @@ import volumeMute from '@/assets/videos-player-icon/volume-mute.svg'
 import volumeSmall from '@/assets/videos-player-icon/volume-small.svg'
 import cssFullScreen from '@/assets/videos-player-icon/cssFullscreen.svg'
 import exitCssFullScreen from '@/assets/videos-player-icon/exit-cssFullscreen.svg'
+import { videosCtrolStore } from '@/stores/videos-control'
 
 const props = defineProps({
   url: {
@@ -27,41 +28,54 @@ const props = defineProps({
 })
 
 const player = ref<any>(null)
+const playerOptions = ref({
+  id: 'video-player',
+  url: props.url,
+  autoplay: true,
+  autoplayMuted: videosCtrolStore().isMuted,
+  loop: true,
+  width: '100%',
+  height: '100%',
+  // autoplayMuted: true,
+  volume: props.volume,
+  closeVideoClick: true,
+  lang: 'zh-cn',
+  // playsinline: true,
+  closeInactive: true,
+  ignores: ['fullscreen', 'cssfullscreen', 'playbackrate'],
+  controls: {
+    autoHide: false,
+    mode: 'bottom',
+    initShow: true
+  },
+  enter: {
+    innerHtml: `
+      <div class="xg-douyin-loading"></div>`
+  },
+  icons: {
+    startPlay: startPlay,
+    // startPause: startPause,
+    startPause: startPlay,
+    play: play,
+    pause: pause,
+    fullscreen: fullscreen,
+    exitFullscreen: fullscreenExit,
+    volumeLarge: volume,
+    volumeMuted: volumeMute,
+    volumeSmall: volumeSmall,
+    fullscreenExit: fullscreenExit,
+    cssFullscreen: cssFullScreen,
+    exitCssFullscreen: exitCssFullScreen,
+    loadingIcon: `   <div class="loading-content">
+      <div class="loading-content-img"></div>
+    </div>`
+  }
+})
 onMounted(() => {
-  player.value = new Player({
-    id: 'video-player',
-    url: props.url,
-    autoplay: true,
-    loop: true,
-    width: '100%',
-    height: '100%',
-    // autoplayMuted: true,
-    volume: props.volume,
-    closeVideoClick: true,
-    lang: 'zh-cn',
-    // playsinline: true,
-    errorTips: `不支持的音频/视频格式`,
-    closeInactive: true,
-    ignores: ['fullscreen', 'cssfullscreen', 'playbackrate'],
-    controls: {
-      autoHide: false,
-      initShow: true,
-      mode: 'bottom'
-    },
-    icons: {
-      startPlay: startPlay,
-      startPause: startPause,
-      play: play,
-      pause: pause,
-      fullscreen: fullscreen,
-      exitFullscreen: fullscreenExit,
-      volumeLarge: volume,
-      volumeMuted: volumeMute,
-      volumeSmall: volumeSmall,
-      fullscreenExit: fullscreenExit,
-      cssFullscreen: cssFullScreen,
-      exitCssFullscreen: exitCssFullScreen
-    }
+  player.value = new Player(playerOptions.value)
+  player.value.on(Events.VOLUME_CHANGE, () => {
+    console.log('音量改变')
+    videosCtrolStore().isMuted = false
   })
 })
 
@@ -94,6 +108,11 @@ onBeforeUnmount(() => {
 </style>
 
 <style>
+.xgplayer .xgplayer-time {
+  font-size: 10px;
+  margin: unset;
+}
+
 .xgplayer xg-start-inner {
   background: none;
 }

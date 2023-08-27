@@ -1,4 +1,12 @@
-import {useElScrollbarScroll, useElScroll, useScroll} from './useScroll'
+import { useElScrollbarScroll, useElScroll, useScroll } from './useScroll'
 
 import { useCount } from './useCount'
-export { useElScrollbarScroll, useElScroll, useScroll, useCount }
+
+import { useKeyboardNavigation } from './useKeyboardNavigation'
+export {
+  useElScrollbarScroll,
+  useElScroll,
+  useScroll,
+  useCount,
+  useKeyboardNavigation
+}

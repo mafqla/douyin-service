@@ -1,73 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
-import { ElMessage } from 'element-plus'
-import { videoStore } from '@/stores/videos'
 import { videosCtrolStore } from '@/stores/videos-control'
-
-const currentIndex = ref(0)
-const prev = ref(false)
-const next = ref(false)
-const isPlay = ref(false)
-
-const page = ref(1)
-const pageSize = ref(5)
-
-console.log(currentIndex.value)
-
-// const videoData = await videoStore().getVideos(page.value, pageSize.value)
-// console.log(videoData)
-
-//点击上一张 ，当前索引为0时，不能再点击
-const handlePrev = () => {
-  if (currentIndex.value === 0) {
-    prev.value = true
-    ElMessage({
-      message: '🤣🤣🤣，这是第一个视频！',
-      type: 'warning'
-    })
-    return
-  }
-  // 暂停上一个视频
-  isPlay.value = false
-  currentIndex.value--
-  videoStore().translateY += 876
-  prev.value = false
-  next.value = false
-}
-
-const handleNext = async () => {
-  if (currentIndex.value === -1) {
-    page.value++
-
-    if (!next.value) {
-      const videoData = await videoStore().getVideos(page.value, pageSize.value)
-      console.log(videoData)
-
-      // 如果不是true，则将data.list的值赋值给videosList.value
-      if (videoData.code === 200) {
-        //@ts-ignore
-        videosList.value.push(...videoData.list)
-      }
-      //检查data的值是否为null，如果是，则调用ElMessage()函数，以弹出提示信息。
-      if (videoData.code === 204) {
-        ElMessage({
-          message: `${videoData.msg}🤣🤣🤣，没有更多视频了！`,
-          type: 'warning'
-        })
-        next.value = true
-        //停止执行
-        return
-      }
-    }
-  }
-
-  // console.log(videosList.value)
-
-  // 暂停上一个视频
-  isPlay.value = false
-  currentIndex.value++
-  videoStore().translateY -= 876
-}
 </script>
 
 <template>
@@ -75,7 +7,7 @@ const handleNext = async () => {
     <div class="carousel-controls-switch">
       <div
         class="carousel-controls-switch-up"
-        :class="{ disabled: videosCtrolStore().activeVideoIndex === 0 || prev }"
+        :class="{ disabled: videosCtrolStore().activeVideoIndex === 0 }"
         @click="videosCtrolStore().handlePrev()"
       >
         <svg-icon class="icon" icon="video-switch-prev-arrow" />
@@ -83,9 +15,13 @@ const handleNext = async () => {
       <div
         class="carousel-controls-switch-down"
         :class="{
-          disabled: next
+          disabled: videosCtrolStore().stopScroll
         }"
-        @click="next === true ? null : videosCtrolStore().handleNext()"
+        @click="
+          videosCtrolStore().stopScroll === true
+            ? null
+            : videosCtrolStore().handleNext()
+        "
       >
         <svg-icon class="icon" icon="video-switch-next-arrow" />
       </div>

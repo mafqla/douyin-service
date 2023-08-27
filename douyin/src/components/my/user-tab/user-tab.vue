@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {ref, watchEffect, type Ref, reactive, onMounted} from 'vue'
+import { ref, watchEffect, type Ref, reactive, onMounted } from 'vue'
 import { UserCollect, UserHistory, UserLike, UserPost } from '.'
 import { ElTabPane, ElTabs, type TabsPaneContext } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import {userStore} from '@/stores/user'
-import {videoStore} from '@/stores/videos'
+import { userStore } from '@/stores/user'
+import { videoStore } from '@/stores/videos'
+import { useScroll } from '@vueuse/core'
 const route = useRoute()
 const router = useRouter()
 
@@ -72,7 +73,7 @@ watchEffect(() => {
 
         <template v-if="isLogin">
           <Loading :show="videoStore().loading">
-            <user-post/>
+            <user-post />
           </Loading>
         </template>
       </el-tab-pane>
@@ -83,12 +84,12 @@ watchEffect(() => {
           <span class="tab-video-num" v-if="tabData.isHide">
             {{ likeCount }}
           </span>
-          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide"/>
+          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide" />
         </template>
 
         <template v-if="isLogin">
           <Loading :show="videoStore().loading">
-            <user-like/>
+            <user-like />
           </Loading>
         </template>
       </el-tab-pane>
@@ -99,11 +100,11 @@ watchEffect(() => {
           <span class="tab-video-num" v-if="tabData.isHide">
             {{ collectCount }}
           </span>
-          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide"/>
+          <svg-icon icon="lock" class="icon" v-if="!tabData.isHide" />
         </template>
         <template v-if="isLogin">
           <Loading :show="videoStore().loading">
-            <user-collect/>
+            <user-collect />
           </Loading>
         </template>
       </el-tab-pane>
@@ -111,7 +112,7 @@ watchEffect(() => {
       <el-tab-pane label="观看历史" name="record" :lazy="true">
         <template v-if="isLogin">
           <Loading :show="videoStore().loading">
-            <user-history/>
+            <user-history />
           </Loading>
         </template>
       </el-tab-pane>

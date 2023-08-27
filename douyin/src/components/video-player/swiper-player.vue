@@ -106,12 +106,15 @@ const playerOptions = ref({
   width: '100%',
   height: '100%',
   playsinline: true,
+  autoplayMuted: true,
   autoplay: isPlay.value,
 
   loop: true,
   lang: 'zh-cn',
   volume: props.globalVolume,
-  keyShortcut: 'on',
+  // keyShortcut: {
+  //   isIgnoreUserActive: true
+  // },
   playbackRate: [0.75, 1.0, 1.25, 1.5, 2.0],
   closeInactive: true,
   allowSeekPlayed: true,
@@ -120,15 +123,22 @@ const playerOptions = ref({
   enableContextmenu: true,
   marginControls: true,
   cssfullscreen: {
-    position: 'root'
+    target: document.getElementById('slide-list')
+  },
+  fullscreen: {
+    target: document.getElementById('slide-list')
   },
   controls: {
     autoHide: false,
     initShow: true
   },
+  enter: {
+    innerHtml: `<div class="xg-douyin-loading"></div>`
+  },
   icons: {
     startPlay: startPlay,
-    startPause: startPause,
+    // startPause: startPause,
+    startPause: startPlay,
     play: play,
     pause: pause,
     fullscreen: fullscreen,
@@ -138,17 +148,53 @@ const playerOptions = ref({
     volumeSmall: volumeSmall,
     fullscreenExit: fullscreenExit,
     cssFullscreen: cssFullScreen,
-    exitCssFullscreen: exitCssFullScreen
+    exitCssFullscreen: exitCssFullScreen,
+    loadingIcon: `<div class="loading-content">
+      <div class="loading-content-img"></div>
+    </div>`
   }
 })
 onMounted(() => {
+  playerOptions.value.fullscreen = {
+    target: document.getElementById('slidelist')
+  }
+  playerOptions.value.cssfullscreen = {
+    target: document.getElementById('slidelist')
+  }
   //@ts-ignore
   player.value = new xgplayer(playerOptions.value)
   const playerRef = ref<HTMLDivElement | null>(null)
   playerRef.value?.appendChild(player.value.root)
+  player.value.on(Events.CSS_FULLSCREEN_CHANGE, (isCssFullscreen: any) => {
+    const carousel = document.getElementsByClassName('carousel') as any
+    const main = document.getElementById('slidelist')
+    if (isCssFullscreen) {
+      carousel[0].style.height = '100%'
+      carousel[0].style.top = '0'
+      carousel[0].style.padding = '0'
+      main?.classList.add('isCssFullscreen')
+    } else {
+      carousel[0].style.height = 'calc(100% - 24px)'
+      carousel[0].style.top = 'calc(0% + 12px)'
+      carousel[0].style.padding = '0 60px 0 30px '
+      main?.classList.remove('isCssFullscreen')
+    }
+  })
+  player.value.on(Events.FULLSCREEN_CHANGE, (isFullscreen: any) => {
+    const carousel = document.getElementsByClassName('carousel') as any
+    if (isFullscreen) {
+      carousel[0].style.height = '100%'
+      carousel[0].style.top = '0'
+      carousel[0].style.padding = '0'
+    } else {
+      carousel[0].style.height = 'calc(100% - 24px)'
+      carousel[0].style.top = 'calc(0% + 12px)'
+      carousel[0].style.padding = '0 60px 0 30px '
+    }
+  })
 })
 
-console.log(props.isPlay)
+// console.log(props.isPlay)
 // 监听 isPlay 变化，更新播放器选项
 
 watch(isPlay, () => {
@@ -156,6 +202,7 @@ watch(isPlay, () => {
   playerOptions.value.autoplay = isPlay.value
   playerOptions.value.id = `xgplayer-${uniqueId}`
   playerOptions.value.volume = 0.6
+  playerOptions.value.autoplayMuted = false
 
   // console.log(player.value.config.autoplay)
   // player.value.config.autoplay = isPlay.value
@@ -163,10 +210,7 @@ watch(isPlay, () => {
   //@ts-ignore
   player.value = new xgplayer(playerOptions.value)
 
-  // console.log(playerOptions.value)
-})
-onBeforeUnmount(() => {
-  player.value.destroy()
+  console.log(playerOptions.value)
 })
 // //@ts-ignore
 // player.on(Events.VOLUME_CHANGE, () => {
@@ -227,25 +271,27 @@ const toggleComments = (id: any) => {
     >
       <!-- <ViliPlayer :options="playerOptions" :isPlay="isPlay" /> -->
 
-      <div class="modal" ref="player" :id="playerId"></div>
-      <video-info
-        :username="props.username"
-        :uploadTime="props.uploadTime"
-        :description="props.description"
-      />
-      <video-action
-        :avatar="props.img"
-        :dianzan="props.dianzan"
-        :comment="props.comment"
-        :shoucang="props.shoucang"
-        :isLike="props.isLike"
-        :isCollect="props.isCollect"
-        @toggleComments="toggleComments(props.id)"
-      >
-      </video-action>
+      <div class="slide-video">
+        <div class="modal" ref="player" :id="playerId">
+          <video-info
+            :username="props.username"
+            :uploadTime="props.uploadTime"
+            :description="props.description"
+          />
+          <video-action
+            :avatar="props.img"
+            :dianzan="props.dianzan"
+            :comment="props.comment"
+            :shoucang="props.shoucang"
+            :isLike="props.isLike"
+            :isCollect="props.isCollect"
+            @toggleComments="toggleComments(props.id)"
+          >
+          </video-action>
+        </div>
+      </div>
+      <video-side-bar-btn @click="openComments" v-show="isShow" />
     </div>
-
-    <video-side-bar-btn @click="openComments" v-show="isShow" />
 
     <video-sidebar
       :id="props.id"
@@ -276,6 +322,15 @@ const toggleComments = (id: any) => {
     width: 100%;
     height: 100%;
     z-index: 2;
+    background-color: transparent;
+
+    .slide-video {
+      bottom: 0;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
 
     .close-btn {
       position: fixed;
@@ -339,24 +394,100 @@ const toggleComments = (id: any) => {
 }
 
 .modal {
-  position: relative;
+  // position: relative;
   background: transparent;
 }
 
-@media screen and (min-width: 1440px) and (max-width: 2560px) {
-  .modal {
-    width: 71.4285714286%;
-  }
-}
+// @media screen and (min-width: 1440px) and (max-width: 2560px) {
+//   .modal {
+//     width: 71.4285714286%;
+//   }
+// }
 
-@media screen and (min-width: 2560px) {
-  .modal {
-    width: calc(100% - 656px);
-  }
-}
+// @media screen and (min-width: 2560px) {
+//   .modal {
+//     width: calc(100% - 656px);
+//   }
+// }
 </style>
 
 <style lang="scss">
+.xgplayer .xg-tips {
+  background-color: #41424c;
+  border-radius: 4px;
+  // bottom: 36px;
+  bottom: 53px;
+  color: #fff;
+  // height: 38px;
+  height: 27px;
+  font-size: 12px;
+  // left: auto;
+  // padding: 10px;
+  // position: absolute;
+  // right: 0;
+  // text-align: center;
+  // top: auto;
+  // transition-delay: 0.05s !important;
+  // -webkit-transition-delay: 0.05s !important;
+  // transition-property: visibility;
+  // -webkit-transition-property: visibility;
+  // visibility: hidden;
+  white-space: nowrap;
+}
+.xgplayer xg-icon {
+  margin-left: 0;
+  margin-right: 0;
+  height: 32px;
+}
+.xgplayer .xg-left-grid,
+.xgplayer .xg-right-grid {
+  margin-right: 16px;
+}
+.xgplayer-pause.xgplayer .xgplayer-start.hide {
+  display: block;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.xg-douyin-loading {
+  animation: loading 1s steps(60, start) infinite;
+  background-image: url(@/assets/loading.png);
+  background-size: 48px;
+  display: inline-block;
+  font-size: 0;
+  height: 48px;
+  left: 50%;
+  position: relative;
+  top: 50%;
+  transform: scale(0.7) translateX(-50%) translateY(-50%);
+  transform-origin: left top;
+  width: 48px;
+}
+.loading-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+
+  .loading-content-img {
+    animation: loading 1s steps(60, start) infinite;
+    background-image: url(@/assets/loading.png);
+    background-size: 48px;
+    display: inline-block;
+    font-size: 0;
+    height: 48px;
+    transform: scale(0.7);
+    width: 48px;
+    overflow: hidden;
+  }
+}
+@keyframes loading {
+  to {
+    background-position-y: -2880px;
+  }
+}
 .xgplayer xg-start-inner {
   background: none;
 }
@@ -384,6 +515,24 @@ const toggleComments = (id: any) => {
 </style>
 
 <style>
+.loading-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+.xgplayer {
+  background-color: transparent !important;
+}
+.xgplayer.xgplayer-is-fullscreen {
+  position: absolute !important;
+  z-index: auto !important;
+}
+.xgplayer .xgplayer-controls {
+  background: transparent;
+}
 .xgplayer .btn-text span {
   font-size: 14px;
   font-weight: 500;

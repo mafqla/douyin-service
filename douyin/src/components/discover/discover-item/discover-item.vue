@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watchEffect, type Ref } from 'vue'
 import TitleBox from './title-box.vue'
 import DiscoverVideo from './discover-video.vue'
 import { useElementSize } from '@vueuse/core'
@@ -21,10 +21,33 @@ const props = defineProps({
 })
 
 // console.log(props)
+const itemHeight = ref(0)
+//生成随机高度
+const generateHeight = () => {
+  const height = Math.floor(Math.random() * 3 + 1)
+  switch (height) {
+    case 1:
+      return 400
+    case 2:
+      return 600
+    case 3:
+      return 700
+    default:
+      return 400
+  }
+}
 
 const renderedImg = ref()
 const { height } = useElementSize(renderedImg)
+
 // console.log(height)
+
+// const listHeight: Ref<number[]> = ref([])
+// watchEffect(() => {
+//   console.log(height.value)
+//   listHeight.value.push(height.value)
+//   console.log(listHeight.value)
+// })
 </script>
 <template>
   <div

@@ -6,22 +6,13 @@ import { useRouter } from 'vue-router'
 import { videoStore } from '@/stores/videos'
 import backgroundurlLightURL from '@/assets/user-background-light.png'
 import backgroundurlDarkURL from '@/assets/user-background-dark.png'
-import { useInfiniteScroll } from '@vueuse/core'
+import { useInfiniteScroll, useScroll } from '@vueuse/core'
 
 const background = ref(`url('${backgroundurlLightURL}')`)
 
 const isDisplay = ref(false)
 const router = useRouter()
 
-// 滚动监听
-window.addEventListener('scroll', function () {
-  // console.log('window.scrollY', window.scrollY)
-  if (window.scrollY > 60) {
-    isDisplay.value = true
-  } else {
-    isDisplay.value = false
-  }
-})
 const video = videoStore()
 
 const store = userStore()
@@ -65,7 +56,7 @@ onMounted(() => {
     background.value = `url('${backgroundurlLightURL}')`
   }
 
-  // fetchVideoData()
+  fetchVideoData()
   isLogin.value = store.isLogin()
 })
 
@@ -75,13 +66,11 @@ watch(query, () => {
   video.userLikeVideos = []
   video.userCollectVideos = []
   video.userRecordVideos = []
-  // fetchVideoData()
+  fetchVideoData()
 })
 watchEffect(() => {
   isLogin.value = store.isLogin()
   query.value = router.currentRoute.value.query.showTab
-
-  fetchVideoData()
 })
 
 const load = () => {
@@ -90,21 +79,44 @@ const load = () => {
   }
   video.bottomLoading = true
   page.value += 1
+  fetchVideoData()
   video.bottomLoading = false
 }
 
 // console.log(page.value)
-
+const el = ref()
 useInfiniteScroll(window, load, {
   distance: 500
 })
+// 滚动监听
+const { y } = useScroll(window)
+watchEffect(() => {
+  // console.log(y.value)
+  if (y.value > 60) {
+    isDisplay.value = true
+  } else {
+    isDisplay.value = false
+  }
+  if (y.value > 160) {
+    document.querySelector('.el-tabs__header')?.classList.add('header-scroll')
+  } else {
+    document
+      .querySelector('.el-tabs__header')
+      ?.classList.remove('header-scroll')
+  }
+})
+
+// 监听滚动事件
 </script>
 <template>
-  <div class="user-detail" :class="{ scrolled: isDisplay }">
-    <div class="user-detail-content">
-      <user-header />
-      <user-tab />
-      <login-code v-if="!isLogin" />
+  <div class="my" ref="el">
+    <div class="user-detail" :class="{ scrolled: isDisplay }">
+      <div class="user-detail-content max">
+        <div class="user-header-background"></div>
+        <user-header />
+        <user-tab />
+        <login-code v-if="!isLogin" />
+      </div>
     </div>
     <user-footer />
   </div>
@@ -114,38 +126,59 @@ useInfiniteScroll(window, load, {
 .scrolled::before {
   opacity: 0; // 滚动后使背景图片消失
 }
-.user-detail {
+.my {
   display: flex;
+  flex: 1;
   width: 100%;
   flex-direction: column;
+  overflow-y: scroll;
+  // overflow-x: hidden;
   user-select: none;
-
-  &::before {
-    background-image: v-bind(background);
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: 1920px 172px;
-    content: '';
-    height: 172px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    // z-index: -1;
-    transition: opacity 0.3s ease-in-out;
-  }
-  .user-detail-content {
-    margin: 0 auto;
-    max-width: 1208px;
-    min-height: calc(100vh - 60px);
-    min-width: 650px;
+  min-height: 100%;
+  .user-detail {
+    padding-top: 60px;
+    display: flex;
+    flex: 1 1;
+    min-height: 100%;
     width: 100%;
+    // &::before {
+    //   background-image: v-bind(background);
+    //   background-position: 50%;
+    //   background-repeat: no-repeat;
+    //   background-size: 1920px 172px;
+    //   content: '';
+    //   height: 172px;
+    //   left: 0;
+    //   position: absolute;
+    //   right: 0;
+    //   top: 0;
+    //   // z-index: -1;
+    //   transition: opacity 0.3s ease-in-out;
+    // }
+    .user-header-background {
+      background-image: v-bind(background);
+      background-position: 50%;
+      background-repeat: no-repeat;
+      background-size: 1920px 172px;
+      height: 172px;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .user-detail-content {
+      margin: 0 auto;
+      max-width: none;
+      width: calc(100% - 120px);
+      max-width: 1208px;
+      min-height: calc(100vh - 60px);
+      min-width: 682px;
+    }
   }
 }
-
 @media (max-width: 1475px) {
   .user-detail {
-    .user-detail-content {
+    .user-detail-content.max {
       max-width: none;
       width: calc(100% - 120px);
     }
@@ -170,13 +203,13 @@ useInfiniteScroll(window, load, {
   }
 }
 
-@media (max-width: 840px) {
-  .user-detail {
-    .user-detail-content {
-      margin: 0 20px;
-    }
-  }
-}
+// @media (max-width: 840px) {
+//   .user-detail {
+//     .user-detail-content {
+//       margin: 0 20px;
+//     }
+//   }
+// }
 
 // :deep(.header) {
 //   border-bottom: 1px solid hsla(0, 0%, 100%, 0.1) !important;

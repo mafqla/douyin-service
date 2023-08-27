@@ -23,6 +23,8 @@ body {
   background: $color-background;
   color: $color-text;
   // position: fixed;
+  min-width: 915px;
+  // overflow-y: overlay;
   user-select: none;
 }
 a {

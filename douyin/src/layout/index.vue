@@ -1,60 +1,87 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import AsideBar from '@/layout/AsideBar.vue'
 import HeaderNav from '@/layout/HeaderNav.vue'
+import { useRouter } from 'vue-router'
 
 // 设置背景颜色
 const backgroundColor = ref('none')
 
 // 滚动监听
-window.addEventListener('scroll', function () {
-  if (window.scrollY > 60) {
-    backgroundColor.value = '#fff'
+window.addEventListener(
+  'scroll',
+  function () {
+    // console.log(window.scrollY)
+    if (window.scrollY > 60) {
+      backgroundColor.value = '#fff'
+    } else {
+      backgroundColor.value = 'none'
+    }
+  },
+  true
+)
+//获取路由地址
+const router = useRouter()
+const my = ref(false)
+watchEffect(() => {
+  if (router.currentRoute.value.path === '/user/self') {
+    my.value = true
   } else {
-    backgroundColor.value = 'none'
+    my.value = false
   }
 })
-
-
 </script>
 
 <template>
-  <div class="main">
-    <el-container>
-      <el-aside>
-        <aside-bar />
-      </el-aside>
-      <el-container class="main-container">
-        <el-affix>
-          <el-header><header-nav /></el-header>
-        </el-affix>
-        <el-main>
-          <div class="page-info">
-            <router-view v-slot="{ Component, route }">
-              <!-- <keep-alive> -->
-              <component :is="Component" :key="route.path" />
-              <!-- </keep-alive> -->
-            </router-view>
-          </div>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div class="main" :class="{ user: my }">
+    <el-aside>
+      <aside-bar />
+    </el-aside>
+    <div class="right-container min">
+      <el-affix class="affix">
+        <el-header><header-nav /></el-header>
+      </el-affix>
+
+      <router-view v-slot="{ Component, route }">
+        <!-- <keep-alive> -->
+        <component :is="Component" :key="route.path" />
+        <!-- </keep-alive> -->
+      </router-view>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.main {
+  background-color: #fff;
+  background-position: top;
+  background-size: cover;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+
+  &.user {
+    height: auto;
+  }
+}
 .el-aside {
   width: $sidebar-width;
   z-index: 2;
 }
-.main-container {
-  width: calc(100% - $sidebar-width);
+.right-container {
+  // width: calc(100% - $sidebar-width);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  // height: 100%;
   overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 100%;
+
+  &.min {
+    min-height: 450px;
+  }
 }
 .el-header {
   height: 60px;
@@ -63,26 +90,13 @@ window.addEventListener('scroll', function () {
   padding: 0;
   background-color: v-bind(backgroundColor);
 }
-.el-main {
-  padding: 0;
-  // flex: 1 1 0%;
-  // display: flex;
-  // flex-direction: column;
-  // min-height: 100%;
-  // width: 100%;
-}
-.page-info {
-  width: 100%;
-  height: 100%;
-  // min-height: 450px;
-}
 
 @media screen and (max-width: 1240px) {
   .el-aside {
     width: $sidebar-width-min;
   }
-  .main-container {
-    width: calc(100% - $sidebar-width-min);
-  }
+  // .affix {
+  //   width: calc(100% - $sidebar-width-min);
+  // }
 }
 </style>

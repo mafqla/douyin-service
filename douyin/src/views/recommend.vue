@@ -1,20 +1,29 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  onUnmounted,
+  ref,
+  watchEffect
+} from 'vue'
 import SwiperControl from '@/components/swper/swiper-control.vue'
-import miniPlayer from '@/components/video-player/mini-player.vue'
 import SwiperVideo from '@/components/swper/swiper-video.vue'
 import type { IFeedParams, IVideoList } from '@/service/videos/videosType'
 import { getVideoList } from '@/service/videos/videos'
+import { videosCtrolStore } from '@/stores/videos-control'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 const loading = ref(true)
-const page = ref(1)
-const size = ref(10)
 const list = ref<IVideoList[]>([])
+const control = videosCtrolStore()
+const message = ref('')
 const getData = async (params: IFeedParams) => {
   try {
     const res = await getVideoList(params)
     // console.log(res)
-
+    message.value = res.msg
     const { data } = res
 
     setTimeout(() => {
@@ -22,14 +31,32 @@ const getData = async (params: IFeedParams) => {
     }, 1000)
 
     list.value.push(...data)
+    control.videosNum = list.value.length
   } catch (err) {
-    console.log(err)
+    // console.log(err)
+    control.stopScroll = true
+    ElMessage({
+      message: `${message.value}🤣🤣🤣，没有更多视频了！`,
+      type: 'warning'
+    })
   }
 }
+
 onMounted(() => {
+  //设置body为possition:fixed
+  document.body.style.position = 'fixed'
+  control.reset()
+})
+//组件销毁时，去除body的possition:fixed
+onBeforeUnmount(() => {
+  document.body.style.position = ''
+})
+//获取路由地址
+const router = useRouter()
+watchEffect(() => {
   getData({
-    page: page.value,
-    size: size.value
+    page: control.page,
+    size: control.size
   })
 })
 </script>
@@ -39,8 +66,7 @@ onMounted(() => {
       <div class="xgplayer-playswitch">
         <swiper-control />
       </div>
-
-      <div class="slide-list">
+      <div class="slide-list" id="slidelist">
         <swiper-video :videoList="list" />
       </div>
     </Loading>
@@ -94,6 +120,16 @@ onMounted(() => {
     height: 100%;
     overflow: hidden;
     position: relative;
+  }
+
+  .isCssFullscreen {
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 2000;
+    background-color: #fff;
   }
 }
 </style>
