@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { videosCtrolStore } from '@/stores/videos-control'
 import type { IVideoList } from '@/service/videos/videosType'
-import { watchEffect, type PropType, ref, onMounted } from 'vue'
-import { useDebounceFn, useElementSize } from '@vueuse/core'
+import {
+  watchEffect,
+  type PropType,
+  ref,
+  onMounted,
+  onUnmounted,
+  watch
+} from 'vue'
+import { useDebounceFn, useElementSize, useThrottleFn } from '@vueuse/core'
 import { useKeyboardNavigation } from '@/hooks'
 
 defineProps({
@@ -27,18 +34,17 @@ watchEffect(() => {
   } else {
     transitionDuration.value = 0 // 将过渡时间重新设置为0ms
   }
-
   videosCtrolStore().initTranslateY = height.value + 12
 })
 
-const debouncedNext = useDebounceFn(() => {
+const debouncedNext = useThrottleFn(() => {
   if (!videosCtrolStore().stopScroll) {
     videosCtrolStore().handleNext()
   }
-}, 200) // 1000 毫秒的防抖延迟
-const debouncedPrev = useDebounceFn(() => {
+}, 2000) // 1000 毫秒的防抖延迟
+const debouncedPrev = useThrottleFn(() => {
   videosCtrolStore().handlePrev()
-}, 200) // 1000 毫秒的防抖延迟
+}, 2000) // 1000 毫秒的防抖延迟
 
 onMounted(() => {
   window.addEventListener('wheel', handleWheel)

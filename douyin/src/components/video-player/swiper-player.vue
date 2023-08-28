@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  toRefs,
-  watch,
-  watchEffect
-} from 'vue'
+import { onMounted, ref, toRefs, watch } from 'vue'
 import xgplayer from 'xgplayer'
 import { Events } from 'xgplayer'
 import 'xgplayer/dist/index.min.css'
@@ -30,6 +23,7 @@ import {
   VideoSideBarBtn
 } from '@/components/video-components'
 import { commentStore } from '@/stores/comment'
+import { videosCtrolStore } from '@/stores/videos-control'
 
 const props = defineProps({
   id: {
@@ -122,6 +116,10 @@ const playerOptions = ref({
   allowSeekAfterEnded: true,
   enableContextmenu: true,
   marginControls: true,
+  // dynamicBg: {
+  //   disable: false,
+  //   mode:'firstframe'
+  // },
   cssfullscreen: {
     target: document.getElementById('slide-list')
   },
@@ -194,63 +192,84 @@ onMounted(() => {
   })
 })
 
-// console.log(props.isPlay)
-// 监听 isPlay 变化，更新播放器选项
-
 watch(isPlay, () => {
   // console.log(isPlay)
   playerOptions.value.autoplay = isPlay.value
   playerOptions.value.id = `xgplayer-${uniqueId}`
   playerOptions.value.volume = 0.6
   playerOptions.value.autoplayMuted = false
-
-  // console.log(player.value.config.autoplay)
-  // player.value.config.autoplay = isPlay.value
-  //  player.value.config.autoplay = isPlay.value
   //@ts-ignore
   player.value = new xgplayer(playerOptions.value)
+  player.value.on(Events.CSS_FULLSCREEN_CHANGE, (isCssFullscreen: any) => {
+    const carousel = document.getElementsByClassName('carousel') as any
+    const main = document.getElementById('slidelist')
+    if (isCssFullscreen) {
+      carousel[0].style.height = '100%'
+      carousel[0].style.top = '0'
+      carousel[0].style.padding = '0'
+      main?.classList.add('isCssFullscreen')
+    } else {
+      carousel[0].style.height = 'calc(100% - 24px)'
+      carousel[0].style.top = 'calc(0% + 12px)'
+      carousel[0].style.padding = '0 60px 0 30px '
+      main?.classList.remove('isCssFullscreen')
+    }
+  })
+  player.value.on(Events.FULLSCREEN_CHANGE, (isFullscreen: any) => {
+    const carousel = document.getElementsByClassName('carousel') as any
+    if (isFullscreen) {
+      carousel[0].style.height = '100%'
+      carousel[0].style.top = '0'
+      carousel[0].style.padding = '0'
+    } else {
+      carousel[0].style.height = 'calc(100% - 24px)'
+      carousel[0].style.top = 'calc(0% + 12px)'
+      carousel[0].style.padding = '0 60px 0 30px '
+    }
+  })
 
   console.log(playerOptions.value)
 })
-// //@ts-ignore
-// player.on(Events.VOLUME_CHANGE, () => {
-//   // TODO
-//   console.log('音量改变')
-// })
 
 const playerId = ref(`xgplayer-${uniqueId}`)
 
-let isShow = ref(true)
+const control = videosCtrolStore()
 let currentWidth = ref('100%')
+
+watch(control, () => {
+  if (control.isShowComment) {
+    //设置宽度
+    currentWidth.value = '100%'
+  } else {
+    //设置宽度
+    currentWidth.value = 'calc(100% - 336px)'
+
+    //获取屏幕宽度
+    const screenWidth = document.body.clientWidth
+    // console.log(screenWidth)
+
+    //如果屏幕宽度大于等于2560px，就设置宽度为100%-28.5714285714%
+    if (screenWidth >= 1440) {
+      currentWidth.value = 'calc(100% - 28.5714285714%)'
+    }
+  }
+})
 //打开评论
 const openComments = () => {
   //隐藏按钮
-  isShow.value = false
-  //设置宽度
-  currentWidth.value = 'calc(100% - 336px)'
-
-  //获取屏幕宽度
-  const screenWidth = document.body.clientWidth
-  // console.log(screenWidth)
-
-  //如果屏幕宽度大于等于2560px，就设置宽度为100%-28.5714285714%
-  if (screenWidth >= 1440) {
-    currentWidth.value = 'calc(100% - 28.5714285714%)'
-  }
+  control.isShowComment = false
 }
 
 //关闭评论
 const closeComments = () => {
   //显示按钮
-  isShow.value = true
-  //设置宽度
-  currentWidth.value = '100%'
+  control.isShowComment = true
 }
 
 //切换评论区的显示状态
 const toggleComments = (id: any) => {
-  isShow.value = !isShow.value
-  if (!isShow.value) {
+  control.isShowComment = !control.isShowComment
+  if (!control.isShowComment) {
     //如果评论区关闭，就执行打开评论操作
     openComments()
   } else {
@@ -290,14 +309,17 @@ const toggleComments = (id: any) => {
           </video-action>
         </div>
       </div>
-      <video-side-bar-btn @click="openComments" v-show="isShow" />
+      <video-side-bar-btn
+        @click="openComments"
+        v-show="control.isShowComment"
+      />
     </div>
 
     <video-sidebar
       :id="props.id"
       :username="props.username"
       @closeComments="closeComments"
-      v-show="!isShow"
+      v-show="!control.isShowComment"
     />
 
     <div class="video-blur">

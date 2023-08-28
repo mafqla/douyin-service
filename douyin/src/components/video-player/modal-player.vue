@@ -86,6 +86,9 @@ const playerOptions = {
   allowSeekAfterEnded: true,
   marginControls: true,
   ignores: ['cssfullscreen'],
+  fullscreen: {
+    target: ''
+  },
   controls: {
     autoHide: false,
     initShow: true
@@ -157,7 +160,7 @@ const toggleComments = (id: any) => {
 </script>
 
 <template>
-  <div class="modal-player">
+  <div class="modal-player" id="modalall">
     <div class="videos-container" :style="{ width: currentWidth }">
       <ViliPlayer :options="playerOptions" />
       <div class="close-btn" @click="$emit('closeBtn')">

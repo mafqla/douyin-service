@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import xgplayer from 'xgplayer'
+import xgplayer, { Events } from 'xgplayer'
 import 'xgplayer/dist/index.min.css'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -18,6 +18,9 @@ const props = defineProps({
 const player = ref<any>(null)
 const uniqueId = uuidv4()
 onMounted(() => {
+  props.options.fullscreen = {
+    target: document.getElementById('modalall')
+  }
   //@ts-ignore
   player.value = new xgplayer({
     ...props.options,
@@ -25,6 +28,19 @@ onMounted(() => {
   })
   const playerRef = ref<HTMLDivElement | null>(null)
   playerRef.value?.appendChild(player.value.root)
+
+  // player.value.on(Events.FULLSCREEN_CHANGE, (isFullscreen: any) => {
+  //   const carousel = document.getElementsByClassName('carousel') as any
+  //   if (isFullscreen) {
+  //     carousel[0].style.height = '100%'
+  //     carousel[0].style.top = '0'
+  //     carousel[0].style.padding = '0'
+  //   } else {
+  //     carousel[0].style.height = 'calc(100% - 24px)'
+  //     carousel[0].style.top = 'calc(0% + 12px)'
+  //     carousel[0].style.padding = '0 60px 0 30px '
+  //   }
+  // })
 })
 
 onBeforeUnmount(() => {
@@ -57,17 +73,17 @@ console.log(props.isPlay)
   background: transparent;
 }
 
-@media screen and (min-width: 1440px) and (max-width: 2560px) {
-  .modal {
-    width: 71.4285714286%;
-  }
-}
+// @media screen and (min-width: 1440px) and (max-width: 2560px) {
+//   .modal {
+//     width: 71.4285714286%;
+//   }
+// }
 
-@media screen and (min-width: 2560px) {
-  .modal {
-    width: calc(100% - 656px);
-  }
-}
+// @media screen and (min-width: 2560px) {
+//   .modal {
+//     width: calc(100% - 656px);
+//   }
+// }
 </style>
 
 <style lang="scss">

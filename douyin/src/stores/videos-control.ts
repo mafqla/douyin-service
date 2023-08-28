@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 export const videosCtrolStore = defineStore('control', () => {
+  //是否显示评论
+  const isShowComment = ref(true)
   const isMuted = ref(true)
   const page = ref(1)
   const size = ref(10)
@@ -14,9 +16,13 @@ export const videosCtrolStore = defineStore('control', () => {
   const videosNum = ref(0)
   //是否停止滚动
   const stopScroll = ref(false)
+  //计算translateY的值,根据传入的索引和initTranslateY的值
+  const computeTranslateY = (index: number) => {
+    return -index * initTranslateY.value
+  }
   const handlePrev = () => {
     if (activeVideoIndex.value > 0) {
-      translateY.value = translateY.value + initTranslateY.value
+      // translateY.value = computeTranslateY(activeVideoIndex.value + 1)
       //切换到上一个视频
       activeVideoIndex.value = activeVideoIndex.value - 1
     }
@@ -25,7 +31,7 @@ export const videosCtrolStore = defineStore('control', () => {
   const handleNext = () => {
     //暂停当前视频
     activeVideoPlayState.value = false
-    translateY.value = translateY.value - initTranslateY.value
+    // translateY.value = computeTranslateY(activeVideoIndex.value + 1)
     //切换到下一个视频
     activeVideoIndex.value = activeVideoIndex.value + 1
     activeVideoPlayState.value = true
@@ -35,6 +41,10 @@ export const videosCtrolStore = defineStore('control', () => {
       page.value = page.value + 1
     }
   }
+
+  watch([activeVideoIndex, initTranslateY], () => {
+    translateY.value = computeTranslateY(activeVideoIndex.value)
+  })
 
   //重置状态
   const reset = () => {
@@ -48,6 +58,7 @@ export const videosCtrolStore = defineStore('control', () => {
   }
 
   return {
+    isShowComment,
     isMuted,
     page,
     size,
