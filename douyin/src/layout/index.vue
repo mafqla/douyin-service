@@ -34,9 +34,9 @@ watchEffect(() => {
 
 <template>
   <div class="main" :class="{ user: my }">
-    <el-aside>
-      <aside-bar />
-    </el-aside>
+    <div class="bg"></div>
+    <aside-bar />
+
     <div class="right-container min">
       <el-affix class="affix">
         <el-header><header-nav /></el-header>
@@ -64,10 +64,14 @@ watchEffect(() => {
   &.user {
     height: auto;
   }
-}
-.el-aside {
-  width: $sidebar-width;
-  z-index: 2;
+  .bg {
+    background: no-repeat
+      url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png)
+      rgba(255, 255, 255, 1);
+    height: 100vh;
+    position: fixed;
+    width: 100vw;
+  }
 }
 .right-container {
   // width: calc(100% - $sidebar-width);
@@ -90,13 +94,16 @@ watchEffect(() => {
   padding: 0;
   background-color: v-bind(backgroundColor);
 }
+.affix {
+  background: no-repeat
+    url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png)
+    rgba(255, 255, 255, 1);
+  background-position-x: -72px;
+}
 
-@media screen and (max-width: 1240px) {
-  .el-aside {
-    width: $sidebar-width-min;
+@media (min-width: 1240px) {
+  .affix {
+    background-position-x: calc(160px * -1);
   }
-  // .affix {
-  //   width: calc(100% - $sidebar-width-min);
-  // }
 }
 </style>

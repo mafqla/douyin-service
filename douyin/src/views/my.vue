@@ -4,8 +4,10 @@ import { UserHeader, LoginCode, UserTab, UserFooter } from '@/components/my'
 import { userStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { videoStore } from '@/stores/videos'
-import backgroundurlLightURL from '@/assets/user-background-light.png'
-import backgroundurlDarkURL from '@/assets/user-background-dark.png'
+// import backgroundurlLightURL from '@/assets/user-background-light.png'
+// import backgroundurlDarkURL from '@/assets/user-background-dark.png'
+import backgroundurlLightURL from '@/assets/personal_light.png'
+import backgroundurlDarkURL from '@/assets/personal_dark.png'
 import { useInfiniteScroll, useScroll } from '@vueuse/core'
 
 const background = ref(`url('${backgroundurlLightURL}')`)

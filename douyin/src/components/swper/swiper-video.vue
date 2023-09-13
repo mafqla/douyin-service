@@ -7,7 +7,8 @@ import {
   ref,
   onMounted,
   onUnmounted,
-  watch
+  watch,
+  computed
 } from 'vue'
 import { useDebounceFn, useElementSize, useThrottleFn } from '@vueuse/core'
 import { useKeyboardNavigation } from '@/hooks'
@@ -19,6 +20,14 @@ defineProps({
   }
 })
 
+const isShowItem = computed(() => {
+  const currentIndex = videosCtrolStore().activeVideoIndex
+  if (currentIndex === 0) {
+    return (index: number) => index >= 0 && index <= 2
+  } else {
+    return (index: number) => index >= currentIndex - 1 && index <= currentIndex + 1
+  }
+})
 const isActiveIndex = (index: number) =>
   index === videosCtrolStore().activeVideoIndex
 
@@ -41,10 +50,10 @@ const debouncedNext = useThrottleFn(() => {
   if (!videosCtrolStore().stopScroll) {
     videosCtrolStore().handleNext()
   }
-}, 2000) // 1000 毫秒的防抖延迟
+}, 3000)
 const debouncedPrev = useThrottleFn(() => {
   videosCtrolStore().handlePrev()
-}, 2000) // 1000 毫秒的防抖延迟
+}, 3000)
 
 onMounted(() => {
   window.addEventListener('wheel', handleWheel)
@@ -85,21 +94,23 @@ useKeyboardNavigation()
         }"
         @mouseWheel="handleWheel"
       >
-        <swiper-player
-          :id="item.id"
-          :username="item.userName"
-          :uploadTime="item.uploadTime"
-          :description="item.description"
-          :url="item.videosAddress"
-          :poster="item.videosCover"
-          :img="item.userAvatar"
-          :dianzan="item.likeCount"
-          :comment="item.commentCount"
-          :isLike="item.isLike"
-          :isCollect="item.isCollect"
-          :isAttention="item.isAttention"
-          :isPlay="isActiveIndex(index)"
-        />
+        <template v-if="isShowItem(index)">
+          <swiper-player
+            :id="item.id"
+            :username="item.userName"
+            :uploadTime="item.uploadTime"
+            :description="item.description"
+            :url="item.videosAddress"
+            :poster="item.videosCover"
+            :img="item.userAvatar"
+            :dianzan="item.likeCount"
+            :comment="item.commentCount"
+            :isLike="item.isLike"
+            :isCollect="item.isCollect"
+            :isAttention="item.isAttention"
+            :isPlay="isActiveIndex(index)"
+          />
+        </template>
       </div>
     </div>
   </div>
@@ -109,13 +120,13 @@ useKeyboardNavigation()
 .carousel {
   position: absolute;
   left: 0;
-  top: calc(0% + 12px);
+  top: calc(0% + 0px);
   width: 100%;
-  height: calc(100% - 24px);
+  height: calc(100% - 12px);
 
   overflow: visible;
-  padding-left: 30px;
-  padding-right: 60px;
+  padding-left: 0px;
+  padding-right: 68px;
   .carousel-inner {
     width: 100%;
     height: 100%;

@@ -166,15 +166,20 @@ watchEffect(() => {
   }
   @media (max-width: 1328px) {
     :deep(.el-tabs__header).header-scroll {
-      padding: 0px 66px 0px 132px;
+      padding: 0px 66px 0px 220px;
     }
   }
 
-  @media (max-width: 840px) {
+  @media (max-width: 1200px) {
     :deep(.el-tabs__header).header-scroll {
-      padding: 0px 26px 0px 94px;
+      padding: 0px 66px 0px 132px;
     }
   }
+  // @media (max-width: 840px) {
+  //   :deep(.el-tabs__header).header-scroll {
+  //     padding: 0px 26px 0px 94px;
+  //   }
+  // }
   :deep(.el-tabs__item.is-active) {
     color: #000;
   }

@@ -291,7 +291,7 @@ const toggleComments = (id: any) => {
       <!-- <ViliPlayer :options="playerOptions" :isPlay="isPlay" /> -->
 
       <div class="slide-video">
-        <div class="modal" ref="player" :id="playerId">
+        <div class="swiper" ref="player" :id="playerId">
           <video-info
             :username="props.username"
             :uploadTime="props.uploadTime"
@@ -330,7 +330,7 @@ const toggleComments = (id: any) => {
 
 <style lang="scss" scoped>
 .swiper-player {
-  border-radius: 4px;
+  border-radius: 16px;
   flex-grow: 1;
   height: 100%;
   opacity: 1;
@@ -415,11 +415,6 @@ const toggleComments = (id: any) => {
   }
 }
 
-.modal {
-  // position: relative;
-  background: transparent;
-}
-
 // @media screen and (min-width: 1440px) and (max-width: 2560px) {
 //   .modal {
 //     width: 71.4285714286%;
@@ -434,6 +429,15 @@ const toggleComments = (id: any) => {
 </style>
 
 <style lang="scss">
+.swiper .xgplayer-time {
+  font-size: 14px;
+  margin: unset;
+  min-height: 40px;
+}
+.xgplayer .xg-center-grid {
+  top: -1px;
+  transform: translateY(-50%);
+}
 .xgplayer .xg-tips {
   background-color: #41424c;
   border-radius: 4px;
@@ -461,8 +465,20 @@ const toggleComments = (id: any) => {
   margin-right: 0;
   height: 32px;
 }
-.xgplayer .xg-left-grid,
+.xgplayer .xg-left-grid {
+  align-items: center;
+  display: flex;
+  flex: 1 1;
+  height: 40px;
+  margin-right: 50px;
+  z-index: 2;
+  margin-left: 8px;
+  margin-right: 50px;
+}
 .xgplayer .xg-right-grid {
+  align-items: center;
+  display: flex;
+  height: 40px;
   margin-right: 16px;
 }
 .xgplayer-pause.xgplayer .xgplayer-start.hide {
@@ -537,14 +553,6 @@ const toggleComments = (id: any) => {
 </style>
 
 <style>
-.loading-content {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  width: 100%;
-}
 .xgplayer {
   background-color: transparent !important;
 }
@@ -712,5 +720,6 @@ const toggleComments = (id: any) => {
 .xgplayer.xgplayer-pc .xg-inner-controls {
   left: 0 !important;
   right: 0 !important;
+  height: 46px;
 }
 </style>
