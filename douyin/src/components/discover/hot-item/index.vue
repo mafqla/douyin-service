@@ -9,6 +9,9 @@ import hot_exclusive from '@/assets/hot/hot_exclusive.png'
 import hot_top1 from '@/assets/hot/hot_top1.png'
 import hot_top2 from '@/assets/hot/hot_top2.png'
 import hot_top3 from '@/assets/hot/hot_top3.png'
+import { useElementSize } from '@vueuse/core'
+import { he } from 'element-plus/es/locale'
+import { discoverStore } from '@/stores/discover'
 
 interface ITopData {
   id: number
@@ -70,10 +73,17 @@ const selectItem = (index: number) => {
   selectedIndex.value = index
 }
 
+const el = ref(null)
+const { height } = useElementSize(el)
+
+setTimeout(() => {
+  // console.log('hot:', height)
+  discoverStore().hotHeight = height.value
+}, 2000)
 </script>
 <template>
-  <div class="hot-item">
-    <div class="hot-item-main">
+  <div class="hot-item" :style="{ height: `${height}px` }">
+    <div class="hot-item-main" ref="el">
       <div class="hot-item-blank"></div>
       <div class="hot-item-content">
         <div class="hot-item-content-title">

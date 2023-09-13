@@ -3,7 +3,9 @@ import { defineStore } from 'pinia'
 
 export const discoverStore = defineStore('discover', {
   state: () => ({
-    categoriesList: []
+    categoriesList: [],
+    hotHeight: 0,
+    listHeight: [] as number[]
   }),
 
   actions: {
@@ -21,8 +23,8 @@ export const discoverStore = defineStore('discover', {
 
       this.categoriesList = data.data
     }
-  },
-  persist: {
-    enabled: true
   }
+  // persist: {
+  //   enabled: true
+  // }
 })

@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect, type Ref } from 'vue'
+import {
+  computed,
+  onMounted,
+  ref,
+  watchEffect,
+  type Ref,
+  onUpdated,
+  nextTick
+} from 'vue'
 import TitleBox from './title-box.vue'
 import DiscoverVideo from './discover-video.vue'
 import { useElementSize } from '@vueuse/core'
 import { ElSkeleton } from 'element-plus'
+import { discoverStore } from '@/stores/discover'
 
 const props = defineProps({
   img: String,
@@ -20,34 +29,14 @@ const props = defineProps({
   isLoading: Boolean
 })
 
-// console.log(props)
-const itemHeight = ref(0)
-//生成随机高度
-const generateHeight = () => {
-  const height = Math.floor(Math.random() * 3 + 1)
-  switch (height) {
-    case 1:
-      return 400
-    case 2:
-      return 600
-    case 3:
-      return 700
-    default:
-      return 400
-  }
-}
 
 const renderedImg = ref()
 const { height } = useElementSize(renderedImg)
 
-// console.log(height)
+setTimeout(() => {
+  discoverStore().listHeight.push(height.value)
+}, 2000)
 
-// const listHeight: Ref<number[]> = ref([])
-// watchEffect(() => {
-//   console.log(height.value)
-//   listHeight.value.push(height.value)
-//   console.log(listHeight.value)
-// })
 </script>
 <template>
   <div
@@ -159,11 +148,13 @@ const { height } = useElementSize(renderedImg)
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-bottom: 16px;
+      // padding-bottom: 16px;
+      padding-top: 60px;
     }
 
     .skeleton-bottom {
       padding-top: 20px;
+      padding-top: 96px;
     }
   }
 }

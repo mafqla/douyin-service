@@ -69,7 +69,6 @@ declare module '@vue/runtime-core' {
     SwiperPlayer: typeof import('./src/components/video-player/swiper-player.vue')['default']
     SwiperVideo: typeof import('./src/components/swper/swiper-video.vue')['default']
     SwitchButton: typeof import('./src/components/my/user-header/switch-button.vue')['default']
-    TextOverflow: typeof import('./src/components/common/text-overflow.vue')['default']
     TitleBox: typeof import('./src/components/discover/discover-item/title-box.vue')['default']
     UserCollect: typeof import('./src/components/my/user-tab/user-collect/user-collect.vue')['default']
     UserFavorites: typeof import('./src/components/my/user-tab/user-favorites/user-favorites.vue')['default']
@@ -89,5 +88,8 @@ declare module '@vue/runtime-core' {
     VideoSidebarBtn: typeof import('./src/components/video-components/video-sidebar-btn/video-sidebar-btn.vue')['default']
     VideoSideList: typeof import('./src/components/video-components/video-side-list/video-side-list.vue')['default']
     ViliPlayer: typeof import('./src/components/video-player/vili-player.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }
