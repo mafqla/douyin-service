@@ -136,7 +136,7 @@ watchEffect(() => {
     height: 64px;
     margin: 0 auto;
     width: 100%;
-    border-bottom: 1px solid rgba(22, 24, 35, 0.06);
+    // border-bottom: 1px solid rgba(22, 24, 35, 0.06);
     display: flex;
     align-items: center;
     background-color: #fff;

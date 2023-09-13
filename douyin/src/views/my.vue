@@ -159,10 +159,11 @@ watchEffect(() => {
     // }
     .user-header-background {
       background-image: v-bind(background);
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-size: 1920px 172px;
-      height: 172px;
+      background-position: 0 0;
+      background-size: 100% 140%;
+      height: 300px;
+      pointer-events: none;
+      width: 100vw;
       left: 0;
       position: absolute;
       right: 0;

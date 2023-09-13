@@ -111,7 +111,7 @@ const activeMenu = computed(() => {
     background: $color-navigation-bg;
     width: $sidebar-width-min;
     background: no-repeat
-      url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png)
+      url(@/assets/test.png)
       rgba(255, 255, 255, 1);
     height: 100vh;
     position: fixed;

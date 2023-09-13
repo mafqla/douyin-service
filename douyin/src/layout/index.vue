@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 
 // 设置背景颜色
 const backgroundColor = ref('none')
-
+const isScrolled = ref(false)
 // 滚动监听
 window.addEventListener(
   'scroll',
@@ -14,8 +14,10 @@ window.addEventListener(
     // console.log(window.scrollY)
     if (window.scrollY > 60) {
       backgroundColor.value = '#fff'
+      isScrolled.value = true
     } else {
       backgroundColor.value = 'none'
+      isScrolled.value = false
     }
   },
   true
@@ -39,7 +41,7 @@ watchEffect(() => {
 
     <div class="right-container min">
       <el-affix class="affix">
-        <el-header><header-nav /></el-header>
+        <el-header><header-nav :class="{ scrolled: isScrolled }" /></el-header>
       </el-affix>
 
       <router-view v-slot="{ Component, route }">
@@ -63,11 +65,16 @@ watchEffect(() => {
 
   &.user {
     height: auto;
+
+    .bg {
+      display: none;
+    }
+    :deep(.aside .aside-bar) {
+      background: transparent !important;
+    }
   }
   .bg {
-    background: no-repeat
-      url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png)
-      rgba(255, 255, 255, 1);
+    background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
     height: 100vh;
     position: fixed;
     width: 100vw;
@@ -95,9 +102,7 @@ watchEffect(() => {
   background-color: v-bind(backgroundColor);
 }
 .affix {
-  background: no-repeat
-    url(https://p-pc-weboff.byteimg.com/tos-cn-i-9r5gewecjs/test.png)
-    rgba(255, 255, 255, 1);
+  background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
   background-position-x: -72px;
 }
 
