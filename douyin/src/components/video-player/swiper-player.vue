@@ -487,20 +487,20 @@ const toggleComments = (id: any) => {
   z-index: 10;
 }
 
-.xg-douyin-loading {
-  animation: loading 1s steps(60, start) infinite;
-  background-image: url(@/assets/loading.png);
-  background-size: 48px;
-  display: inline-block;
-  font-size: 0;
-  height: 48px;
-  left: 50%;
-  position: relative;
-  top: 50%;
-  transform: scale(0.7) translateX(-50%) translateY(-50%);
-  transform-origin: left top;
-  width: 48px;
-}
+// .xg-douyin-loading {
+//   animation: loading 1s steps(60, start) infinite;
+//   background-image: url(@/assets/loading.png);
+//   background-size: 48px;
+//   display: inline-block;
+//   font-size: 0;
+//   height: 48px;
+//   left: 50%;
+//   position: relative;
+//   top: 50%;
+//   transform: scale(0.7) translateX(-50%) translateY(-50%);
+//   transform-origin: left top;
+//   width: 48px;
+// }
 .loading-content {
   align-items: center;
   display: flex;
@@ -717,7 +717,7 @@ const toggleComments = (id: any) => {
   -ms-transform: translate(-50%, -50%) scale(1);
   transform: translate(-50%, -50%) scale(1);
 }
-.xgplayer.xgplayer-pc .xg-inner-controls {
+.swiper.xgplayer-pc .xg-inner-controls {
   left: 0 !important;
   right: 0 !important;
   height: 46px;

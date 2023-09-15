@@ -13,8 +13,12 @@ const loading = ref(false)
         </template>
       </swiper-video> -->
       <mini-player
+        style="height: 320px; width: 200px"
         :url="'http://192.168.227.1:8081/res/458e6bd5-a8cc-492f-a924-e264d7b2eb9e.mp4'"
       />
+      <search-result />
+
+      <search-recommend />
     </Loading>
   </div>
 </template>

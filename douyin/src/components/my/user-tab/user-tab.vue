@@ -210,5 +210,8 @@ watchEffect(() => {
     width: 100%;
     height: 100%;
   }
+  :deep(.el-tabs__nav) {
+    z-index: unset;
+  }
 }
 </style>

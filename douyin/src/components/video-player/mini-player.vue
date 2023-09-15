@@ -85,13 +85,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="video-play">
+  <div class="mini-play">
     <div id="video-player" class="video-player"></div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.video-play {
+.mini-play {
   position: relative;
   width: 100%;
   height: 100%;
@@ -250,5 +250,16 @@ onBeforeUnmount(() => {
 .xgplayer.xgplayer-pc .xg-inner-controls {
   left: 0 !important;
   right: 0 !important;
+}
+.xgplayer .xgplayer-time .time-duration {
+  color: unset !important;
+}
+
+.mini-play .xg-inner-controls {
+  height: 37px !important;
+}
+.mini-play .bottom-controls .xg-left-grid,
+.mini-play .bottom-controls .xg-right-grid {
+  bottom: 1px !important;
 }
 </style>

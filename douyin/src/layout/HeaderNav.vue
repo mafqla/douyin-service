@@ -36,17 +36,7 @@ const handlePost = () => {
     <div class="header-main">
       <div class="header-content">
         <div class="header-left">
-          <div class="header-left-search">
-            <input
-              type="text"
-              class="header-search-input"
-              placeholder="搜索你感兴趣的内容"
-            />
-            <button>
-              <svg-icon class="icon-search" icon="search" />
-              <span class="btn-title">搜索</span>
-            </button>
-          </div>
+          <search-input />
         </div>
         <div class="header-right">
           <div class="header-right-item">
@@ -166,99 +156,6 @@ const handlePost = () => {
         max-width: 520px;
         padding: 0 8px;
         width: 333px;
-
-        .header-left-search {
-          border-radius: 12px;
-          background-color: rgba(255, 255, 255, 1);
-          border: 2px solid rgba(0, 0, 0, 0.7);
-          align-items: center;
-          box-sizing: border-box;
-          display: flex;
-          flex-direction: row;
-          flex-grow: 1;
-          flex-shrink: 1;
-          height: 40px;
-          width: 100%;
-          z-index: 100;
-          position: relative;
-
-          button {
-            align-items: center;
-            background-color: transparent;
-            // background-color: #e4e4e6;
-            border: none;
-            border-bottom-right-radius: 12px;
-            border-top-right-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            // width: 69px;
-            // width: 64px;
-            z-index: 50;
-            right: -2px;
-            width: 73px;
-            position: relative;
-
-            .icon-search {
-              width: 18px;
-              height: 18px;
-            }
-
-            .btn-title {
-              color: #2f3035;
-              margin-left: 3px;
-              font-size: 16px;
-              font-weight: 500;
-              user-select: none;
-            }
-          }
-
-          .header-search-input {
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-            flex-shrink: 1;
-            align-items: center;
-            border-bottom-left-radius: 12px !important;
-            border-top-left-radius: 12px !important;
-            height: 40px;
-            padding: 0 12px;
-            background-color: transparent;
-            margin: 0;
-            border: none;
-            outline: none;
-            caret-color: #fe2c55;
-            user-select: none;
-
-            &::placeholder {
-              color: rgba(47, 48, 53, 0.4);
-              opacity: 1;
-              font-size: 14px;
-              font-weight: 200;
-              line-height: 40px;
-            }
-          }
-
-          &:hover {
-            border: 2px solid rgba(22, 24, 35, 1);
-            button {
-              background-color: rgba(22, 24, 35, 1);
-              border-bottom-right-radius: 12px;
-              border-top-right-radius: 12px;
-              right: -2px;
-              width: 73px;
-              position: relative;
-
-              .icon-search {
-                color: #fff;
-              }
-              .btn-title {
-                color: #fff;
-              }
-            }
-          }
-        }
       }
 
       @media (min-width: 1240px) {
@@ -365,39 +262,7 @@ const handlePost = () => {
     }
   }
 }
-
 .main.user {
-  .header-left-search {
-    border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
-    background-color: transparent !important;
-    .header-search-input {
-      &::placeholder {
-        color: rgba(255, 255, 255, 1) !important ;
-      }
-    }
-
-    button {
-      background-color: hsla(0, 0%, 100%, 0.3) !important;
-      .icon-search {
-        color: #fff;
-      }
-      .btn-title {
-        color: #fff !important;
-      }
-    }
-
-    &:hover {
-      button {
-        background-color: hsla(0, 0%, 100%, 0.3) !important;
-        .icon-search {
-          color: #fff;
-        }
-        .btn-title {
-          color: #fff;
-        }
-      }
-    }
-  }
   .header-right-item {
     .icon {
       color: rgba(255, 255, 255, 0.75);
@@ -415,38 +280,6 @@ const handlePost = () => {
   }
 
   .header.scrolled {
-    .header-left-search {
-      background-color: rgba(255, 255, 255, 1) !important;
-      border: 2px solid rgba(0, 0, 0, 0.7) !important;
-      .header-search-input {
-        &::placeholder {
-          color: rgba(47, 48, 53, 0.4) !important ;
-        }
-      }
-
-      button {
-        background-color: transparent;
-        .icon-search {
-          color: #2f3035 !important;
-        }
-        .btn-title {
-          color: #2f3035 !important;
-        }
-      }
-
-      &:hover {
-        button {
-          background-color: rgba(22, 24, 35, 1) !important;
-
-          .icon-search {
-            color: #fff !important;
-          }
-          .btn-title {
-            color: #fff !important;
-          }
-        }
-      }
-    }
     .header-right-item {
       .icon {
         color: rgba(22, 24, 35, 0.6);
@@ -465,7 +298,6 @@ const handlePost = () => {
     }
   }
 }
-
 @media screen and (max-width: 1240px) {
   .header {
     .header-main {

@@ -448,8 +448,6 @@ const handleClose = () => {
                   translateYValues[index]
                 }px)`
               }"
-              @click.stop="handleModal(item)"
-              @openModal="handleModal(item)"
             />
           </template>
           <discover-item

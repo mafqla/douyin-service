@@ -10,7 +10,6 @@ import hot_top1 from '@/assets/hot/hot_top1.png'
 import hot_top2 from '@/assets/hot/hot_top2.png'
 import hot_top3 from '@/assets/hot/hot_top3.png'
 import { useElementSize } from '@vueuse/core'
-import { he } from 'element-plus/es/locale'
 import { discoverStore } from '@/stores/discover'
 
 interface ITopData {
