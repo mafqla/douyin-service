@@ -35,30 +35,33 @@ import { videosCtrolStore } from '@/stores/videos-control'
   height: 100%;
 
   .carousel-controls-switch {
-    background-color: rgb(50, 52, 66);
-    height: 80px;
+    // background-color: rgb(50, 52, 66);
+    background-color: rgba(242, 242, 243, 1);
+    height: 88px;
     opacity: 0.7;
     position: relative;
-    width: 36px;
+    width: 44px;
     border-radius: 18px;
     &:hover {
       opacity: 0.9;
     }
     .carousel-controls-switch-up {
-      height: 40px;
+      height: 44px;
       position: absolute;
       top: 0px;
-      width: 36px;
+      width: 44px;
       cursor: pointer;
       opacity: 0.7;
 
       .icon {
-        left: 5px;
+        // left: 5px;
+        left: 9px;
         position: relative;
         top: 7px;
         height: 26px !important;
         width: 26px !important;
-        color: #fff;
+        // color: #fff;
+        color: rgba(22, 24, 35, 0.6);
       }
     }
     .carousel-controls-switch-up.disabled {
@@ -79,12 +82,14 @@ import { videosCtrolStore } from '@/stores/videos-control'
       cursor: pointer;
 
       .icon {
-        left: 5px;
+        // left: 5px;
+        left: 9px;
         position: relative;
         top: 7px;
         height: 26px !important;
         width: 26px !important;
-        color: #fff;
+        // color: #fff;
+        color: rgba(22, 24, 35, 0.6);
       }
     }
   }

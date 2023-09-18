@@ -575,8 +575,8 @@ const toggleComments = (id: any) => {
   width: 57px;
   background-color: #41424c;
   border-radius: 4px;
-  /* bottom: 40px; */
-  bottom: 53px;
+  bottom: 40px;
+  /* bottom: 53px; */
   color: #fff;
   font-size: 14px;
   opacity: 1;

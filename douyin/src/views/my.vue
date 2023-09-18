@@ -19,20 +19,21 @@ const video = videoStore()
 
 const store = userStore()
 const isLogin = ref(false)
+const isDataLoaded = ref(false)
 const query = ref(router.currentRoute.value.query.showTab) as any
 const page = ref(1)
 const size = ref(10)
 const allowScroll = ref(true)
 
-const fetchVideoData = async () => {
+const fetchVideoData = async (page: number, size: number) => {
   if (query.value === null || query.value === undefined) {
-    console.log(query.value)
+    // console.log(query.value)
     return
   }
   const data = await video.getVideoDataByParams({
     showTab: query.value,
-    page: page.value,
-    size: size.value
+    page,
+    size
   })
   if (data) {
     if (query.value === 'post') {
@@ -58,22 +59,15 @@ onMounted(() => {
     background.value = `url('${backgroundurlLightURL}')`
   }
 
-  fetchVideoData()
   isLogin.value = store.isLogin()
+  if (!isDataLoaded.value && isLogin.value) {
+    fetchVideoData(page.value, size.value)
+    isDataLoaded.value = true
+  }
 })
 
-watch(query, () => {
-  page.value = 1
-  video.userPostVideos = []
-  video.userLikeVideos = []
-  video.userCollectVideos = []
-  video.userRecordVideos = []
-  fetchVideoData()
-})
-watchEffect(() => {
-  isLogin.value = store.isLogin()
-  query.value = router.currentRoute.value.query.showTab
-})
+// 滚动监听
+const { y } = useScroll(window)
 
 const load = () => {
   if (!allowScroll.value) {
@@ -81,17 +75,13 @@ const load = () => {
   }
   video.bottomLoading = true
   page.value += 1
-  fetchVideoData()
+  // fetchVideoData()
   video.bottomLoading = false
+  fetchVideoData(page.value, size.value)
 }
 
 // console.log(page.value)
-const el = ref()
-useInfiniteScroll(window, load, {
-  distance: 500
-})
-// 滚动监听
-const { y } = useScroll(window)
+
 watchEffect(() => {
   // console.log(y.value)
   if (y.value > 60) {
@@ -106,8 +96,30 @@ watchEffect(() => {
       .querySelector('.el-tabs__header')
       ?.classList.remove('header-scroll')
   }
-})
+  if (!isDataLoaded.value && isLogin.value) {
+    isDataLoaded.value = true
+    fetchVideoData(page.value, size.value)
+  }
 
+  //如果query改变，清空数据
+
+  // fetchVideoData(page.value, size.value)
+  if (query.value !== router.currentRoute.value.query.showTab) {
+    query.value = router.currentRoute.value.query.showTab
+    page.value = 1
+
+    video.userPostVideos = []
+    video.userLikeVideos = []
+    video.userCollectVideos = []
+    video.userRecordVideos = []
+    // 调用API
+    fetchVideoData(page.value, size.value)
+  }
+})
+const el = ref()
+useInfiniteScroll(window, load, {
+  distance: 500
+})
 // 监听滚动事件
 </script>
 <template>

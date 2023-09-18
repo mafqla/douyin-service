@@ -3,7 +3,7 @@ import { ref, watchEffect } from 'vue'
 import AsideBar from '@/layout/AsideBar.vue'
 import HeaderNav from '@/layout/HeaderNav.vue'
 import { useRouter } from 'vue-router'
-
+import { userStore } from '@/stores/user'
 // 设置背景颜色
 const backgroundColor = ref('none')
 const isScrolled = ref(false)
@@ -44,7 +44,7 @@ watchEffect(() => {
         <el-header><header-nav :class="{ scrolled: isScrolled }" /></el-header>
       </el-affix>
 
-      <router-view v-slot="{ Component, route }">
+      <router-view v-slot="{ Component, route }" :key="userStore().routerKey">
         <!-- <keep-alive> -->
         <component :is="Component" :key="route.path" />
         <!-- </keep-alive> -->
@@ -72,6 +72,9 @@ watchEffect(() => {
     :deep(.aside .aside-bar) {
       background: transparent !important;
     }
+    .affix {
+      background: unset !important;
+    }
   }
   .bg {
     background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
@@ -95,7 +98,8 @@ watchEffect(() => {
   }
 }
 .el-header {
-  height: 60px;
+  // height: 60px;
+  height: 68px;
   position: sticky;
   z-index: 1;
   padding: 0;

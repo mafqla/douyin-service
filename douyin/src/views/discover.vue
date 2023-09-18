@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted, reactive, ref, watchEffect } from 'vue'
 import HotItem from '@/components/discover/hot-item/index.vue'
 import DiscoverItem from '@/components/discover/discover-item/discover-item.vue'
 import { getVideoList } from '@/service/videos/videos'
 import type { IFeedParams, IVideoList } from '@/service/videos/videosType'
-import { useElementSize, useInfiniteScroll } from '@vueuse/core'
+import { useInfiniteScroll } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import modelPlayer from '@/components/video-player/modal-player.vue'
 import { discoverStore } from '@/stores/discover'
-import { vInfiniteScroll } from '@vueuse/components'
 
 const loading = ref(true)
 const page = ref(1)
@@ -29,7 +28,7 @@ const getData = async (params: IFeedParams) => {
     list.value.push(...data)
     allowScroll.value = data && ((data.length > 0) as any)
 
-    console.log(allowScroll.value)
+    // console.log(allowScroll.value)
   } catch (err) {
     console.log(err)
   }
@@ -273,6 +272,12 @@ function actualIndex(loopIndex: number) {
   }
   return loopIndex
 }
+
+onBeforeUnmount(() => {
+  discoverStore().$reset()
+})
+//组件卸载前清除数据
+
 //置顶数据
 const topData = {
   id: 1,

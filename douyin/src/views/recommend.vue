@@ -91,9 +91,9 @@ watchEffect(() => {
     .xgplayer-playswitch {
       position: absolute;
       right: 13px;
-      top: calc(50% + 60px);
+      top: calc(50% + 25px);
       transform: translateY(calc(-50% - 30px));
-      z-index: 2;
+      // z-index: 2;
     }
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 const isInputClicked = ref(false)
 const isResult = ref(false)
 const searchQuery = ref('')
@@ -28,6 +28,7 @@ const handleFocus = () => {
     isInputClicked.value = true
   }
 }
+
 const handleBlur = () => {
   isInputClicked.value = false
   isResult.value = false
@@ -37,11 +38,32 @@ watchEffect(() => {
   console.log(searchQuery.value)
   if (searchQuery.value !== '') {
     isResult.value = true
+  } else {
+    isResult.value = false
   }
 })
+
+//触发搜索框的focus事件
+const input = ref()
+//点击触发搜索框的focus事件
+const handleClick = () => {
+  input.value.focus()
+  handleFocus()
+}
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+const search = ref()
+const handleClickOutside = (event: Event) => {
+  if (!search.value.contains(event.target)) {
+    input.value.blur()
+    handleBlur()
+  }
+}
 </script>
 <template>
-  <div class="search">
+  <div class="search" @click="handleClick" ref="search">
     <form action="" class="header-search-form">
       <div class="clear-search" v-if="searchQuery !== ''" @click="clearSearch">
         <svg
@@ -76,16 +98,15 @@ watchEffect(() => {
         placeholder="搜索你感兴趣的内容"
         v-model="searchQuery"
         @input="handleInput"
-        @focus="handleFocus"
-        @blur="handleBlur"
         :maxlength="100"
+        ref="input"
       />
     </form>
     <button>
       <svg-icon class="icon-search" icon="search" />
       <span class="btn-title">搜索</span>
     </button>
-    <search-recommend v-show="isInputClicked" />
+    <search-recommend v-show="isInputClicked" @click="handleClick" />
     <search-result v-show="isResult" :searchText="searchQuery" />
   </div>
 </template>

@@ -2,8 +2,8 @@
 import { userStore } from '@/stores/user'
 import { ref } from 'vue'
 
-const email = ref('')
-const password = ref('')
+const email = ref('admin@qq.com')
+const password = ref('admin13n')
 
 // 定义表单校验规则
 const rules = {}
@@ -13,22 +13,22 @@ const rules = {}
 const handleLogin = (email: string, password: string) => {
   // 调用登录接口
   const store = userStore()
-  store.login({email, password})
+  store.login({ email, password })
 }
 </script>
 <template>
   <div class="pass-login">
     <el-form>
       <el-form-item>
-        <el-input placeholder="邮箱" v-model="email"/>
+        <el-input placeholder="邮箱" v-model="email" />
       </el-form-item>
       <el-form-item>
         <el-input
-            placeholder="请输入密码"
-            type="password"
-            show-password
-            v-model="password"
-            @keyup.enter="handleLogin(email, password)"
+          placeholder="请输入密码"
+          type="password"
+          show-password
+          v-model="password"
+          @keyup.enter="handleLogin(email, password)"
         >
           <template #append>忘记密码</template>
         </el-input>
@@ -38,24 +38,24 @@ const handleLogin = (email: string, password: string) => {
         <div class="web-login-confirm-info">
           <span class="web-login-confirm-info__before-text">同意</span>
           <a
-              target="_blank"
-              href="https://www.douyin.com/agreements/?id=6773906068725565448"
-              class="web-login-confirm-info__info"
-          >用户协议
+            target="_blank"
+            href="https://www.douyin.com/agreements/?id=6773906068725565448"
+            class="web-login-confirm-info__info"
+            >用户协议
           </a>
           <span class="web-login-confirm-info__connect-text">和</span>
           <a
-              target="_blank"
-              href="https://www.douyin.com/agreements/?id=6773901168964798477"
-              class="web-login-confirm-info__info"
-          >隐私政策
+            target="_blank"
+            href="https://www.douyin.com/agreements/?id=6773901168964798477"
+            class="web-login-confirm-info__info"
+            >隐私政策
           </a>
         </div>
       </el-form-item>
       <el-form-item>
         <el-button
-            @click="handleLogin(email, password)"
-            :disabled="!email || !password"
+          @click="handleLogin(email, password)"
+          :disabled="!email || !password"
         >
           登录
         </el-button>

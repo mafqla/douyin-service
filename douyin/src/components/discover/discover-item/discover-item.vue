@@ -35,7 +35,7 @@ const { height } = useElementSize(renderedImg)
 
 setTimeout(() => {
   discoverStore().listHeight.push(height.value)
-}, 2000)
+}, 1500)
 
 </script>
 <template>

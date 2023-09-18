@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
-import { HeaderAvatar, LoginButton } from '@/components/header'
+import {
+  HeaderAvatar,
+  LoginButton,
+  MessageBox,
+  NotificationBox,
+  CooperateBox,
+  QuickBox,
+  ClientBox
+} from '@/components/header'
 import { login } from '@/components/auth'
 import { userStore } from '@/stores/user'
 //切换深色主题
@@ -40,47 +48,87 @@ const handlePost = () => {
         </div>
         <div class="header-right">
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon expand" icon="expand" />
+            <div class="header-right-item-content">
+              <div class="header-right-item-overplay">
+                <svg-icon class="icon expand" icon="expand" />
+              </div>
+              <p>更多</p>
             </div>
-            <p>更多</p>
           </div>
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-1" />
+            <div class="header-right-item-content">
+              <div class="header-right-item-overplay">
+                <svg-icon class="icon" icon="header-1" />
+              </div>
+              <p>充抖币</p>
             </div>
-            <p>充抖币</p>
           </div>
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-2" />
-            </div>
-            <p>客户端</p>
+            <el-popover :show-arrow="false" placement="bottom-end">
+              <template #reference>
+                <div class="header-right-item-content">
+                  <div class="header-right-item-overplay">
+                    <svg-icon class="icon" icon="header-2" />
+                  </div>
+                  <p>客户端</p>
+                </div>
+              </template>
+              <template #default> <client-box /></template>
+            </el-popover>
           </div>
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-3" />
-            </div>
-            <p>快捷访问</p>
+            <el-popover :show-arrow="false" placement="bottom-end">
+              <template #reference>
+                <div class="header-right-item-content">
+                  <div class="header-right-item-overplay">
+                    <svg-icon class="icon" icon="header-3" />
+                  </div>
+                  <p>快捷访问</p>
+                </div>
+              </template>
+              <template #default><quick-box /> </template>
+            </el-popover>
           </div>
 
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-4" />
-            </div>
-            <p>通知</p>
+            <el-popover :show-arrow="false" placement="bottom-end">
+              <template #reference>
+                <div class="header-right-item-content">
+                  <div class="header-right-item-overplay">
+                    <svg-icon class="icon" icon="header-4" />
+                  </div>
+                  <p>通知</p>
+                </div>
+              </template>
+              <template #default> <notification-box /> </template>
+            </el-popover>
           </div>
+
           <div class="header-right-item">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-5" />
-            </div>
-            <p>私信</p>
+            <el-popover :show-arrow="false" placement="bottom-end">
+              <template #reference>
+                <div class="header-right-item-content">
+                  <div class="header-right-item-overplay">
+                    <svg-icon class="icon" icon="header-5" />
+                  </div>
+                  <p>私信</p>
+                </div></template
+              >
+              <template #default> <message-box /> </template>
+            </el-popover>
           </div>
           <div class="header-right-item" @click="handlePost">
-            <div class="header-right-item-overplay">
-              <svg-icon class="icon" icon="header-6" />
-            </div>
-            <p>投稿</p>
+            <el-popover :show-arrow="false" placement="bottom-end">
+              <template #reference>
+                <div class="header-right-item-content">
+                  <div class="header-right-item-overplay">
+                    <svg-icon class="icon" icon="header-6" />
+                  </div>
+                  <p>投稿</p>
+                </div>
+              </template>
+              <template #default> <cooperate-box /> </template>
+            </el-popover>
           </div>
           <!-- <el-divider direction="vertical" /> -->
 
@@ -190,56 +238,68 @@ const handlePost = () => {
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          width: 48px;
-
-          .header-right-item-overplay {
-            // background-color: #e7e7ec;
-            background: transparent;
-            border-radius: 72px;
-            display: flex;
-            height: 24px;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-          }
-
-          p {
-            font-size: 10px;
-            font-weight: 500;
-            line-height: 20px;
-            text-align: center;
-            word-break: keep-all;
-            color: rgba(47, 48, 53, 0.7);
-            user-select: none;
-          }
-          .icon {
-            opacity: 0.8;
-          }
-          & .icon {
-            width: 24px;
-            height: 24px;
-          }
-          & .icon.expand {
-            width: 12.44px;
-            height: 12.44px;
-          }
-
-          &:hover {
-            .header-right-item-overplay {
-              // background-color: #e7e7ec;
-              background-color: transparent;
-              cursor: pointer;
-            }
-            p {
-              color: #2f3035;
-            }
-            .icon {
-              opacity: 1;
-            }
-          }
+          width: auto;
+          min-width: 32px;
+          margin-left: 8px;
+          position: relative;
 
           &:nth-child(1) {
             display: none;
+          }
+
+          .header-right-item-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: auto;
+            min-width: 32px;
+
+            .header-right-item-overplay {
+              // background-color: #e7e7ec;
+              background: transparent;
+              border-radius: 72px;
+              display: flex;
+              height: 24px;
+              align-items: center;
+              justify-content: center;
+              width: 24px;
+            }
+
+            p {
+              font-size: 10px;
+              font-weight: 500;
+              line-height: 20px;
+              text-align: center;
+              word-break: keep-all;
+              color: rgba(47, 48, 53, 0.7);
+              user-select: none;
+            }
+            .icon {
+              opacity: 0.8;
+            }
+            & .icon {
+              width: 24px;
+              height: 24px;
+            }
+            & .icon.expand {
+              width: 12.44px;
+              height: 12.44px;
+            }
+
+            &:hover {
+              .header-right-item-overplay {
+                // background-color: #e7e7ec;
+                background-color: transparent;
+                cursor: pointer;
+              }
+              p {
+                color: #2f3035;
+              }
+              .icon {
+                opacity: 1;
+              }
+            }
           }
         }
         .header-right-item:first-child {
@@ -249,6 +309,11 @@ const handlePost = () => {
       }
     }
 
+    @media (min-width: 0) {
+      .header-right {
+        width: auto;
+      }
+    }
     @media (min-width: 869px) {
       .header-content {
         justify-content: flex-end;
@@ -298,7 +363,7 @@ const handlePost = () => {
     }
   }
 }
-@media screen and (max-width: 1240px) {
+@media screen and (max-width: 840px) {
   .header {
     .header-main {
       .header-content {

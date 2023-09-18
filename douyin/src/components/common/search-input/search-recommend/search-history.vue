@@ -23,7 +23,7 @@ const clearHistory = () => {
 <template>
   <div class="search-history" v-if="historyList.length !== 0">
     <span class="search-history-title">历史记录</span>
-    <div class="clear-history-btn" @click="clearHistory">
+    <div class="clear-history-btn" @click.stop.event="clearHistory">
       <svg
         width="14"
         height="14"
@@ -53,7 +53,7 @@ const clearHistory = () => {
       class="search-history-box"
     >
       <span class="search-history-box-text">{{ item.text }}</span>
-      <div class="search-history-clear-icon" @click="deleteHistory(index)">
+      <div class="search-history-clear-icon" @click.stop="deleteHistory(index)">
         <svg
           width="14"
           height="14"
