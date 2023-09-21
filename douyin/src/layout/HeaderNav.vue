@@ -168,7 +168,6 @@ const handlePost = () => {
   -webkit-app-region: no-drag;
   align-items: center;
   display: flex;
-  height: 100%;
   justify-content: space-between;
   position: relative;
   background-color: transparent;
@@ -177,6 +176,10 @@ const handlePost = () => {
   width: 100%;
   height: 100%;
   // border-bottom: rgba(231, 231, 236, 0.4) 1px solid;
+  margin-right: 16px;
+
+  // position: fixed;
+
 
   .header-main {
     align-items: center;

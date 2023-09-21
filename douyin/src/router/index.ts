@@ -34,6 +34,67 @@ const routes: RouteRecordRaw[] = [
             component: () => import('@/views/my.vue')
           }
         ]
+      },
+      {
+        path: '/friend',
+        name: 'friend',
+        component: () => import('@/views/friend.vue')
+      },
+      {
+        path: '/live',
+        name: 'live',
+        component: () => import('@/views/live.vue')
+      },
+      {
+        path: '/vs',
+        name: 'vs',
+        component: () => import('@/views/theater.vue')
+      },
+      {
+        path: 'hot',
+        name: 'hot',
+        component: () => import('@/views/hot.vue')
+      },
+
+      {
+        path: '/channel/300201',
+        name: 'entertainment',
+        component: () => import('@/views/entertainment.vue')
+      },
+      {
+        path: '/channel/300203',
+        name: 'channel',
+        component: () => import('@/views/knowledge.vue')
+      },
+      {
+        path: '/channel/300204',
+        name: 'food',
+        component: () => import('@/views/food.vue')
+      },
+      {
+        path: '/channel/300205',
+        name: 'game',
+        component: () => import('@/views/game.vue')
+      },
+      {
+        path: '/channel/300206',
+        name: 'anime',
+        component: () => import('@/views/anime.vue')
+      },
+      {
+        path: '/channel/300207',
+        name: 'sports',
+        component: () => import('@/views/sports.vue')
+      },
+      {
+        path: '/channel/300208',
+        name: 'fashion',
+        component: () => import('@/views/fashion.vue')
+      },
+      {
+        path: '/channel/300209',
+        name: 'music',
+        component: () => import('@/views/music.vue')
       }
     ]
   },
@@ -44,8 +105,7 @@ const routes: RouteRecordRaw[] = [
     props: (route) => ({
       pageName: route.params.pageName,
       modalId: route.query.modal_id
-    }),
-    
+    })
   },
   {
     path: '/post',

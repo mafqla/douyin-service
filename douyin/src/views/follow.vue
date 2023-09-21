@@ -16,9 +16,6 @@ const loading = ref(false)
         style="height: 320px; width: 200px"
         :url="'http://192.168.227.1:8081/res/458e6bd5-a8cc-492f-a924-e264d7b2eb9e.mp4'"
       />
-      <search-result />
-
-      <search-recommend />
     </Loading>
   </div>
 </template>
@@ -28,6 +25,7 @@ const loading = ref(false)
   width: 100%;
   height: 80vh;
   position: relative;
+  background-color: antiquewhite;
 }
 
 :deep(.carousel-controls) {

@@ -91,20 +91,16 @@ const toggleModal = (event: any) => {
             </template>
             <template #default>
               <img v-lazy="imgSrc" :alt="title" class="" />
+              <miniPlayer
+                v-if="isVideoVisible"
+                class="video-player"
+                :url="videoUrl"
+                @click="$emit('openModal')"
+              />
             </template>
           </el-skeleton>
 
-          <miniPlayer
-            v-if="isVideoVisible"
-            class="video-player"
-            :url="videoUrl"
-            :volume="volume"
-          />
-          <div
-            class="overlay"
-            v-if="isVideoVisible"
-            @click="$emit('openModal')"
-          ></div>
+          <!-- <div class="overlay" v-if="!isVideoVisible"></div> -->
         </div>
         <div class="video-item-block"></div>
         <span class="author-card-user-video-like" v-if="!isVideoVisible">
@@ -140,7 +136,6 @@ const toggleModal = (event: any) => {
   .video-item-link {
     cursor: pointer;
     display: inline-block;
-    transition-property: transform, shadow, background-color;
     width: 100%;
     color: inherit;
     text-decoration: none;

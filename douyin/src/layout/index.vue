@@ -41,7 +41,9 @@ watchEffect(() => {
 
     <div class="right-container min">
       <el-affix class="affix">
-        <el-header><header-nav :class="{ scrolled: isScrolled }" /></el-header>
+        <div class="header-conent">
+          <header-nav :class="{ scrolled: isScrolled }" />
+        </div>
       </el-affix>
 
       <router-view v-slot="{ Component, route }" :key="userStore().routerKey">
@@ -97,13 +99,14 @@ watchEffect(() => {
     min-height: 450px;
   }
 }
-.el-header {
+.header-conent {
   // height: 60px;
   height: 68px;
   position: sticky;
   z-index: 1;
   padding: 0;
   background-color: v-bind(backgroundColor);
+  width: calc(100% - 72px);
 }
 .affix {
   background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);

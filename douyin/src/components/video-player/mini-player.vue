@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Player, { Events } from 'xgplayer'
 import 'xgplayer/dist/index.min.css'
 import startPlay from '@/assets/videos-player-icon/all-play.svg'
@@ -20,16 +20,12 @@ const props = defineProps({
     type: String,
     required: true,
     default: ''
-  },
-  volume: {
-    type: Number,
-    default: 0
   }
 })
 
 const player = ref<any>(null)
-const playerOptions = ref({
-  id: 'video-player',
+const playerOptions = {
+  id: 'mini-player',
   url: props.url,
   autoplay: true,
   autoplayMuted: videosCtrolStore().isMuted,
@@ -37,7 +33,7 @@ const playerOptions = ref({
   width: '100%',
   height: '100%',
   // autoplayMuted: true,
-  volume: props.volume,
+  // volume: props.volume,
   closeVideoClick: true,
   lang: 'zh-cn',
   // playsinline: true,
@@ -70,9 +66,9 @@ const playerOptions = ref({
       <div class="loading-content-img"></div>
     </div>`
   }
-})
+}
 onMounted(() => {
-  player.value = new Player(playerOptions.value)
+  player.value = new Player(playerOptions)
   player.value.on(Events.VOLUME_CHANGE, () => {
     console.log('音量改变')
     videosCtrolStore().isMuted = false
@@ -86,7 +82,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="mini-play">
-    <div id="video-player" class="video-player"></div>
+    <div id="mini-player"></div>
   </div>
 </template>
 
@@ -97,26 +93,41 @@ onBeforeUnmount(() => {
   height: 100%;
   // bottom: 48px;
   // bottom: 60px;
-
-  // :deep(.xgplayer-skin-default video) {
-  //   position: absolute;
-  //   width: 100%;
-  //   height: 100%;
-  //   bottom: 48px;
-  // }
 }
 </style>
 
 <style>
-.xgplayer .xgplayer-time {
+.mini-play video {
+  background: #fff !important;
+}
+.mini-play .xgplayer-time {
   font-size: 10px;
   margin: unset;
 }
 
-.xgplayer xg-start-inner {
+.mini-play xg-start-inner {
   background: none;
 }
-.xgplayer .xgplayer-start .xg-icon-play,
+.mini-play .xgplayer-controls {
+  background: transparent;
+}
+.mini-play .xgplayer-time .time-duration {
+  color: unset !important;
+}
+
+.mini-play .xg-inner-controls {
+  height: 37px !important;
+}
+/* .mini-play .bottom-controls .xg-center-grid {
+  top: 26px;
+  padding: 0;
+} */
+.mini-play .bottom-controls .xg-left-grid,
+.mini-play .bottom-controls .xg-right-grid {
+  bottom: 2px !important;
+  /* z-index: -1; */
+}
+.mini-play .xgplayer-start .xg-icon-play,
 .xg-icon-pause {
   width: 100%;
   height: 100%;
@@ -204,7 +215,7 @@ onBeforeUnmount(() => {
   background: none;
   box-shadow: none;
 }
-.xgplayer .xgplayer-progress-btn {
+.mini-play .xgplayer-progress-btn {
   background: rgba(255, 94, 94, 0.304);
   border: 0.5px solid rgba(255, 94, 94, 0.057);
   border-radius: 30px;
@@ -218,7 +229,7 @@ onBeforeUnmount(() => {
   width: 20px;
   z-index: 1;
 }
-.xgplayer .xgplayer-progress-bottom .xgplayer-progress-btn:before {
+.mini-play .xgplayer-progress-bottom .xgplayer-progress-btn:before {
   background: #fff;
   border-radius: 30px;
   content: ' ';
@@ -229,8 +240,8 @@ onBeforeUnmount(() => {
   position: relative;
   /* width: 12px; */
 }
-.xgplayer .xgplayer-progress-btn,
-.xgplayer .xgplayer-progress-btn:before {
+.mini-play .xgplayer-progress-btn,
+.mini-play .xgplayer-progress-btn:before {
   display: block;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -250,16 +261,5 @@ onBeforeUnmount(() => {
 .xgplayer.xgplayer-pc .xg-inner-controls {
   left: 0 !important;
   right: 0 !important;
-}
-.xgplayer .xgplayer-time .time-duration {
-  color: unset !important;
-}
-
-.mini-play .xg-inner-controls {
-  height: 37px !important;
-}
-.mini-play .bottom-controls .xg-left-grid,
-.mini-play .bottom-controls .xg-right-grid {
-  bottom: 1px !important;
 }
 </style>

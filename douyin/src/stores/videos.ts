@@ -71,9 +71,9 @@ export const videoStore = defineStore('videos', {
         const userVideos = res.data
 
         this.loading = false
-        this.postCount = userVideos?.publishCount
-        this.likeCount = userVideos?.likeCount
-        this.collectCount = userVideos?.collectCount
+        this.postCount = userVideos.publishCount
+        this.likeCount = userVideos.likeCount
+        this.collectCount = userVideos.collectCount
 
         // ElMessage({
         //   message: res.msg,

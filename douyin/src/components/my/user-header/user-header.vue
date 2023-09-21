@@ -13,13 +13,19 @@ watchEffect(() => {
   isLogin.value = store.isLogin()
   avatar.value = store.userInfo.userAvatar
 })
+
+//编辑资料
+const open = ref(false)
+const edit = () => {
+  open.value = true
+}
 </script>
 
 <template>
   <div class="user-detail-header">
     <div class="user-avatar">
-      <el-avatar v-if="isLogin" :size="112" :src="avatar"/>
-      <svg-icon v-if="!isLogin" class="icon" icon="user-avatar"/>
+      <el-avatar v-if="isLogin" :size="112" :src="avatar" />
+      <svg-icon v-if="!isLogin" class="icon" icon="user-avatar" />
     </div>
     <div class="user-info">
       <div class="user-name">
@@ -66,24 +72,24 @@ watchEffect(() => {
         </span>
         <!-- 作者页面显示 -->
         <span class="user-account-addr"
-        >ip属地: {{ store.userInfo.ipLocation }}</span
+          >ip属地: {{ store.userInfo.ipLocation }}</span
         >
         <template v-if="store.userInfo.gender !== null">
           <span class="user-account-info">
             <svg-icon
-                v-if="store.userInfo.gender === '女'"
-                icon="small-woman"
-                class="user-account-icon"
+              v-if="store.userInfo.gender === '女'"
+              icon="small-woman"
+              class="user-account-icon"
             />
             <svg-icon
-                v-if="store.userInfo.gender === '男'"
-                icon="small-man"
-                class="user-account-icon"
+              v-if="store.userInfo.gender === '男'"
+              icon="small-man"
+              class="user-account-icon"
             />
             <span v-if="store.userInfo.birthdate !== null"
-            >{{
+              >{{
                 Math.ceil(
-                    (Date.now() - new Date(store.userInfo.birthdate).getTime()) /
+                  (Date.now() - new Date(store.userInfo.birthdate).getTime()) /
                     31557600000
                 )
               }}岁</span
@@ -98,28 +104,29 @@ watchEffect(() => {
           <span class="user-account-info">{{ store.userInfo.school }}</span>
         </template>
       </p>
-      <p v-if="isLogin" class="user-signature">
+
+      <div v-if="isLogin" class="user-signature">
         <span> {{ store.userInfo.signature }}</span>
-      </p>
+      </div>
     </div>
 
     <div class="trust-login-switch" v-if="isLogin">
       <div class="trust-login-tips-left">
         <div class="trust-login-tips-icon">
           <svg
-              width="15"
-              height="16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class=""
-              viewBox="0 0 15 16"
+            width="15"
+            height="16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class=""
+            viewBox="0 0 15 16"
           >
             <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M7.5 15.473a7.5 7.5 0 100-15 7.5 7.5 0 000 15zm.034-12c-.956 0-1.842.367-2.45 1.076-.076.089-.162.22-.243.36-.209.357-.056.805.308.999l.027.014c.396.211.842-.003 1.114-.36.3-.393.715-.588 1.244-.588.787 0 1.338.327 1.338.992 0 .536-.427.94-.91 1.371l-.03.028c-.517.469-1.05.953-1.277 1.857-.01.04-.02.088-.028.14-.077.464.31.86.779.86.423 0 .753-.33.858-.74a.984.984 0 01.027-.092c.185-.512.535-.848.885-1.152.676-.6 1.324-1.227 1.324-2.272 0-1.619-1.366-2.493-2.966-2.493zm-.034 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
-                fill="#2F3035"
-                fill-opacity="0.4"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M7.5 15.473a7.5 7.5 0 100-15 7.5 7.5 0 000 15zm.034-12c-.956 0-1.842.367-2.45 1.076-.076.089-.162.22-.243.36-.209.357-.056.805.308.999l.027.014c.396.211.842-.003 1.114-.36.3-.393.715-.588 1.244-.588.787 0 1.338.327 1.338.992 0 .536-.427.94-.91 1.371l-.03.028c-.517.469-1.05.953-1.277 1.857-.01.04-.02.088-.028.14-.077.464.31.86.779.86.423 0 .753-.33.858-.74a.984.984 0 01.027-.092c.185-.512.535-.848.885-1.152.676-.6 1.324-1.227 1.324-2.272 0-1.619-1.366-2.493-2.966-2.493zm-.034 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
+              fill="#2F3035"
+              fill-opacity="0.4"
             ></path>
           </svg>
           <!-- <div class="trust-login-tips-info trust-login-tips-info-bottom">
@@ -127,8 +134,14 @@ watchEffect(() => {
                       </div> -->
         </div>
       </div>
-      <switch-button/>
+      <switch-button />
     </div>
+
+    <div class="edit">
+      <download-btn style="margin: unset" />
+      <button class="content-btn" @click="edit">编辑资料</button>
+    </div>
+    <user-modal :open="open" @close="open = false" />
   </div>
 </template>
 
@@ -148,14 +161,24 @@ watchEffect(() => {
   }
 
   .user-info {
-    flex: 1 1;
-    align-items: flex-start;
+    // flex: 1 1;
+    // align-items: flex-start;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // margin-left: 40px;
+    // min-width: 560px;
+
+    align-content: center;
+    align-items: center;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 40px;
-    min-width: 560px;
+    flex: 1 1;
+    flex-wrap: wrap;
+    margin-left: 32px;
     .user-name {
+      display: flex;
+      position: relative;
+      width: 100%;
       .user-name-noin {
         color: #161823;
         font-size: 20px;
@@ -185,6 +208,7 @@ watchEffect(() => {
       display: flex;
       height: 22px;
       margin-top: 6px;
+      width: 100%;
 
       span {
         color: rgba(22, 24, 35, 0.6);
@@ -237,6 +261,7 @@ watchEffect(() => {
       height: 23px;
       margin-top: 4px;
       position: relative;
+      width: 100%;
 
       span {
         // color: rgba(22, 24, 35, 0.6);
@@ -248,8 +273,10 @@ watchEffect(() => {
     }
 
     .user-info-detail {
+      // justify-content: flex-start;
       display: flex;
-      justify-content: flex-start;
+      margin-top: 4px;
+      width: 100%;
 
       .user-item {
         align-items: baseline;
@@ -313,16 +340,78 @@ watchEffect(() => {
       }
     }
   }
+
+  .edit {
+    bottom: 0;
+    display: flex;
+    position: absolute;
+    right: 0;
+
+    :deep(.content-text) {
+      width: 208px;
+    }
+
+    .content-btn {
+      // background: #e4e4e6 !important;
+      // background: var(--color-bg-b3) !important;
+      background: rgba(228, 228, 230, 1) !important;
+      border: none;
+      // color: #161823 !important;
+      // color: var(--color-text-t1) !important;
+      color: rgba(22, 24, 35, 1) !important;
+      font-size: 13px;
+      font-weight: 400;
+      margin: 0 0 0 8px;
+
+      align-items: center;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      // margin: 0 8px;
+      outline: none;
+      padding: 0 16px;
+      position: relative;
+      border-radius: 4px;
+      font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
+      // font-size: 14px;
+      // font-weight: 500;
+      height: 36px;
+      line-height: 22px;
+      min-width: 88px;
+    }
+  }
+}
+
+// @media (max-width: 1024px) {
+//   .user-detail-header {
+//     padding-bottom: 68px;
+//   }
+// }
+// @media (max-width: 940px) {
+//   .user-detail-header {
+//     padding-bottom: 68px;
+//   }
+// }
+
+@media (max-width: 1180px) {
+  .user-detail-header {
+    padding-bottom: 68px;
+    .edit {
+      bottom: 0;
+      left: 0;
+    }
+  }
 }
 
 @media (max-width: 1024px) {
-  .user-detail-heade {
+  .user-detail-header {
     padding-bottom: 68px;
-  }
-}
-@media (max-width: 940px) {
-  .user-detail-heade {
-    padding-bottom: 68px;
+
+    .edit {
+      bottom: 0;
+      left: 0;
+    }
   }
 }
 </style>

@@ -256,6 +256,7 @@ watchEffect(() => {
 
   const listHeight = discoverStore().listHeight
   const hotHeight = discoverStore().hotHeight
+  // console.log(numItems.value)
   translateYValues.value = generateTranslateYValues(
     360,
     hotHeight,

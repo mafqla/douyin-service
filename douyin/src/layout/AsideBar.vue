@@ -40,9 +40,12 @@ const calculateBackgroundPosition = (index: string) => {
 
 const activeMenu = computed(() => {
   const { path } = route
-  const index = Object.values(menuItems).findIndex(
-    (item) => item.path === `/${path.split('/')[1]}`
-  )
+  const index = Object.values(menuItems).findIndex((item) => {
+    return (
+      item.path === `/${path.split('/')[1]}` ||
+      item.path === `/${path.split('/').splice(1, 2).join('/')}`
+    )
+  })
   activeIndex.value = (index + 1).toString()
   return (index + 1).toString()
 })
@@ -61,7 +64,7 @@ const activeMenu = computed(() => {
         <div class="menu-container" :default-active="activeMenu">
           <template v-for="item in menuItems" :key="item.index">
             <div
-            class="menu-item"
+              class="menu-item"
               :index="item.index"
               @click="handleSelect(item.index)"
               :class="{ active: activeIndex === item.index }"
@@ -110,9 +113,7 @@ const activeMenu = computed(() => {
   .aside-bar {
     background: $color-navigation-bg;
     width: $sidebar-width-min;
-    background: no-repeat
-      url(@/assets/test.png)
-      rgba(255, 255, 255, 1);
+    background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
     height: 100vh;
     position: fixed;
     z-index: 100;

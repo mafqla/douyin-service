@@ -176,6 +176,11 @@ useInfiniteScroll(window, load, {
       height: 300px;
       pointer-events: none;
       width: 100vw;
+
+      // background-position: 50%;
+      // background-repeat: no-repeat;
+      // background-size: 1920px 172px;
+      height: 172px;
       left: 0;
       position: absolute;
       right: 0;
@@ -187,7 +192,8 @@ useInfiniteScroll(window, load, {
       width: calc(100% - 120px);
       max-width: 1208px;
       min-height: calc(100vh - 60px);
-      min-width: 682px;
+      // min-width: 682px;
+      min-width: 760px;
     }
   }
 }
