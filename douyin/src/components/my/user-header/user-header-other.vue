@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
-import switchButton from './switch-button.vue'
 import { userStore } from '@/stores/user'
 
 const isLogin = ref(false)
@@ -13,57 +12,31 @@ watchEffect(() => {
   isLogin.value = store.isLogin()
   avatar.value = store.userInfo.userAvatar
 })
-
-//编辑资料
-const open = ref(false)
-const edit = () => {
-  open.value = true
-}
 </script>
 
 <template>
   <div class="user-detail-header">
     <div class="user-avatar">
-      <el-avatar v-if="isLogin" :size="112" :src="avatar" />
-      <svg-icon v-if="!isLogin" class="icon" icon="user-avatar" />
+      <el-avatar :size="112" :src="avatar" />
     </div>
     <div class="user-info">
       <div class="user-name">
-        <h1 class="user-name-noin" v-if="!isLogin">未登录</h1>
-        <h1 class="user-name-login" v-if="isLogin">
+        <h1 class="user-name-login">
           <span>{{ store.userInfo.username }}</span>
         </h1>
       </div>
       <div class="user-info-detail">
         <div class="user-item">
-          <template v-if="!isLogin">
-            <p class="user-text">关注</p>
-            <p class="user-line">-</p>
-          </template>
-          <template v-else>
-            <div class="user-info-text">关注</div>
-            <div class="user-number">0</div>
-          </template>
+          <div class="user-info-text">关注</div>
+          <div class="user-number">0</div>
         </div>
         <div class="user-item">
-          <template v-if="!isLogin">
-            <p class="user-text">粉丝</p>
-            <p class="user-line">-</p>
-          </template>
-          <template v-else>
-            <div class="user-info-text">粉丝</div>
-            <div class="user-number">0</div>
-          </template>
+          <div class="user-info-text">粉丝</div>
+          <div class="user-number">0</div>
         </div>
         <div class="user-item">
-          <template v-if="!isLogin">
-            <p class="user-text">获赞</p>
-            <p class="user-line">-</p>
-          </template>
-          <template v-else>
-            <div class="user-info-text">获赞</div>
-            <div class="user-number">0</div>
-          </template>
+          <div class="user-info-text">获赞</div>
+          <div class="user-number">0</div>
         </div>
       </div>
       <p v-if="isLogin" class="user-account">
@@ -110,38 +83,19 @@ const edit = () => {
       </div>
     </div>
 
-    <div class="trust-login-switch" v-if="isLogin">
-      <div class="trust-login-tips-left">
-        <div class="trust-login-tips-icon">
-          <svg
-            width="15"
-            height="16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class=""
-            viewBox="0 0 15 16"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.5 15.473a7.5 7.5 0 100-15 7.5 7.5 0 000 15zm.034-12c-.956 0-1.842.367-2.45 1.076-.076.089-.162.22-.243.36-.209.357-.056.805.308.999l.027.014c.396.211.842-.003 1.114-.36.3-.393.715-.588 1.244-.588.787 0 1.338.327 1.338.992 0 .536-.427.94-.91 1.371l-.03.028c-.517.469-1.05.953-1.277 1.857-.01.04-.02.088-.028.14-.077.464.31.86.779.86.423 0 .753-.33.858-.74a.984.984 0 01.027-.092c.185-.512.535-.848.885-1.152.676-.6 1.324-1.227 1.324-2.272 0-1.619-1.366-2.493-2.966-2.493zm-.034 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
-              fill="#2F3035"
-              fill-opacity="0.4"
-            ></path>
-          </svg>
-          <!-- <div class="trust-login-tips-info trust-login-tips-info-bottom">
-                        保存登录信息，下次登录免验证
-                      </div> -->
+    <div class="action">
+      <download-btn style="margin: unset" class="other" />
+      <button class="content-btn follow">关注</button>
+      <button class="content-btn">私信</button>
+      <button class="content-btn more">
+        <svg-icon icon="more" class="icon" />
+      </button>
+      <button class="content-btn more">
+        <div class="share">
+          <svg-icon icon="fenxiang" class="icon" />
         </div>
-      </div>
-      <switch-button />
+      </button>
     </div>
-
-    <div class="edit">
-      <download-btn style="margin: unset" />
-      <button class="content-btn" @click="edit">编辑资料</button>
-    </div>
-    <user-modal :open="open" @close="open = false" />
   </div>
 </template>
 
@@ -152,13 +106,6 @@ const edit = () => {
   margin-top: 32px;
   position: relative;
   width: 100%;
-
-  .user-avatar {
-    .icon {
-      width: 112px;
-      height: 112px;
-    }
-  }
 
   .user-info {
     // flex: 1 1;
@@ -180,7 +127,7 @@ const edit = () => {
       position: relative;
       width: 100%;
       .user-name-noin {
-        color: #161823;
+        color: var(--color-text-t1);
         font-size: 20px;
         font-weight: 400;
         line-height: 28px;
@@ -188,7 +135,7 @@ const edit = () => {
       }
       .user-name-login {
         span {
-          color: #161823;
+          color: var(--color-text-t1);
           display: block;
           flex: none;
           font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
@@ -211,7 +158,7 @@ const edit = () => {
       width: 100%;
 
       span {
-        color: rgba(22, 24, 35, 0.6);
+        color: var(--color-text-t3);
         // color: rgba(255, 255, 255, 0.5);
         font-size: 12px;
         line-height: 20px;
@@ -225,8 +172,8 @@ const edit = () => {
         align-items: center;
         // border: 1px solid #f2f2f4;
         // border: 1px solid rgba(242, 242, 243, 0.08);
-        background: rgba(242, 242, 243, 1);
-        color: rgba(22, 24, 35, 0.75);
+        background: var(--color-secondary-default);
+        color: var(--color-text-t2);
         border-radius: 2px;
         display: flex;
         height: 20px;
@@ -242,7 +189,7 @@ const edit = () => {
       }
     }
     .user-info-text {
-      color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
       font-size: 14px;
       line-height: 22px;
       margin-right: 6px;
@@ -252,7 +199,7 @@ const edit = () => {
       display: flex;
       height: 22px;
       margin-top: 6px;
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
       font-size: 16px;
       line-height: 24px;
     }
@@ -265,7 +212,7 @@ const edit = () => {
 
       span {
         // color: rgba(22, 24, 35, 0.6);
-        color: rgba(22, 24, 35, 1);
+        color: var(--color-text-t1);
         font-size: 12px;
         line-height: 20px;
         font-weight: 400;
@@ -284,13 +231,13 @@ const edit = () => {
         justify-content: flex-start;
 
         .user-text {
-          color: rgba(22, 24, 35, 0.6);
+          color: var(--color-text-t3);
           font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
           font-weight: 400;
         }
 
         .user-line {
-          color: #161823;
+          color: var(--color-text-t1);
           font-size: 20px;
           font-weight: 400;
           line-height: 28px;
@@ -298,15 +245,14 @@ const edit = () => {
           transform: scaleX(0.5);
         }
         .user-line-number {
-          color: #161823;
+          color: var(--color-text-t1);
           font-size: 16px;
           line-height: 24px;
           margin-left: 6px;
         }
 
         &::after {
-          border: 1px solid #f2f2f4;
-          border-color: rgba(242, 242, 243, 1);
+          border-left: 1px solid var(--color-secondary-default);
           content: '';
           height: 16px;
           margin: 0 16px;
@@ -323,45 +269,35 @@ const edit = () => {
     }
   }
 
-  .trust-login-switch {
-    align-items: center;
-    display: inline-flex;
-    position: relative !important;
-    height: 100%;
-
-    .trust-login-tips-left {
-      display: inline-block;
-      left: -12px;
-      top: 2px;
-      .trust-login-tips-icon {
-        cursor: pointer;
-        height: 16px;
-        width: 16px;
-      }
-    }
-  }
-
-  .edit {
+  .action {
     bottom: 0;
     display: flex;
     position: absolute;
     right: 0;
+    flex-wrap: wrap;
+    max-width: 300px;
 
     :deep(.content-text) {
       width: 208px;
     }
 
+    .other {
+      margin-bottom: 12px !important;
+      margin-top: 20px !important;
+    }
+
     .content-btn {
       // background: #e4e4e6 !important;
-      // background: var(--color-bg-b3) !important;
-      background: rgba(228, 228, 230, 1) !important;
+      background: var(--color-bg-b3) !important;
+      // background: rgba(242, 242, 243, 1);
       border: none;
       // color: #161823 !important;
-      // color: var(--color-text-t1) !important;
-      color: rgba(22, 24, 35, 1) !important;
+      color: var(--color-text-t1) !important;
+      // color: rgba(22, 24, 35, 1);
       font-size: 13px;
       font-weight: 400;
-      margin: 0 0 0 8px;
+      // margin: 0 0 0 8px;
+      margin: 0 8px 0 0;
 
       align-items: center;
       border: 0;
@@ -379,6 +315,43 @@ const edit = () => {
       height: 36px;
       line-height: 22px;
       min-width: 88px;
+
+      &:hover {
+        background: rgba(228, 228, 230, 1) !important;
+        color: rgba(22, 24, 35, 1) !important;
+      }
+      &.follow {
+        background-color: #fe2c55 !important;
+        color: #fff !important;
+
+        &:hover {
+          background-color: #d21b46 !important;
+        }
+      }
+
+      &.more {
+        width: 36px !important;
+        min-width: 36px !important;
+        padding: unset !important;
+
+        .share {
+          height: 45px;
+          width: 50px;
+          position: relative;
+          .icon {
+            width: 50px;
+            height: 45px;
+            // color: #161823;
+            color: var(--color-text-t0);
+          }
+        }
+        .icon {
+          width: 36px;
+          height: 36px;
+          // color: #161823;
+          color: var(--color-text-t0);
+        }
+      }
     }
   }
 }
@@ -397,8 +370,8 @@ const edit = () => {
 @media (max-width: 1180px) {
   .user-detail-header {
     padding-bottom: 68px;
-    .edit {
-      bottom: 0;
+    .action {
+      bottom: -24px;
       left: 0;
     }
   }
@@ -408,8 +381,8 @@ const edit = () => {
   .user-detail-header {
     padding-bottom: 68px;
 
-    .edit {
-      bottom: 0;
+    .action {
+      bottom: -24px;
       left: 0;
     }
   }

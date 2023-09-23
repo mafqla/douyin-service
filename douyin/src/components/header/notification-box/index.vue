@@ -17,7 +17,7 @@ import { ref } from 'vue'
               class="user-link"
               target="_blank"
               rel="noopener noreferrer"
-              >
+            >
               <div class="user-avatar-card" data-e2e="user-avatar-card">
                 <img
                   class="dIUpgpVW user-avatar-card"
@@ -247,8 +247,16 @@ import { ref } from 'vue'
 </template>
 
 <style lang="scss" scoped>
+html.dark .notification-container.active:hover {
+  background: linear-gradient(
+    90deg,
+    #252632,
+    #33343f 33.44%,
+    #33343f 66.56%,
+    #252632
+  );
+}
 .notification-container {
-  background-color: #fff;
   background-color: var(--color-bg-b1-white);
   border-radius: 4px;
   box-sizing: border-box;
@@ -306,13 +314,13 @@ import { ref } from 'vue'
         width: 0;
         .user-name {
           // color: #161823;
-          // color: var(--color-text-t1);
-          color: rgba(22, 24, 35, 1);
+          color: var(--color-text-t1);
+          // color: rgba(22, 24, 35, 1);
         }
 
         .user-badge {
-          color: rgba(22, 24, 35, 0.75);
-          // color: var(--color-text-t2);
+          // color: rgba(22, 24, 35, 0.75);
+          color: var(--color-text-t2);
           flex-shrink: 0;
           font-size: 13px;
           font-weight: 400;
@@ -324,8 +332,8 @@ import { ref } from 'vue'
         }
 
         .notification-date {
-          color: rgba(22, 24, 35, 0.34);
-          // color: var(--color-text-t4);
+          // color: rgba(22, 24, 35, 0.34);
+          color: var(--color-text-t4);
           flex-shrink: 0;
           font-size: 12px;
           font-weight: 400;
@@ -373,8 +381,8 @@ import { ref } from 'vue'
         user-select: none;
       }
       .GDTi27FS {
-        background-color: #fff;
-        // background-color: var(--color-bg-b1);
+        // background-color: var(--color-bg-b0);
+        background-color: var(--color-bg-b1);
         border-radius: 50%;
         bottom: -3px;
         height: 22px;
@@ -430,12 +438,12 @@ import { ref } from 'vue'
     }
   }
   .text-muted {
-    color: rgba(22, 24, 35, 0.75);
-    // color: var(--color-text-t2);
+    // color: rgba(22, 24, 35, 0.75);
+    color: var(--color-text-t2);
   }
   .notification-text {
-    color: rgba(22, 24, 35, 0.75);
-    // color: var(--color-text-t2);
+    // color: rgba(22, 24, 35, 0.75);
+    color: var(--color-text-t2);
     font-size: 13px;
     font-weight: 400;
     line-height: 21px;
@@ -449,8 +457,8 @@ import { ref } from 'vue'
     }
   }
   .text-secondary {
-    color: rgba(22, 24, 35, 0.34);
-    // color: var(--color-text-t4);
+    // color: rgba(22, 24, 35, 0.34);
+    color: var(--color-text-t4);
   }
   .notification-item {
     box-sizing: border-box;
@@ -480,8 +488,8 @@ import { ref } from 'vue'
     }
 
     .notification-info {
-      color: rgba(22, 24, 35, 0.34);
-      // color: var(--color-text-t4);
+      // color: rgba(22, 24, 35, 0.34);
+      color: var(--color-text-t4);
       flex-shrink: 0;
       font-size: 12px;
       font-weight: 400;
@@ -503,8 +511,8 @@ import { ref } from 'vue'
   }
   .horizontal-line {
     align-self: flex-end;
-    background-color: rgba(22, 24, 35, 0.06);
-    // background-color: var(--color-line-l3);
+    // background-color: rgba(22, 24, 35, 0.06);
+    background-color: var(--color-line-l3);
     height: 1px;
     margin-right: 16px;
     width: 268px;

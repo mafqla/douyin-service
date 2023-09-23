@@ -1,33 +1,41 @@
 <script setup lang="ts">
-import { reactive, ref, toRefs, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const props = defineProps({
-  open: Boolean
+  open: Boolean,
+  userInfo: {
+    type: Object,
+    default: () => {
+      return {
+        username: '',
+        signature: '',
+        avatar: ''
+      }
+    }
+  }
 })
 
-const userInfo = reactive({
-  username: '',
-  signature: '',
-  avatar:
-    'https://p6-pc-sign.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_fddf54d2b1544d0aa4f0987fefc73f65.jpeg?x-expires=1695448800&x-signature=6bZZCwXWFfo%2Bh5owpySDLI1H3LU%3D&from=2480802190'
-})
+
+
 const isEdited = ref(false)
 // 记录初始的用户名和个性签名
-const usernameInitial = ref(userInfo.username)
-const signatureInitial = ref(userInfo.signature)
-const avatarInitial = ref(userInfo.avatar)
-const usernameLength = ref(userInfo.username.length)
+const usernameInitial = ref(props.userInfo.username)
+const signatureInitial = ref(props.userInfo.signature)
+const avatarInitial = ref(props.userInfo.avatar)
+const usernameLength = ref(props.userInfo.username.length)
 watchEffect(() => {
-  usernameLength.value = userInfo.username.length
+  usernameLength.value = props.userInfo.username.length
   if (
-    userInfo.username !== usernameInitial.value ||
-    userInfo.signature !== signatureInitial.value
+    props.userInfo.username !== usernameInitial.value ||
+    props.userInfo.signature !== signatureInitial.value
   ) {
     isEdited.value = true
   } else {
     isEdited.value = false
   }
+  console.log(open)
   if (props.open) {
+    console.log('open')
     document.body.style.overflow = 'hidden'
   } else {
     //移除样式属性
@@ -38,14 +46,14 @@ watchEffect(() => {
 const emit = defineEmits(['close'])
 const saveProfile = () => {
   //获取用户信息
-  console.log(userInfo.username, userInfo.signature)
+  console.log(props.userInfo.username, props.userInfo.signature)
   //关闭
   emit('close')
 }
 const cancelEdit = () => {
-  userInfo.username = usernameInitial.value
-  userInfo.signature = signatureInitial.value
-  userInfo.avatar = avatarInitial.value
+  props.userInfo.username = usernameInitial.value
+  props.userInfo.signature = signatureInitial.value
+  props.userInfo.avatar = avatarInitial.value
   emit('close')
 }
 
@@ -62,7 +70,7 @@ const uploadAvatar = () => {
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
-        userInfo.avatar = reader.result as string
+        props.userInfo.avatar = reader.result as string
       }
     }
   }

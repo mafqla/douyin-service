@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
 
 <style>
 .mini-play video {
-  background: #fff !important;
+  background: var(--color-bg-b1) !important;
 }
 .mini-play .xgplayer-time {
   font-size: 10px;

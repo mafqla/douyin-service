@@ -63,6 +63,7 @@ const links = [
   position: relative;
   right: -60px;
   border-radius: 12px;
+  width: 160px;
 }
 
 .cooperate-list {
@@ -70,7 +71,7 @@ const links = [
   animation-duration: 0.4s;
   animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.34, 0.69, 0.1, 1);
-  background: #fff;
+  background: var(--color-bg-b1-white);
   border-radius: 12px;
   padding: 12px 0;
 }
@@ -82,7 +83,8 @@ const links = [
 
 .cooperate-link {
   align-items: center;
-  color: rgba(22, 24, 35, 1);
+  // color: rgba(22, 24, 35, 1);
+  color: var(--color-text-t1);
   cursor: pointer;
   display: flex;
   font-size: 14px;
@@ -106,6 +108,15 @@ const links = [
     #fff
   );
 }
+html.dark .cooperate-link:hover {
+  background: linear-gradient(
+    90deg,
+    #252632,
+    #33343f 33.44%,
+    #33343f 66.56%,
+    #252632
+  );
+}
 
 .cooperate-link-icon {
   cursor: default;
@@ -116,7 +127,7 @@ const links = [
     box-shadow: none;
   }
   100% {
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
   }
 }
 

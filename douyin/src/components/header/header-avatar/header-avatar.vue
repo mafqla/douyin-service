@@ -2,7 +2,8 @@
 import { ref, watchEffect } from 'vue'
 import SwitchButton from '@/components/my/user-header/switch-button.vue'
 import { userStore } from '@/stores/user'
-import {videoStore} from '@/stores/videos'
+import { videoStore } from '@/stores/videos'
+import useTheme from '@/hooks/useTheme'
 
 //是否登录
 let isLogin: any = ref(false)
@@ -14,12 +15,13 @@ watchEffect(() => {
   isLogin.value = store.isLogin()
   src.value = store.userInfo.userAvatar
 })
+const { toggleTheme } = useTheme()
 </script>
 <template>
   <div class="header-right-avatar">
     <el-popover :show-arrow="false" placement="bottom-end">
       <template #reference>
-        <el-avatar size="small" :src="src"/>
+        <el-avatar size="small" :src="src" />
       </template>
       <template #default>
         <div class="right-popover">
@@ -27,16 +29,16 @@ watchEffect(() => {
             <div class="popover-content">
               <div class="popover-content-header">
                 <div class="content-header"></div>
-                <switch-button/>
+                <switch-button />
               </div>
               <ul class="popover-content-center">
                 <ul class="content-center-content">
                   <router-link
-                      to="/user/self?showTab=post"
-                      class="content-center-link"
+                    to="/user/self?showTab=post"
+                    class="content-center-link"
                   >
                     <li class="content-center-item">
-                      <svg-icon class="icon" icon="zuopin"/>
+                      <svg-icon class="icon" icon="zuopin" />
                       <p class="content-center-num">
                         {{ videoStore().postCount }}
                       </p>
@@ -47,11 +49,11 @@ watchEffect(() => {
                 </ul>
                 <ul class="content-center-content">
                   <router-link
-                      to="/user/self?showTab=like"
-                      class="content-center-link"
+                    to="/user/self?showTab=like"
+                    class="content-center-link"
                   >
                     <li class="content-center-item">
-                      <svg-icon class="icon" icon="like"/>
+                      <svg-icon class="icon" icon="like" />
                       <p class="content-center-num">
                         {{ videoStore().likeCount }}
                       </p>
@@ -62,11 +64,11 @@ watchEffect(() => {
                 </ul>
                 <ul class="content-center-content">
                   <router-link
-                      to="/user/self?showTab=favorite_collection"
-                      class="content-center-link"
+                    to="/user/self?showTab=favorite_collection"
+                    class="content-center-link"
                   >
                     <li class="content-center-item">
-                      <svg-icon class="icon" icon="my-collect"/>
+                      <svg-icon class="icon" icon="my-collect" />
                       <p class="content-center-num">
                         {{ videoStore().collectCount }}
                       </p>
@@ -77,11 +79,11 @@ watchEffect(() => {
                 </ul>
                 <ul class="content-center-content">
                   <router-link
-                      to="/user/self?showTab=record"
-                      class="content-center-link"
+                    to="/user/self?showTab=record"
+                    class="content-center-link"
                   >
                     <li class="content-center-item">
-                      <svg-icon class="icon" icon="history"/>
+                      <svg-icon class="icon" icon="history" />
                       <p class="content-center-num">
                         <span>30</span><span class="num-title">天内</span>
                       </p>
@@ -95,8 +97,8 @@ watchEffect(() => {
                 <li>
                   <div class="footer-item">
                     <router-link
-                        to="/user/self?showTab=post"
-                        class="content-center-link"
+                      to="/user/self?showTab=post"
+                      class="content-center-link"
                     >
                       个人主页
                     </router-link>
@@ -106,22 +108,20 @@ watchEffect(() => {
                 <li>
                   <div class="footer-item">
                     <router-link
-                        to="/user/self?showTab=post"
-                        class="content-center-link"
-                    >抖币充值
-                    </router-link
-                    >
+                      to="/user/self?showTab=post"
+                      class="content-center-link"
+                      >抖币充值
+                    </router-link>
                     <div class="footer-item-b"></div>
                   </div>
                 </li>
                 <li>
                   <div class="footer-item">
                     <router-link
-                        to="/user/self?showTab=post"
-                        class="content-center-link"
-                    >直播伴侣
-                    </router-link
-                    >
+                      to="/user/self?showTab=post"
+                      class="content-center-link"
+                      >直播伴侣
+                    </router-link>
                     <div class="footer-item-b"></div>
                   </div>
                 </li>
@@ -131,15 +131,15 @@ watchEffect(() => {
                     <div class="footer-item-b"></div>
                   </div>
                 </li>
-                <li class="huanfu">
+                <li class="huanfu" @click="toggleTheme">
                   <div class="huanfu-content">
-                    <svg-icon class="huanfu-icon" icon="huanfu"/>
+                    <svg-icon class="huanfu-icon" icon="huanfu" />
                     <span class="huanfu-title">换肤</span>
                   </div>
                 </li>
                 <li class="shezhi">
                   <div class="shezhi-content">
-                    <svg-icon class="shezhi-icon" icon="shezhi"/>
+                    <svg-icon class="shezhi-icon" icon="shezhi" />
                     <span class="shezhi-title">设置</span>
                   </div>
                 </li>
@@ -177,10 +177,11 @@ watchEffect(() => {
 }
 .right-popover {
   //background: #fff;
-  background: rgba(249, 249, 249, 1);
+  // background: rgba(249, 249, 249, 1);
+  background: var(--color-bg-b1-white);
   border-radius: 4px;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-  box-shadow: rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-1);
   display: block;
   overflow: hidden;
   padding: 8px;
@@ -190,7 +191,7 @@ watchEffect(() => {
 
   .right-popover-content {
     // background: #fff;
-    background: rgba(249, 249, 249, 1);
+    background: var(--color-bg-b1-white);
     border-radius: 4px;
     box-shadow: none;
   }
@@ -237,7 +238,7 @@ watchEffect(() => {
             margin: 0 !important;
             width: 72px;
             align-items: center;
-            color: rgba(22, 24, 35, 0.75);
+            // color: rgba(22, 24, 35, 0.75);
             color: var(--color-text-t2);
             display: flex;
             font-size: 14px;
@@ -256,7 +257,7 @@ watchEffect(() => {
             .content-center-num {
               align-items: center;
               //color: #161823;
-              color: rgba(22, 24, 35, 1);
+              color: var(--color-text-t1);
               display: flex;
               font-size: 16px;
               font-weight: 500;
@@ -270,7 +271,7 @@ watchEffect(() => {
             }
             .content-center-subtitle {
               //color: rgba(22, 24, 35, 0.34);
-              color: rgba(22, 24, 35, 0.34);
+              color: var(--color-text-t4);
               font-size: 12px;
               line-height: 20px;
             }
@@ -312,7 +313,7 @@ watchEffect(() => {
       }
       .footer-item {
         //color: #161823;
-        color: rgba(22, 24, 35, 1);
+        color: var(--color-text-t1);
         cursor: pointer;
         font-weight: 400;
 
@@ -334,18 +335,18 @@ watchEffect(() => {
             margin-left: 8px;
             transform: scale(0.7);
             fill: currentColor;
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
           }
 
           &::before {
             border-left: 1px solid;
             //color: #f2f2f4;
-            color: rgba(243, 243, 243, 1);
+            color: var(--color-secondary-default);
             content: '';
             height: 12px;
           }
           .huanfu-title {
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
             font-size: 12px;
             margin-bottom: -1px;
           }
@@ -378,7 +379,7 @@ watchEffect(() => {
             transform: scale(1.1);
           }
           .shezhi-title {
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
             font-size: 12px;
             margin-bottom: -1px;
           }

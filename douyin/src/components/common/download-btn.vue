@@ -24,19 +24,16 @@ import {} from 'vue'
   }
   &:hover {
     .hoverRed {
-      background: #ff2c55 !important;
-      // background: var(--color-primary-default);
+      // background: #ff2c55 !important;
+      background: var(--color-primary-default) !important;
       color: #fff;
     }
   }
   .content {
     align-items: center;
-    background-color: rgba(242, 242, 243, 1);
-    // background-color: #f2f2f4;
-    // background-color: var(--color-secondary-default);
+    background-color: var(--color-secondary-default);
     border-radius: 4px;
-    // color: var(--color-text-t0);
-    color: rgba(0, 0, 0, 1);
+    color: var(--color-text-t0);
     display: flex;
     flex-direction: row;
     font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
@@ -53,8 +50,8 @@ import {} from 'vue'
     .content-btn {
       align-items: center;
       // background-color: #e4e4e6;
-      // background-color: var(--color-secondary-hover);
-      background-color: rgba(228, 228, 230, 1);
+      background-color: var(--color-secondary-hover);
+      // background-color: rgba(228, 228, 230, 1);
       cursor: pointer;
       display: flex;
       flex-shrink: 0;

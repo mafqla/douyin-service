@@ -1,6 +1,7 @@
 import { AuthLogin, PostAuthLogin, PostAuthSendCode } from '@/service/auth/auth'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
+import { videoStore } from './videos'
 
 export const userStore = defineStore('user', {
   state: () => ({
@@ -62,6 +63,7 @@ export const userStore = defineStore('user', {
       // 清空本地存储
       localStorage.clear()
       this.routerKey = ''
+      videoStore().$reset()
       // window.location.reload()
     },
 

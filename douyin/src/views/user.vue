@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, toRef, watchEffect } from 'vue'
-import { UserHeaderMy, LoginCode, UserTab, UserFooter } from '@/components/my'
+import { onMounted, ref, watch, watchEffect } from 'vue'
+import { LoginCode, UserTab, UserFooter } from '@/components/my'
 import { userStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { videoStore } from '@/stores/videos'
@@ -9,8 +9,6 @@ import { videoStore } from '@/stores/videos'
 import backgroundurlLightURL from '@/assets/personal_light.png'
 import backgroundurlDarkURL from '@/assets/personal_dark.png'
 import { useInfiniteScroll, useScroll } from '@vueuse/core'
-import useTheme from '@/hooks/useTheme'
-import { settingStore } from '@/stores/setting'
 
 const background = ref(`url('${backgroundurlLightURL}')`)
 
@@ -55,6 +53,12 @@ const fetchVideoData = async (page: number, size: number) => {
 }
 
 onMounted(() => {
+  if (localStorage.getItem('theme') === 'dark') {
+    background.value = `url('${backgroundurlDarkURL}')`
+  } else {
+    background.value = `url('${backgroundurlLightURL}')`
+  }
+
   isLogin.value = store.isLogin()
   if (!isDataLoaded.value && isLogin.value) {
     fetchVideoData(page.value, size.value)
@@ -77,14 +81,8 @@ const load = () => {
 }
 
 // console.log(page.value)
-const theme = toRef(settingStore(), 'theme')
+
 watchEffect(() => {
-  console.log(theme.value)
-  if (theme.value === 'dark') {
-    background.value = `url('${backgroundurlDarkURL}')`
-  } else {
-    background.value = `url('${backgroundurlLightURL}')`
-  }
   // console.log(y.value)
   if (y.value > 60) {
     isDisplay.value = true
@@ -129,9 +127,8 @@ useInfiniteScroll(window, load, {
     <div class="user-detail" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content max">
         <div class="user-header-background"></div>
-        <user-header-my />
+        <user-header-other />
         <user-tab />
-        <login-code v-if="!isLogin" />
       </div>
     </div>
     <user-footer />
@@ -182,7 +179,7 @@ useInfiniteScroll(window, load, {
       // background-position: 50%;
       // background-repeat: no-repeat;
       // background-size: 1920px 172px;
-      // height: 172px;
+      height: 172px;
       left: 0;
       position: absolute;
       right: 0;
@@ -225,81 +222,4 @@ useInfiniteScroll(window, load, {
     }
   }
 }
-
-// @media (max-width: 840px) {
-//   .user-detail {
-//     .user-detail-content {
-//       margin: 0 20px;
-//     }
-//   }
-// }
-
-// :deep(.header) {
-//   border-bottom: 1px solid hsla(0, 0%, 100%, 0.1) !important;
-// }
-
-// :global(.header-search-icon) {
-//   :global(button) {
-//     background-color: transparent !important;
-
-//     :global(.icon-search) {
-//       color: #fff;
-//     }
-//     :global(.btn-title) {
-//       color: #fff !important;
-//     }
-
-//     :global(&:hover) {
-//       background-color: hsla(0, 0%, 100%, 0.3) !important;
-//       :global(.icon-search) {
-//         color: #fff;
-//       }
-//       :global(.btn-title) {
-//         color: #fff;
-//       }
-//     }
-//   }
-// }
-
-// :global(.header-search-input) {
-//   background-color: transparent !important;
-//   border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
-//   caret-color: #fe2c55;
-
-//   :global(&::placeholder) {
-//     color: rgba(255, 255, 255, 1);
-//   }
-
-//   :global(&:active) {
-//     border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
-//   }
-// }
-
-// :global(.header-right-item-overplay) {
-//   background-color: hsla(0, 0%, 100%, 0.17) !important;
-// }
-
-// :global(.header-right-item:hover) {
-//   p {
-//     color: rgba(255, 255, 255, 1) !important;
-//   }
-//   .icon {
-//     opacity: 1;
-//   }
-// }
-// :global(.header-right) {
-//   :global(.header-right-item) {
-//     p {
-//       color: rgba(255, 255, 255, 0.75) !important;
-//     }
-//     :global(.icon) {
-//       opacity: 0.8;
-//       color: #fff;
-
-//       path {
-//         fill: rgba(255, 255, 255, 1) !important;
-//       }
-//     }
-//   }
-// }
 </style>

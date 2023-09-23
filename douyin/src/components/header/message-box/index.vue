@@ -133,127 +133,13 @@ const handleExpand = () => {
                 :class="{ hovered: isHover }"
               >
                 <div class="author">
-                  <div class="author-name">郑大智</div>
+                  <div class="author-name">asfasf</div>
                 </div>
                 <div class="msg">
                   <div class="msg-content B5nTXsAM">
                     <pre class="msg-text">是啊</pre>
                   </div>
                   <div class="date">&nbsp;·&nbsp;06-27</div>
-                </div>
-              </div>
-            </div>
-            <div class="qoGdIX8w"></div>
-          </div>
-        </div>
-        <div
-          class="message-list-item"
-          style="height: 60px; transform: translateY(60px)"
-        >
-          <div class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-content-left">
-                <img
-                  class="conversation-img img-radius"
-                  src="https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813_62c6bafc5cd1407db18ee6deca4c21c2.jpeg?from=3782654143"
-                />
-              </div>
-              <div class="conversation-item-content-right default hovered">
-                <div class="author">
-                  <div class="author-name">小虞干</div>
-                </div>
-                <div class="msg">
-                  <div class="msg-content B5nTXsAM">
-                    <pre class="msg-text">
-对方关注或回复你之前，可发送一条文字消息。请礼貌发言，自觉遵守《抖音自律公约》</pre
-                    >
-                  </div>
-                  <div class="date">&nbsp;·&nbsp;06-26</div>
-                </div>
-              </div>
-            </div>
-            <div class="qoGdIX8w"></div>
-          </div>
-        </div>
-        <div
-          class="message-list-item"
-          style="height: 60px; transform: translateY(120px)"
-        >
-          <div class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-content-left">
-                <img
-                  class="conversation-img img-radius"
-                  src="https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813_0a9a380ce65c40d48dcdb8be46fbee49.jpeg?from=3782654143"
-                />
-              </div>
-              <div class="conversation-item-content-right default hovered">
-                <div class="author">
-                  <div class="author-name">欻犸影视</div>
-                </div>
-                <div class="msg">
-                  <div class="msg-content B5nTXsAM">
-                    <pre class="msg-text">
-对方关注或回复你之前，可发送一条文字消息。请礼貌发言，自觉遵守《抖音自律公约》</pre
-                    >
-                  </div>
-                  <div class="date">&nbsp;·&nbsp;06-24</div>
-                </div>
-              </div>
-            </div>
-            <div class="qoGdIX8w"></div>
-          </div>
-        </div>
-        <div
-          class="message-list-item"
-          style="height: 60px; transform: translateY(180px)"
-        >
-          <div class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-content-left">
-                <img
-                  class="conversation-img img-radius"
-                  src="https://p11.douyinpic.com/aweme/100x100/aweme-avatar/mosaic-legacy_2cf910006af8ea3a2cb94.jpeg?from=3782654143"
-                />
-              </div>
-              <div class="conversation-item-content-right default hovered">
-                <div class="author">
-                  <div class="author-name">风中人</div>
-                </div>
-                <div class="msg">
-                  <div class="msg-content B5nTXsAM">
-                    <pre class="msg-text">
-                                         多发点视频啊黄映</pre
-                    >
-                  </div>
-                  <div class="date">&nbsp;·&nbsp;03-25</div>
-                </div>
-              </div>
-            </div>
-            <div class="qoGdIX8w"></div>
-          </div>
-        </div>
-        <div
-          class="message-list-item"
-          style="height: 60px; transform: translateY(240px)"
-        >
-          <div class="conversation-item">
-            <div class="conversation-item-content">
-              <div class="conversation-item-content-left">
-                <img
-                  class="conversation-img img-radius"
-                  src="https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_fddf54d2b1544d0aa4f0987fefc73f65.jpeg?from=3782654143"
-                />
-              </div>
-              <div class="conversation-item-content-right default hovered">
-                <div class="author">
-                  <div class="author-name">󠀀ㅤ󠀀ㅤ󠀀</div>
-                </div>
-                <div class="msg">
-                  <div class="msg-content B5nTXsAM">
-                    <pre class="msg-text">分享[视频]</pre>
-                  </div>
-                  <div class="date">&nbsp;·&nbsp;03-25</div>
                 </div>
               </div>
             </div>
@@ -276,6 +162,15 @@ const handleExpand = () => {
   right: 24px;
   top: 16px;
 }
+html.dark .conversation-item.clicked {
+  background: linear-gradient(
+    90deg,
+    #252632,
+    #33343f 33.44%,
+    #33343f 66.56%,
+    #252632
+  );
+}
 .message-list {
   position: relative;
   width: 100%;
@@ -286,6 +181,7 @@ const handleExpand = () => {
     top: 0;
     width: 100%;
   }
+
   .conversation-item {
     align-items: center;
     display: flex;
@@ -365,8 +261,8 @@ const handleExpand = () => {
         width: 100%;
         .author-name {
           // color: #161823;
-          // color: var(--color-text-t1);
-          color: rgba(22, 24, 35, 1);
+          color: var(--color-text-t1);
+          // color: rgba(22, 24, 35, 1);
           font-size: 13px;
           font-weight: 400;
           line-height: 21px;
@@ -378,8 +274,8 @@ const handleExpand = () => {
 
       .msg {
         align-items: center;
-        color: rgba(22, 24, 35, 0.6);
-        // color: var(--color-text-t3);
+        // color: rgba(22, 24, 35, 0.6);
+        color: var(--color-text-t3);
         display: flex;
         flex-direction: row;
         font-size: 12px;
@@ -402,8 +298,8 @@ const handleExpand = () => {
         }
 
         .date {
-          color: rgba(22, 24, 35, 0.34);
-          //color: var(--color-text-t4);
+          // color: rgba(22, 24, 35, 0.34);
+          color: var(--color-text-t4);
           flex-grow: 0;
           flex-shrink: 0;
           text-align: right;

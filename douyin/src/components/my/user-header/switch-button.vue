@@ -12,7 +12,7 @@ const isSaveLogin = ref(true)
 
 <style lang="scss" scoped>
 .trust-login-switch-title {
-  color: rgba(22, 24, 35, 0.34);
+  color: var(--color-text-t4);
   font-family: DFP King Gothic GB;
   font-size: 12px;
   font-style: normal;

@@ -387,10 +387,9 @@ import {} from 'vue'
 
 <style lang="scss" scoped>
 .user-footer {
-  // background-color: #fff;
-  background-color: rgba(249, 249, 249, 1);
-  border-top: 1px solid #f2f2f4;
-  color: rgba(22, 24, 35, 0.6);
+  background-color: var(--color-bg-b1);
+  border-top: 1px solid var(--color-secondary-default);
+  color: var(--color-text-t3);
   flex-direction: column;
   align-items: center;
   display: flex;
@@ -410,7 +409,7 @@ import {} from 'vue'
     width: 100%;
 
     .user-footer-link-title {
-      color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       font-size: 14px;
       font-weight: 400;
@@ -426,7 +425,7 @@ import {} from 'vue'
   .JXaUfgsM {
     align-items: center;
     // color: #000;
-    color: rgba(0, 0, 0, 1);
+    color: var(--color-text-t0);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -444,6 +443,11 @@ import {} from 'vue'
         margin-right: 5px;
         width: 15px;
       }
+
+      span,
+      .B3AsdZT9 {
+        opacity: 0.4;
+      }
     }
   }
 
@@ -452,8 +456,7 @@ import {} from 'vue'
     width: calc(100% - 80px);
 
     .SBRU08_v {
-      border-top: 1px solid #161823;
-      border-top: 1px solid rgba(22, 24, 35, 1);
+      border-top: 1px solid var(--color-text-t1);
       display: block;
       margin-bottom: 20px;
       opacity: 0.03;
@@ -464,7 +467,7 @@ import {} from 'vue'
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      border-right: 1px solid rgba(22, 24, 35, 0.6);
+      border-right: 1px solid var(--color-text-t3);
       margin-right: 12px;
       padding-right: 12px;
     }

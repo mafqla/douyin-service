@@ -81,7 +81,7 @@ const activeName = ref('pass')
       height: 0;
     }
     .el-tabs__item {
-      color: #161823;
+       color: var(--color-text-t1);
       cursor: default;
       font-size: 18px;
       font-weight: 400;

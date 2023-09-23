@@ -161,7 +161,7 @@ const toggleModal = (event: any) => {
 
         .item-skeleton {
           // background: #fff;
-          background: rgba(249, 249, 249, 1);
+          background: var(--color-bg-b1);
           border-radius: 6px;
           display: flex;
           flex-direction: column;
@@ -179,6 +179,7 @@ const toggleModal = (event: any) => {
               .icon {
                 width: 105px;
                 height: 120px;
+                // color: var(--color-bg-b2);
               }
             }
           }
@@ -255,8 +256,9 @@ const toggleModal = (event: any) => {
     .video-title {
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-      color: #161823;
-      color: rgba(22, 24, 35, 1);
+      // color: #161823;
+      // color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
       display: -webkit-box;
       font-size: 14px;
       font-weight: 500;

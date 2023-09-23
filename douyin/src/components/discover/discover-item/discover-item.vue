@@ -29,14 +29,12 @@ const props = defineProps({
   isLoading: Boolean
 })
 
-
 const renderedImg = ref()
 const { height } = useElementSize(renderedImg)
 
 setTimeout(() => {
   discoverStore().listHeight.push(height.value)
 }, 1500)
-
 </script>
 <template>
   <div
@@ -136,7 +134,7 @@ setTimeout(() => {
 
 .discover-item-skeleton {
   // background: #fff;
-  background: rgba(249, 249, 249, 1);
+  background: var(--color-bg-b1);
   border-radius: 6px;
   display: flex;
   flex-direction: column;
@@ -161,6 +159,7 @@ setTimeout(() => {
 .icon {
   width: 105px;
   height: 120px;
+  // color: var(--color-bg-b2);
 }
 // @media (min-width: 884px) and (max-width: 1139px) {
 //   .discover-item {

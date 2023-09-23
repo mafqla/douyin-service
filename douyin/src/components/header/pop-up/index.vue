@@ -93,8 +93,8 @@ const handleClick = () => {
     }
 
     100% {
-      box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-      // box-shadow: var(--shadow-1);
+      // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-1);
     }
   }
 
@@ -107,8 +107,7 @@ const handleClick = () => {
     visibility: visible;
 
     .pop-up-main {
-      background-color: #fff;
-      // background-color: var(--color-bg-b1);
+      background-color: var(--color-bg-b1);
       display: flex;
       height: 70vh;
       max-height: 700px;
@@ -118,14 +117,14 @@ const handleClick = () => {
         height: auto;
       }
       .pop-up-left {
-        border-right: 1px solid rgba(22, 24, 35, 0.06);
-        // border-right: 1px solid var(--color-line-l3);
+        // border-right: 1px solid rgba(22, 24, 35, 0.06);
+        border-right: 1px solid var(--color-line-l3);
         position: relative;
 
         .list-container {
           align-items: center;
-          background-color: #fff;
-          // background-color: var(--color-bg-b1-white);
+
+          background-color: var(--color-bg-b1-white);
           border-radius: 4px;
           height: 100%;
           overflow: hidden;
@@ -140,14 +139,14 @@ const handleClick = () => {
 
           .head {
             align-items: center;
-            background: linear-gradient(0deg, #f8f9fd, rgba(248, 249, 253, 0));
-            // background: linear-gradient(
-            //   0deg,
-            //   var(--im-header-bg-start) 0,
-            //   var(--im-header-bg-end) 100%
-            // );
-            border-bottom: 1px solid rgba(22, 24, 35, 0.06);
-            // border-bottom: 1px solid var(--color-line-l3);
+
+            background: linear-gradient(
+              0deg,
+              var(--im-header-bg-start) 0,
+              var(--im-header-bg-end) 100%
+            );
+
+            border-bottom: 1px solid var(--color-line-l3);
             display: flex;
             flex-grow: 0;
             flex-shrink: 0;
@@ -158,8 +157,8 @@ const handleClick = () => {
 
             .head-title {
               // color: #161823;
-              // color: var(--color-text-t1);
-              color: rgba(22, 24, 35, 1);
+              color: var(--color-text-t1);
+              // color: rgba(22, 24, 35, 1);
               flex-shrink: 0;
               font-size: 16px;
               font-weight: 500;
@@ -182,8 +181,8 @@ const handleClick = () => {
             width: 100%;
 
             & .nomore {
-              color: rgba(22, 24, 35, 0.34);
-              // color: var(--color-text-t4);
+              // color: rgba(22, 24, 35, 0.34);
+              color: var(--color-text-t4);
             }
             & .nomore {
               font-size: 12px;
@@ -199,8 +198,8 @@ const handleClick = () => {
               line-height: 20px;
               margin: 24px 0 39px;
               text-align: center;
-              color: rgba(22, 24, 35, 0.34);
-              // color: var(--color-text-t4);
+              // color: rgba(22, 24, 35, 0.34);
+              color: var(--color-text-t4);
             }
 
             .a0rPI9sE {
@@ -255,8 +254,8 @@ const handleClick = () => {
 
               .error-text {
                 // color: #161823;
-                // color: var(--color-text-t1);
-                color: rgba(22, 24, 35, 1);
+                color: var(--color-text-t1);
+                // color: rgba(22, 24, 35, 1);
                 font-family: sans-serif -apple-system, BlinkMacSystemFont,
                   Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
                   Droid Sans, Helvetica Neue;
@@ -266,8 +265,8 @@ const handleClick = () => {
                 line-height: 26px;
               }
               .yCJWkVDx {
-                color: rgba(22, 24, 35, 0.6);
-                // color: var(--color-text-t3);
+                // color: rgba(22, 24, 35, 0.6);
+                color: var(--color-text-t3);
                 font-family: sans-serif -apple-system, BlinkMacSystemFont,
                   Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
                   Droid Sans, Helvetica Neue;
@@ -302,6 +301,10 @@ const handleClick = () => {
         right: 0;
         top: 0;
         width: 32px;
+
+        path {
+          fill: var(--color-text-t3);
+        }
       }
     }
   }

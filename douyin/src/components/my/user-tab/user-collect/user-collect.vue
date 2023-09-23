@@ -5,7 +5,7 @@ import { VideoList } from '@/components/video-components'
 import UserFavorites from '../user-favorites/user-favorites.vue'
 import CollectList from '../collect-list/collect-list.vue'
 import CollectionsList from '../collections-list/collections-list.vue'
-import {videoStore} from '@/stores/videos'
+import { videoStore } from '@/stores/videos'
 // 数据为空时的展示
 const isEmpty = ref(false)
 const activeName = ref('videos')
@@ -33,7 +33,7 @@ const handleClick = (tab: any) => {
             </user-favorites>
           </el-tab-pane>
           <el-tab-pane label="视频" name="videos">
-            <video-list :videoList="videoStore().userCollectVideos"/>
+            <video-list :videoList="videoStore().userCollectVideos" />
           </el-tab-pane>
           <el-tab-pane label="合集" name="collections">
             <user-favorites>
@@ -75,8 +75,7 @@ const handleClick = (tab: any) => {
 
     :deep(.el-tabs__header) {
       align-items: center;
-      background-color: #fff;
-      background-color: rgba(255, 255, 255, 1);
+      background-color: var(--color-bg-b0);
       display: flex;
       height: 40px;
       justify-content: space-between;

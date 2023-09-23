@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { ref } from 'vue'
 import { state } from './index'
 //退出会话
 const handleExit = () => {
@@ -204,8 +204,7 @@ const handleMouseLeave = () => {
 
 .conversaton-detail-content {
   align-items: flex-start;
-  background-color: #fff;
-  //background-color: var(--color-bg-b1-white);
+  background-color: var(--color-bg-b1-white);
   border-radius: 0 4px 4px 0;
   display: flex;
   flex-direction: column;
@@ -221,14 +220,13 @@ const handleMouseLeave = () => {
 }
 .action-bar {
   align-items: center;
-  background: linear-gradient(0deg, #f8f9fd, rgba(248, 249, 253, 0));
-  //background: linear-gradient(
-  //0deg,
-  //var(--im-header-bg-start) 0,
-  //var(--im-header-bg-end) 100%
-  // );
-  border-bottom: 1px solid rgba(22, 24, 35, 0.06);
-  //border-bottom: 1px solid var(--color-line-l3);
+  // background: linear-gradient(0deg, #f8f9fd, rgba(248, 249, 253, 0));
+  background: linear-gradient(
+    0deg,
+    var(--im-header-bg-start) 0,
+    var(--im-header-bg-end) 100%
+  );
+  border-bottom: 1px solid var(--color-line-l3);
   display: flex;
   flex-shrink: 0;
   font-size: 16px;
@@ -250,8 +248,8 @@ const handleMouseLeave = () => {
   &,
   .action-user-text-common {
     //color: #161823;
-    //color: var(--color-text-t1);
-    color: rgba(22, 24, 35, 1);
+    color: var(--color-text-t1);
+
     flex-grow: 0;
     font-weight: 500;
   }
@@ -265,8 +263,7 @@ const handleMouseLeave = () => {
     flex-shrink: 0;
   }
   .action-exit {
-    color: rgba(22, 24, 35, 0.6);
-    //color: var(--color-text-t3);
+    color: var(--color-text-t3);
     cursor: pointer;
     font-size: 13px;
     font-weight: 400px;
@@ -317,6 +314,10 @@ const handleMouseLeave = () => {
   height: 32px;
   padding: 0 8px;
   width: 32px;
+
+  svg path {
+    fill: var(--color-text-t3);
+  }
 }
 
 .action-more-content-icon {
@@ -341,8 +342,7 @@ const handleMouseLeave = () => {
   }
 }
 .message-view-content {
-  background-color: #fff;
-  //background-color: var(--color-bg-b1-white);
+  background-color: var(--color-bg-b1-white);
   display: flex;
   flex-direction: column-reverse;
   overflow-x: hidden;
@@ -359,8 +359,7 @@ const handleMouseLeave = () => {
 }
 .message-view-reply .message-view-date,
 .message-view-reply .ZYWoyIKO {
-  color: rgba(22, 24, 35, 0.34);
-  //color: var(--color-text-t4);
+  color: var(--color-text-t4);
   font-size: 12px;
   font-weight: 400;
   text-align: center;
@@ -373,8 +372,7 @@ const handleMouseLeave = () => {
   flex-grow: 1;
 }
 .first-text {
-  color: rgba(22, 24, 35, 0.34);
-  //color: var(--color-text-t4);
+  color: var(--color-text-t4);
   font-size: 12px;
   line-height: 20px;
   text-align: center;
@@ -384,8 +382,7 @@ const handleMouseLeave = () => {
   white-space: pre-wrap;
 }
 .input-box {
-  background-color: #fff;
-  //background-color: var(--color-bg-b1-white);
+  background-color: var(--color-bg-b1-white);
   flex-grow: 0;
   flex-shrink: 0;
   padding: 16px;
@@ -399,8 +396,7 @@ const handleMouseLeave = () => {
   position: relative;
 
   & .user-logo-box {
-    border: 1px solid rgba(22, 24, 35, 0.06);
-    // border: 1px solid var(--color-line-l3);
+    border: 1px solid var(--color-line-l3);
     border-radius: 20px;
     height: 40px;
     width: 40px;
@@ -415,8 +411,7 @@ const handleMouseLeave = () => {
   }
 
   & .msg-item-content {
-    color: rgba(22, 24, 35, 0.75);
-    // color: var(--color-text-t2);
+    color: var(--color-text-t2);
     font-size: 13px;
     font-weight: 400;
     margin-left: 8px;
@@ -446,17 +441,14 @@ const handleMouseLeave = () => {
     justify-content: flex-end;
   }
   .right {
-    color: #fff;
-    // color: var(--color-const-text-white);
+    color: var(--color-const-text-white);
     order: -1;
   }
 }
 
 .reply-text {
   word-wrap: break-word;
-  // background-color: #e4e4e6;
-  // background-color: var(--color-bg-b3);
-  background-color: rgba(228, 228, 230, 1);
+  background-color: var(--color-bg-b3);
   border-radius: 6px;
   display: inline-block;
   font-size: 14px;
@@ -494,11 +486,9 @@ const handleMouseLeave = () => {
 }
 .zAJ75W4c {
   // background-color: #41424c;
-  // background-color: var(--color-bg-toast);
-  background-color: rgba(65, 66, 76, 1);
+  background-color: var(--color-bg-toast);
   border-radius: 6px;
-  color: #fff;
-  // color: var(--color-const-text-white);
+  color: var(--color-const-text-white);
   font-size: 13px;
   height: 67px;
   padding: 16px 16px 10px;

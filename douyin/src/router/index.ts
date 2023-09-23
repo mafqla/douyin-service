@@ -25,15 +25,21 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: '/user',
+        path: '/user/:id',
         name: 'user',
-        redirect: '/user/self?showTab=like',
-        children: [
-          {
-            path: 'self',
-            component: () => import('@/views/my.vue')
-          }
-        ]
+        component: () => import('@/views/user.vue')
+        // redirect: '/user/self?showTab=like',
+        // children: [
+        //   {
+        //     path: 'self',
+        //     component: () => import('@/views/my.vue')
+        //   }
+        // ]
+      },
+      {
+        path: '/user/self',
+        name: 'self',
+        component: () => import('@/views/my.vue'),
       },
       {
         path: '/friend',

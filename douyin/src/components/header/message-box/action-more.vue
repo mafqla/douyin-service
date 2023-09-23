@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {} from 'vue'
+import { ref } from 'vue'
 
 //删除聊天
 const isDelete = ref(false)
@@ -53,11 +53,10 @@ const handleCancell = () => {
 
 <style lang="scss" scoped>
 .action-more-box {
-  background-color: #fff;
-  //background-color: var(--color-bg-b1);
+  background-color: var(--color-bg-b1);
   border-radius: 4px;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-  //box-shadow: var(--shadow-1);
+  // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-1);
   padding: 12px 0;
   position: absolute;
   transition: all 0.3s;
@@ -74,7 +73,6 @@ const handleCancell = () => {
       animation-duration: 0.4s;
       animation-fill-mode: forwards;
       animation-timing-function: cubic-bezier(0.34, 0.69, 0.1, 1);
-      background-color: #fff;
       // background-color: var(--color-bg-b1);
       padding: 12px 0;
     }
@@ -87,8 +85,8 @@ const handleCancell = () => {
 
     .box-list-item {
       // color: #161823;
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       cursor: pointer;
       font-size: 14px;
       font-style: normal;
@@ -133,8 +131,8 @@ const handleCancell = () => {
     }
     .clear-text {
       // color: #161823;
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       font-size: 14px;
       font-weight: 400;
       line-height: 22px;
@@ -160,15 +158,15 @@ const handleCancell = () => {
 
         &.delete {
           background-color: #ff2c55;
-          color: #fff;
-          // color: var(--color-const-text-white);
+          // color: #fff;
+          color: var(--color-const-text-white);
         }
 
         &.cancell {
-          background-color: #f2f2f4;
-          // background-color: var(--color-secondary-default);
-          color: rgba(22, 24, 35, 0.75);
-          // color: var(--color-text-t2);
+          // background-color: #f2f2f4;
+          background-color: var(--color-secondary-default);
+          // color: rgba(22, 24, 35, 0.75);
+          color: var(--color-text-t2);
         }
       }
     }
@@ -179,8 +177,8 @@ const handleCancell = () => {
     box-shadow: none;
   }
   100% {
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-    //box-shadow: var(--shadow-1);
+    // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
   }
 }
 

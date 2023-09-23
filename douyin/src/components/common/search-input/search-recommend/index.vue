@@ -32,8 +32,8 @@ import { ref } from 'vue'
   }
 
   .search-recommend-container {
-    background-color: rgba(249, 249, 249, 1);
-    border: 1px solid rgba(242, 242, 243, 1);
+    background-color: var(--color-bg-b1);
+    border: 1px solid var(--color-secondary-default);
 
     border-radius: 12px;
     // border-radius: 4px;

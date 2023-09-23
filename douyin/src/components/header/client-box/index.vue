@@ -198,8 +198,7 @@ import {} from 'vue'
     animation-fill-mode: forwards;
     animation-timing-function: cubic-bezier(0.34, 0.69, 0.1, 1);
 
-    background-color: #fff;
-    // background-color: var(--color-bg-b1-white);
+    background-color: var(--color-bg-b1-white);
     border-radius: 12px;
     min-width: 164px;
     padding: 0;
@@ -229,8 +228,8 @@ import {} from 'vue'
   margin-bottom: 12px;
 }
 .popup-feature-text {
-  color: rgba(22, 24, 35, 0.75);
-  // color: var(--color-text-t2);
+  // color: rgba(22, 24, 35, 0.75);
+  color: var(--color-text-t2);
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -245,8 +244,8 @@ import {} from 'vue'
 .popup-download-btn-text {
   background-color: #ff2c55;
   border-radius: 0 0 4px 4px;
-  color: #fff;
-  // color: var(--color-const-text-white);
+  // color: #fff;
+  color: var(--color-const-text-white);
   cursor: pointer;
   font-size: 14px;
   font-weight: 400;
@@ -271,8 +270,8 @@ import {} from 'vue'
     box-shadow: none;
   }
   100% {
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-    // box-shadow: var(--shadow-1);
+    // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
   }
 }
 

@@ -93,7 +93,7 @@ watchEffect(() => {
       right: 13px;
       top: calc(50% + 25px);
       transform: translateY(calc(-50% - 30px));
-      // z-index: 2;
+      z-index: 2;
     }
   }
 
@@ -129,7 +129,7 @@ watchEffect(() => {
     top: 0px;
     width: 100%;
     z-index: 2000;
-    background-color: #fff;
+    background-color: var(--color-bg-b0);
   }
 }
 </style>

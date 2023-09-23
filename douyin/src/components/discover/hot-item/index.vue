@@ -172,12 +172,12 @@ setTimeout(() => {
   will-change: transform;
 
   .hot-item-main {
-    background-color: #fff;
+    background-color: var(--color-bg-b1);
     // background-color: rgba(37, 38, 50, 1);
-    border: 0.5px solid rgba(22, 24, 35, 0.06);
+    border: 0.5px solid var(--color-line-l3);
     // border: 0.5px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
-    box-shadow: 0 0 0.5px 0 #f2f2f4;
+    box-shadow: 0 0 0.5px 0 var(--color-secondary-default);
     // box-shadow: 0 0 0.5px 0 rgba(242, 242, 243, 0.08);
     overflow: hidden;
     position: relative;
@@ -205,7 +205,8 @@ setTimeout(() => {
 
         .hot-item-content-title-item {
           align-items: center;
-          color: rgba(22, 24, 35, 0.75);
+          // color: rgba(22, 24, 35, 0.75);
+          color: var(--color-text-t2);
           // color: rgba(255, 255, 255, 0.75);
           cursor: pointer;
           display: flex;
@@ -220,7 +221,7 @@ setTimeout(() => {
         .hot-item-content-title-item.selected {
           border-bottom: 3px solid #fe2c55;
           border-top: 3px solid transparent;
-          color: #000;
+          color: var(--color-text-t0);
           // color: rgba(255, 255, 255, 1);
           font-weight: 600;
         }
@@ -260,7 +261,8 @@ setTimeout(() => {
               }
             }
             .hot-item-list-content-text {
-              color: rgba(22, 24, 35, 0.6);
+              // color: rgba(22, 24, 35, 0.6);
+              color: var(--color-text-t3);
               // color: rgba(255, 255, 255, 0.5);
               flex-shrink: 0;
               font-size: 21px;
@@ -289,7 +291,7 @@ setTimeout(() => {
                 .custom-title {
                   position: relative;
                   h3 {
-                    color: #161823;
+                    color: var(--color-text-t1);
                     // color: rgba(255, 255, 255, 0.9);
                     font-size: 16px;
                     line-height: 24px;
@@ -309,7 +311,7 @@ setTimeout(() => {
               }
 
               .hot-du {
-                color: rgba(22, 24, 35, 0.6);
+                color: var(--color-text-t3);
                 // color: rgba(255, 255, 255, 0.5);
                 font-size: 14px;
                 line-height: 22px;
@@ -322,16 +324,16 @@ setTimeout(() => {
             }
 
             .hot-item-content-show {
-              background-color: #f2f2f4;
+              background-color: var(--color-bg-b2);
               // background-color: rgba(51,52,63,1);
-              border: 1px solid rgba(22, 24, 35, 0.2);
+              border: 1px solid var(--color-line-l2);
               // border: 1px solid rgba(255, 255, 255, 0.12);
               border-radius: 4px;
-              color: #161823;
+              color: var(--color-text-t1);
               // color: rgba(255, 255, 255, 0.9);
               display: none;
-              filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.04));
-              // filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+              // filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.04));
+              filter: drop-shadow(0 12px 24px var(--color-shadow1));
               font-size: 12px;
               left: 50%;
               line-height: 20px;
@@ -367,7 +369,7 @@ setTimeout(() => {
   .icon {
     width: 12px;
     height: 24px;
-    color: rgba(22, 24, 35, 0.6);
+    color: var(--color-text-t3);
     // color: rgba(255, 255, 255, 0.5);
   }
 }

@@ -5,7 +5,7 @@ import HeaderNav from '@/layout/HeaderNav.vue'
 import { useRouter } from 'vue-router'
 import { userStore } from '@/stores/user'
 // 设置背景颜色
-const backgroundColor = ref('none')
+const backgroundColor = ref(true)
 const isScrolled = ref(false)
 // 滚动监听
 window.addEventListener(
@@ -13,10 +13,10 @@ window.addEventListener(
   function () {
     // console.log(window.scrollY)
     if (window.scrollY > 60) {
-      backgroundColor.value = '#fff'
+      backgroundColor.value = false
       isScrolled.value = true
     } else {
-      backgroundColor.value = 'none'
+      backgroundColor.value = true
       isScrolled.value = false
     }
   },
@@ -26,7 +26,7 @@ window.addEventListener(
 const router = useRouter()
 const my = ref(false)
 watchEffect(() => {
-  if (router.currentRoute.value.path === '/user/self') {
+  if (router.currentRoute.value.path.includes('user')) {
     my.value = true
   } else {
     my.value = false
@@ -41,7 +41,7 @@ watchEffect(() => {
 
     <div class="right-container min">
       <el-affix class="affix">
-        <div class="header-conent">
+        <div class="header-conent" :class="{ none: backgroundColor }">
           <header-nav :class="{ scrolled: isScrolled }" />
         </div>
       </el-affix>
@@ -57,7 +57,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 .main {
-  background-color: #fff;
+  //  background-color: var(--color-bg-b0);
   background-position: top;
   background-size: cover;
   display: flex;
@@ -79,7 +79,7 @@ watchEffect(() => {
     }
   }
   .bg {
-    background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
+    background: no-repeat url(@/assets/test.png) var(--color-bg-b0);
     height: 100vh;
     position: fixed;
     width: 100vw;
@@ -105,12 +105,19 @@ watchEffect(() => {
   position: sticky;
   z-index: 1;
   padding: 0;
-  background-color: v-bind(backgroundColor);
+  background-color: var(--color-bg-b0);
   width: calc(100% - 72px);
+
+  &.none {
+    background-color: transparent;
+  }
 }
 .affix {
-  background: no-repeat url(@/assets/test.png) rgba(255, 255, 255, 1);
+  background: no-repeat url(@/assets/test.png) var(--color-bg-b0);
   background-position-x: -72px;
+}
+.el-affix--fixed {
+  width: calc(100% - 72px);
 }
 
 @media (min-width: 1240px) {

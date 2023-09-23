@@ -11,13 +11,6 @@ import {
 } from '@/components/header'
 import { login } from '@/components/auth'
 import { userStore } from '@/stores/user'
-//切换深色主题
-const isDark = ref(false)
-
-//切换主题
-const toggleTheme = () => {
-  isDark.value = !isDark.value
-}
 //是否登录
 let isLogin: any = ref(false)
 
@@ -180,7 +173,6 @@ const handlePost = () => {
 
   // position: fixed;
 
-
   .header-main {
     align-items: center;
     display: flex;
@@ -220,7 +212,7 @@ const handlePost = () => {
       }
       @media (min-width: 1197px) {
         .header-left {
-          left: calc(50vw - 84.456px - 13.9%);
+          // left: calc(50vw - 84.456px - 13.9%);
           width: calc(27.8% + 28.912px);
         }
       }
@@ -275,11 +267,14 @@ const handlePost = () => {
               line-height: 20px;
               text-align: center;
               word-break: keep-all;
-              color: rgba(47, 48, 53, 0.7);
+              color: var(--color-text-t3);
               user-select: none;
             }
             .icon {
-              opacity: 0.8;
+              opacity: 0.6;
+              path {
+                fill: var(--color-text-t3);
+              }
             }
             & .icon {
               width: 24px;
@@ -297,7 +292,7 @@ const handlePost = () => {
                 cursor: pointer;
               }
               p {
-                color: #2f3035;
+                color: var(--color-text-t0);
               }
               .icon {
                 opacity: 1;
@@ -350,17 +345,18 @@ const handlePost = () => {
   .header.scrolled {
     .header-right-item {
       .icon {
-        color: rgba(22, 24, 35, 0.6);
+        // color: rgba(22, 24, 35, 0.6);
+        color: var(--color-text-t3);
         fill-opacity: 1;
       }
       p {
-        color: rgba(22, 24, 35, 0.6) !important;
+        color: var(--color-text-t3) !important;
       }
 
       &:hover {
         .icon,
         p {
-          color: rgba(0, 0, 0, 1) !important;
+          color: var(--color-text-t0) !important;
         }
       }
     }

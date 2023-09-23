@@ -111,16 +111,20 @@ const clearHistory = () => {
     display: flex;
 
     .clear-history-btn-text {
-      color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       font-size: 13px;
       font-weight: 400;
       margin-left: 2px;
     }
+
+    svg path {
+      fill: var(--color-text-t3);
+    }
   }
 
   .search-history-title {
-    color: rgba(0, 0, 0, 1);
+    color: var(--color-text-t0);
     font-size: 14px;
     font-size: 13px;
     font-weight: 600;
@@ -144,12 +148,16 @@ const clearHistory = () => {
   overflow: hidden;
   padding: 6px 20px 0;
 }
+
+html.dark .search-history-box:hover {
+  background: #5d5f67;
+}
 .search-history-box {
   // background-color: #e4e4e6;
-  background-color: rgba(228, 228, 230, 1);
+  background-color: var(--color-bg-toast);
   border-radius: 4px;
   // color: #161823;
-  color: rgba(22, 24, 35, 1);
+  color: var(--color-text-t1);
   cursor: pointer;
   display: flex;
   height: 24px;
@@ -164,7 +172,7 @@ const clearHistory = () => {
   &:hover {
     background-color: #e3e5ec;
     // color: #000;
-    color: rgba(0, 0, 0, 1);
+    color: var(--color-text-t0);
 
     .search-history-clear-icon {
       display: flex;
@@ -179,6 +187,10 @@ const clearHistory = () => {
 
     .close-icon {
       color: #2f3035;
+
+      circle {
+        fill: var(--color-bg-toast);
+      }
     }
     &:hover .close-icon {
       color: #fe2c55;
@@ -186,6 +198,12 @@ const clearHistory = () => {
   }
 }
 
+html.dark .close-icon {
+  path {
+    fill: #fff;
+    fill-opacity: 0.5;
+  }
+}
 .search-history-box-text {
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
   font-size: 12px;
@@ -204,9 +222,9 @@ const clearHistory = () => {
 
 .search-history-expand-icon {
   align-items: center;
-  background-color: #e4e4e6;
-  //background-color: var(--color-bg-b3);
-  background-color: rgba(228, 228, 230, 1);
+  // background-color: #e4e4e6;
+  background-color: var(--color-bg-b3);
+  // background-color: rgba(228, 228, 230, 1);
   border-radius: 4px;
   cursor: pointer;
   display: flex;

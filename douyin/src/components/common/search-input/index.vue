@@ -112,10 +112,11 @@ const handleClickOutside = (event: Event) => {
 </template>
 
 <style lang="scss" scoped>
+
 .search {
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 1);
-  border: 2px solid rgba(0, 0, 0, 0.7);
+  background-color: var(--color-bg-b0);
+  border: 2px solid var(--input-border);
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -171,7 +172,7 @@ const handleClickOutside = (event: Event) => {
     }
 
     .btn-title {
-      color: #2f3035;
+      color: var(--color-text-t1);
       margin-left: 3px;
       font-size: 16px;
       font-weight: 500;
@@ -197,7 +198,8 @@ const handleClickOutside = (event: Event) => {
     user-select: none;
 
     &::placeholder {
-      color: rgba(47, 48, 53, 0.4);
+      // color: rgba(47, 48, 53, 0.4);
+      color: var(--color-text-t4);
       opacity: 1;
       font-size: 14px;
       font-weight: 200;
@@ -206,9 +208,9 @@ const handleClickOutside = (event: Event) => {
   }
 
   &:hover {
-    border: 2px solid rgba(22, 24, 35, 1);
+    border: 2px solid var(--color-text-t1);
     button {
-      background-color: rgba(22, 24, 35, 1);
+      background-color: var(--color-text-t0);
       border-bottom-right-radius: 12px;
       border-top-right-radius: 12px;
       right: -2px;
@@ -216,10 +218,10 @@ const handleClickOutside = (event: Event) => {
       position: relative;
 
       .icon-search {
-        color: #fff;
+        color: var(--color-const-text-black);
       }
       .btn-title {
-        color: #fff;
+        color: var(--color-const-text-black);
       }
     }
   }
@@ -260,33 +262,33 @@ const handleClickOutside = (event: Event) => {
 
   .header.scrolled {
     .search {
-      background-color: rgba(255, 255, 255, 1) !important;
-      border: 2px solid rgba(0, 0, 0, 0.7) !important;
+      background-color: var(--color-bg-b0) !important;
+      border: 2px solid var(--input-border) !important;
       .header-search-input {
         &::placeholder {
-          color: rgba(47, 48, 53, 0.4) !important ;
+          color: var(--color-text-t4) !important ;
         }
       }
 
       button {
         background-color: transparent;
         .icon-search {
-          color: #2f3035 !important;
+          color: var(--color-text-t1) !important;
         }
         .btn-title {
-          color: #2f3035 !important;
+          color: var(--color-text-t1) !important;
         }
       }
 
       &:hover {
         button {
-          background-color: rgba(22, 24, 35, 1) !important;
+          background-color: var(--color-text-t0) !important;
 
           .icon-search {
-            color: #fff !important;
+            color: var(--color-const-text-black) !important;
           }
           .btn-title {
-            color: #fff !important;
+            color: var(--color-const-text-black) !important;
           }
         }
       }

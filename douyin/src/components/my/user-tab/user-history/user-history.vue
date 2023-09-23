@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElEmpty } from 'element-plus'
-import {videoStore} from '@/stores/videos'
+import { videoStore } from '@/stores/videos'
 const activeName = ref('videos')
 const handleClick = (tab: any) => {
   console.log(tab)
@@ -19,7 +19,7 @@ const handleClick = (tab: any) => {
       <div class="user-history-list">
         <el-tabs v-model="activeName" @tab-click="handleClick(activeName)">
           <el-tab-pane label="视频" name="videos">
-            <video-list :videoList="videoStore().userRecordVideos"/>
+            <video-list :videoList="videoStore().userRecordVideos" />
           </el-tab-pane>
           <el-tab-pane label="影视综" name="entertainment">
             <entertainment />
@@ -97,8 +97,8 @@ const handleClick = (tab: any) => {
 
     :deep(.el-tabs__header) {
       align-items: center;
-      background-color: #fff;
-      background-color: rgba(255, 255, 255, 1);
+      background-color: var(--color-bg-b0);
+      // background-color: rgba(255, 255, 255, 1);
       display: flex;
       height: 40px;
       justify-content: space-between;

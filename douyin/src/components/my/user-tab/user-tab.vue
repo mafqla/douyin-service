@@ -122,7 +122,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 .user-tab {
-  background-color: #fff;
+  background-color: var(--color-bg-b0);
 
   .tab-title {
     margin-right: 6px;
@@ -136,10 +136,10 @@ watchEffect(() => {
     height: 64px;
     margin: 0 auto;
     width: 100%;
-    // border-bottom: 1px solid rgba(22, 24, 35, 0.06);
+    border-bottom: 1px solid var(--color-line-l3);
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--color-bg-b0);
   }
 
   //下拉样式
@@ -181,7 +181,7 @@ watchEffect(() => {
   //   }
   // }
   :deep(.el-tabs__item.is-active) {
-    color: #000;
+    color: var(--color-text-t0);
   }
   :deep(.el-tabs__item:hover) {
     color: none;
@@ -196,7 +196,7 @@ watchEffect(() => {
   :deep(.el-tabs__item) {
     border-bottom: none;
     height: 100%;
-    color: rgba(22, 24, 35, 0.34);
+    color: var(--color-text-t4);
     font-size: 18px;
     line-height: 26px;
     font-weight: normal;

@@ -185,12 +185,11 @@ import {} from 'vue'
   animation-duration: 0.4s;
   animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.34, 0.69, 0.1, 1);
-  background-color: #fff;
-  // background-color: var(--color-bg-b1-white);
+  background-color: var(--color-bg-b1-white);
   // border-radius: 4px;
   border-radius: 12px;
-  box-shadow: 0 0 24px 0 0 24px rgba(0, 0, 0, 0.1);
-  // box-shadow: 0 0 24px var(--shadow-1);
+  // box-shadow: 0 0 24px 0 0 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 24px var(--shadow-1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -208,16 +207,16 @@ import {} from 'vue'
 
     .title-text {
       // color: #161823;
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       font-size: 16px;
       font-weight: 600;
       line-height: 24px;
       margin-top: 8px;
     }
     .subtitle-text {
-      color: rgba(22, 24, 35, 0.34);
-      // color: var(--color-text-t4);
+      // color: rgba(22, 24, 35, 0.34);
+      color: var(--color-text-t4);
       font-size: 12px;
       font-weight: 400;
       line-height: 20px;
@@ -231,8 +230,8 @@ import {} from 'vue'
       border-bottom-right-radius: 4px;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      color: #fff;
-      // color: var(--color-const-text-white);
+      // color: #fff;
+      color: var(--color-const-text-white);
       cursor: pointer;
       display: flex;
       height: 40px;
@@ -253,10 +252,10 @@ import {} from 'vue'
 
   .info-container {
     align-items: center;
-    background-color: #fff;
+    background-color: var(--color-bg-b0);
     // background-color: var(--color-bg-b0);
     border-top: 1px solid rgba(22, 24, 35, 0.06);
-    // border-color: var(--color-line-l3);
+    border-color: var(--color-line-l3);
     display: flex;
     height: 62px;
     padding: 0 16px;
@@ -269,15 +268,15 @@ import {} from 'vue'
       margin-left: 6px;
 
       .title-text {
-        color: #161823;
-        // color: var(--color-text-t1);
+        // color: #161823;
+        color: var(--color-text-t1);
         font-size: 12px;
         line-height: 14px;
         margin-bottom: 2px;
       }
       .subtitle-text {
-        color: rgba(22, 24, 35, 0.34);
-        // color: var(--color-text-t4);
+        // color: rgba(22, 24, 35, 0.34);
+        color: var(--color-text-t4);
         font-size: 10px;
         line-height: 14px;
         margin-top: 2px;
@@ -290,8 +289,8 @@ import {} from 'vue'
       display: flex;
 
       .card-header {
-        color: rgba(22, 24, 35, 0.6);
-        // color: var(--color-text-t3);
+        // color: rgba(22, 24, 35, 0.6);
+        color: var(--color-text-t3);
         font-size: 12px;
         font-weight: 400;
         margin-left: 4px;
@@ -305,8 +304,8 @@ import {} from 'vue'
     box-shadow: none;
   }
   100% {
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-    // box-shadow: var(--shadow-1);
+    // box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-1);
   }
 }
 

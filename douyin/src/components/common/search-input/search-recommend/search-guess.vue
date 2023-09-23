@@ -64,7 +64,7 @@ const guessList = ref([
 
   .guess-title {
     // color: #000;
-    color: rgba(0, 0, 0, 1);
+    color: var(--color-text-t0);
     font-size: 14px;
     font-size: 13px;
     font-weight: 600;
@@ -82,8 +82,12 @@ const guessList = ref([
     -ms-user-select: none;
     user-select: none;
 
+    svg path {
+      fill: var(--color-text-t3);
+    }
+
     .refresh-text {
-      color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
       font-size: 13px;
       font-weight: 400;
@@ -117,9 +121,9 @@ const guessList = ref([
 
     &.main-box.QWsKM5ZL,
     &.main-box:hover {
-      background-color: #e4e4e6 !important;
-      //background-color: var(--color-bg-b3) !important;
-      background-color: rgba(228, 228, 230, 1) !important;
+      // background-color: #e4e4e6 !important;
+      background-color: var(--color-bg-b3) !important;
+      // background-color: rgba(228, 228, 230, 1) !important;
       border-radius: 4px;
     }
   }
@@ -128,8 +132,8 @@ const guessList = ref([
 .search-guess-box-title {
   align-items: center;
   // color: #161823;
-  // color: var(--color-text-t1);
-  color: rgba(22, 24, 35, 1);
+  color: var(--color-text-t1);
+  // color: rgba(22, 24, 35, 1);
   cursor: pointer;
   display: flex;
   height: 32px;
@@ -143,8 +147,8 @@ const guessList = ref([
 }
 
 .recommend {
-  color: #fe2c55;
-  //color: var(--color-primary);
+  // color: #fe2c55;
+  color: var(--color-primary);
 }
 .search-guess-text {
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import useTheme from '@/hooks/useTheme'
 import {} from 'vue'
+const { toggleTheme } = useTheme()
 </script>
 <template>
   <div class="login-button">
@@ -74,7 +76,7 @@ import {} from 'vue'
                     <div class="footer-item-b"></div>
                   </div>
                 </li>
-                <li class="huanfu">
+                <li class="huanfu" @click="toggleTheme">
                   <div class="huanfu-content">
                     <svg-icon class="huanfu-icon" icon="huanfu" />
                     <span class="huanfu-title">换肤</span>
@@ -120,10 +122,9 @@ import {} from 'vue'
 }
 .right-popover {
   //background: #fff;
-  background: rgba(249, 249, 249, 1);
+  background: var(--color-bg-b1-white);
   border-radius: 4px;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
-  box-shadow: rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-1);
   display: block;
   overflow: hidden;
   padding: 8px;
@@ -133,7 +134,7 @@ import {} from 'vue'
 
   .right-popover-content {
     // background: #fff;
-    background: rgba(249, 249, 249, 1);
+    background: var(--color-bg-b1-white);
     border-radius: 4px;
     box-shadow: none;
   }
@@ -180,7 +181,7 @@ import {} from 'vue'
             margin: 0 !important;
             width: 72px;
             align-items: center;
-            color: rgba(22, 24, 35, 0.75);
+            // color: rgba(22, 24, 35, 0.75);
             color: var(--color-text-t2);
             display: flex;
             font-size: 14px;
@@ -199,7 +200,7 @@ import {} from 'vue'
             .content-center-num {
               align-items: center;
               //color: #161823;
-              color: rgba(22, 24, 35, 1);
+              color: var(--color-text-t1);
               display: flex;
               font-size: 16px;
               font-weight: 500;
@@ -213,7 +214,7 @@ import {} from 'vue'
             }
             .content-center-subtitle {
               //color: rgba(22, 24, 35, 0.34);
-              color: rgba(22, 24, 35, 0.34);
+              color: var(--color-text-t4);
               font-size: 12px;
               line-height: 20px;
             }
@@ -255,7 +256,7 @@ import {} from 'vue'
       }
       .footer-item {
         //color: #161823;
-        color: rgba(22, 24, 35, 1);
+        color: var(--color-text-t1);
         cursor: pointer;
         font-weight: 400;
 
@@ -277,18 +278,18 @@ import {} from 'vue'
             margin-left: 8px;
             transform: scale(0.7);
             fill: currentColor;
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
           }
 
           &::before {
             border-left: 1px solid;
             //color: #f2f2f4;
-            color: rgab(243, 243, 243, 1);
+            color: var(--color-secondary-default);
             content: '';
             height: 12px;
           }
           .huanfu-title {
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
             font-size: 12px;
             margin-bottom: -1px;
           }
@@ -321,7 +322,7 @@ import {} from 'vue'
             transform: scale(1.1);
           }
           .shezhi-title {
-            color: rgba(22, 24, 35, 0.34);
+            color: var(--color-text-t4);
             font-size: 12px;
             margin-bottom: -1px;
           }

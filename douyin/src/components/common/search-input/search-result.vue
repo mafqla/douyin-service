@@ -239,12 +239,12 @@ const highlightedText = (text: string) => {
   z-index: 50;
 
   .search-result-content {
-    // background-color: #fff;
-    // background-color: var(--color-bg-b1);
-    background-color: rgba(249, 249, 249, 1);
+    //  background-color: var(--color-bg-b0);
+    background-color: var(--color-bg-b1);
+    // background-color: rgba(249, 249, 249, 1);
     // border: 1px solid #f2f2f4;
-    // border: 1px solid var(--color-secondary-default);
-    border: 1px solid rgba(242, 242, 243, 1);
+    border: 1px solid var(--color-secondary-default);
+    // border: 1px solid rgba(242, 242, 243, 1);
     border-radius: 4px;
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.1);
     box-sizing: content-box;
@@ -255,8 +255,8 @@ const highlightedText = (text: string) => {
     .search-result-box {
       align-items: center;
       // color: #161823;
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       cursor: pointer;
       display: flex;
       font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
@@ -277,8 +277,8 @@ const highlightedText = (text: string) => {
         white-space: nowrap;
 
         .selected {
-          color: #fe2c55;
-          // color: var(--color-primary);
+          // color: #fe2c55;
+          color: var(--color-primary);
         }
       }
 
@@ -331,16 +331,16 @@ const highlightedText = (text: string) => {
             }
           }
           .user-info-num {
-            color: rgba(22, 24, 35, 0.75);
-            // color: var(--color-text-t2);
+            // color: rgba(22, 24, 35, 0.75);
+            color: var(--color-text-t2);
             font-size: 12px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
 
             .selected {
-              color: #fe2c55;
-              // color: var(--color-primary);
+              // color: #fe2c55;
+              color: var(--color-primary);
             }
           }
           .selected,
@@ -353,13 +353,13 @@ const highlightedText = (text: string) => {
       }
       &:hover {
         // background-color: #e4e4e6;
-        // background-color: var(--color-bg-b3);
-        background-color: rgba(228, 228, 230, 1);
+        background-color: var(--color-bg-b3);
+        // background-color: rgba(228, 228, 230, 1);
         .icon {
           align-items: center;
           // color: #161823;
-          // color: var(--color-text-t1);
-          color: rgba(22, 24, 35, 1);
+          color: var(--color-text-t1);
+          // color: rgba(22, 24, 35, 1);
           display: flex;
           flex-shrink: 0;
           flex-wrap: nowrap;
@@ -375,8 +375,8 @@ const highlightedText = (text: string) => {
     }
     .user-text {
       // color: #161823;
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       font-size: 12px;
       line-height: 20px;
     }
@@ -384,7 +384,7 @@ const highlightedText = (text: string) => {
 }
 
 :deep(.selected) {
-  color: #fe2c55;
-  // color: var(--color-primary);
+  // color: #fe2c55;
+  color: var(--color-primary);
 }
 </style>

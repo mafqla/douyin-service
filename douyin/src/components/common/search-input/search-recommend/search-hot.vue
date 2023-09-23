@@ -232,22 +232,22 @@ const hotList = ref([
 }
 .hot-box-top {
   // background: linear-gradient(90deg, #323f5a, rgba(50, 63, 90, 0) 100%);
-  // background: var(--linear-gradient-bg-top);
-  background: linear-gradient(
-    90deg,
-    #ebf0fd,
-    rgba(215, 228, 255, 0)
-  ) !important;
+  background: var(--linear-gradient-bg-top) !important;
+  // background: linear-gradient(
+  //   90deg,
+  //   #ebf0fd,
+  //   rgba(215, 228, 255, 0)
+  // ) !important;
   flex-shrink: 0;
 }
 
 .search-hot-box {
-  background: linear-gradient(
-    90deg,
-    hsla(0, 0%, 99%, 0.06),
-    hsla(0, 0%, 96%, 0)
-  );
-  //background: var(--linear-gradient-bg-1);
+  // background: linear-gradient(
+  //   90deg,
+  //   hsla(0, 0%, 99%, 0.06),
+  //   hsla(0, 0%, 96%, 0)
+  // );
+  background: var(--linear-gradient-bg-1);
   border-radius: 4px;
   cursor: pointer;
   height: 32px;
@@ -270,8 +270,8 @@ const hotList = ref([
     color: #ad9692;
   }
   .hot-box-num {
-    color: rgba(22, 24, 35, 0.6);
-    // color: var(--color-text-t3);
+    // color: rgba(22, 24, 35, 0.6);
+    color: var(--color-text-t3);
     flex-shrink: 0;
     font-size: 10px;
     padding-left: 8px;
@@ -280,15 +280,15 @@ const hotList = ref([
   &.z9qGEsHa,
   &:hover {
     //background: #41424c;
-    //background: var(--color-bg-b3);
-    background-color: rgba(228, 228, 230, 1) !important;
+    background: var(--color-bg-b3) !important;
+    // background-color: rgba(228, 228, 230, 1) !important;
   }
 }
 
 .hot-box-text {
   // color: hsla(0, 0%, 100%, 0.9);
-  // color: var(--color-text-t1);
-  color: rgba(22, 24, 35, 1);
+  color: var(--color-text-t1);
+  // color: rgba(22, 24, 35, 1);
   flex-shrink: 1;
   font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
   font-size: 14px;
@@ -301,8 +301,8 @@ const hotList = ref([
 
 .hot-box-rank {
   // background: linear-gradient(90deg, #403a3a, rgba(64, 58, 58, 0) 100%);
-  // background: var(--linear-gradient-bg-num);
-  background: linear-gradient(90deg, #faf4ef, #f9f9fa);
+  background: var(--linear-gradient-bg-num);
+  // background: linear-gradient(90deg, #faf4ef, #f9f9fa);
   flex-shrink: 0;
 }
 
@@ -325,7 +325,8 @@ const hotList = ref([
 .hot-box-icon-num {
   align-items: center;
   //color: hsla(0, 0%, 100%, 0.5);
-  color: rgba(22, 24, 35, 0.6);
+  // color: rgba(22, 24, 35, 0.6);
+  color: var(--color-text-t3);
   display: flex;
   flex-shrink: 0;
   font-size: 12px;
