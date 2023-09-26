@@ -14,6 +14,7 @@ import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +38,7 @@ import static com.yali.vilivili.utils.IpUtils.getIpSource;
  * @Author fuqianlin
  */
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
 
     @Resource
@@ -56,19 +58,38 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginVO login(LoginRO ro) {
-        UserEntity user = userRepository.findTopByEmail(ro.getEmail());
-        if (Objects.isNull(user)) {
-            throw new MyException("1001", ErrorCode.USER_NOT_FOUND.getMessage());
-        }
-        String pwd = AESUtil.encrypt(ro.getPassword());
-        if (!StringUtils.equals(user.getPassword(), pwd)) {
-            throw new MyException(HttpStatus.OK.toString(), "密码错误!");
+        try {
+            UserEntity user = userRepository.findTopByEmail(ro.getEmail());
+            if (Objects.isNull(user)) {
+                throw new MyException("1001", ErrorCode.USER_NOT_FOUND.getMessage());
+            }
+            String pwd = AESUtil.encrypt(ro.getPassword());
+            if (!StringUtils.equals(user.getPassword(), pwd)) {
+                throw new MyException(HttpStatus.OK.toString(), "密码错误!");
+            }
+
+            if (user.getIsValid() != 0) {
+                throw new MyException(HttpStatus.FORBIDDEN.toString(), "用户已被禁用，请联系管理员");
+            }
+            TokenInfoVO tokenInfoVO = new TokenInfoVO();
+            String loginUUID = UUID.randomUUID().toString();
+            tokenInfoVO.setLoginUUID(loginUUID);
+            tokenInfoVO.setUserId(user.getId());
+            String token = JwtUtils.getToken(tokenInfoVO);
+            // 将token存入redis中，设置过期时间为2小时）
+            redisTemplate.opsForValue().set(loginUUID, token, 2, TimeUnit.HOURS);
+
+            LoginVO loginVO = new LoginVO();
+
+            loginVO.setToken(token);
+            return loginVO ;
+        } catch (MyException e) {
+            throw new MyException(e.getCode(), e.getMessage());
+        }catch (Exception e){
+            log.error("登录失败", e);
+            throw new MyException(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "登录失败");
         }
 
-        if (user.getIsValid() != 0) {
-            throw new MyException(HttpStatus.FORBIDDEN.toString(), "用户已被禁用，请联系管理员");
-        }
-        return getLoginVO(user);
     }
 
     /**
@@ -219,20 +240,6 @@ public class AuthServiceImpl implements AuthService {
         String ipLocation = getIpSource(user.getUIp());
 
         LoginVO loginVO = new LoginVO();
-        loginVO.setUserId(user.getId());
-        loginVO.setUsername(user.getUsername());
-        loginVO.setEmail(user.getEmail());
-        loginVO.setUserAvatar(avatarUrl);
-        loginVO.setType(String.valueOf(user.getType()));
-        loginVO.setCreateTime(user.getCreateTime());
-        loginVO.setPhone(user.getPhone());
-        loginVO.setUserNum(user.getUserNum());
-        loginVO.setIpLocation(ipLocation);
-        loginVO.setBirthdate(user.getBirthdate());
-        loginVO.setGender(user.getGender());
-        loginVO.setSignature(user.getSignature());
-        loginVO.setSchool(user.getSchool());
-        loginVO.setLocation(user.getLocation());
         loginVO.setToken(token);
         return loginVO;
     }

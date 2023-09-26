@@ -21,11 +21,13 @@ import java.util.Date;
 @DynamicUpdate
 @TableName(value = "attention")
 public class AttentionEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private long Id;
 
 
+    // 关注的用户id
     @Column(name = "attention_id")
     private long attentionId;
 

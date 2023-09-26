@@ -7,6 +7,13 @@ import java.util.List;
 public interface LikeService {
 
     /**
+     * 点赞
+     * @param user_id 用户id
+     * @param video_id 视频id
+     */
+    void like(int user_id, Long video_id);
+
+    /**
      * 获取点赞列表降序
      *
      * @param user_id 用户id
@@ -25,4 +32,11 @@ public interface LikeService {
      * @return 是否点赞
      */
     Boolean isLike(int user_id, Long video_id);
+
+    /**
+     * 获取当前用户获得的点赞数
+     * @param userId 用户id
+     * @return 点赞数量
+     */
+    Long getUserReceivedLikeCount(Integer userId);
 }

@@ -11,14 +11,17 @@ import com.yali.vilivili.model.ro.AddUserRO;
 import com.yali.vilivili.model.ro.UserSelectRO;
 import com.yali.vilivili.model.ro.deleteByUserIdRO;
 import com.yali.vilivili.model.ro.updateUserRO;
+import com.yali.vilivili.model.vo.UserInfoVO;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.HostHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -42,11 +45,23 @@ public class UserController extends BaseController {
     @Resource
     private HostHolder hostHolder;
 
+
+    @ApiOperation(value = "查询用户信息")
+    @GetMapping("/userInfo")
+    public ResponseEntity<OR<UserInfoVO>> getUserInfo(Integer userId){
+
+        Integer currentUser = currentUser();
+
+        return processData(() ->userService.findUserById(currentUser, userId), "查询成功", this::processException);
+    }
     @ApiOperation(value = "更新用户")
     @PostMapping("/updateUser")
     @RequireLogin
-    public ResponseEntity<OR<Void>> updateUser(@Valid updateUserRO ro) {
-        userService.updateUser(ro);
+    public ResponseEntity<OR<Void>> updateUser(@Valid updateUserRO ro, MultipartFile avatar) {
+        if (ro.getId() == null) {
+            ro.setId(currentUser());
+        }
+        userService.updateUser(ro, avatar);
         return process(this::successResult);
     }
 
@@ -81,51 +96,5 @@ public class UserController extends BaseController {
         return processData(() -> userService.findAllUserByPage(page, size),"查询成功", this::processException);
     }
 
-    @ApiOperation(value = "关注 保存到redis")
-    @PostMapping("/attention")
-    public ResponseEntity<OR<Void>> attention(String username,String fansname) {
-        userService.attention(username,fansname);
-        return process(this::successResult);
-    }
 
-
-    @ApiOperation(value = "取关 保存到redis")
-    @PostMapping("/cancel")
-    public ResponseEntity<OR<Void>> cancel(String username,String fansnams) {
-        userService.cancel(username, fansnams);
-        return process(this::successResult);
-    }
-
-    @ApiOperation(value = "查询粉丝")
-    @PostMapping("/selectAttention")
-    public ResponseEntity<OR<List<UserEntity>>> cancel() {
-        UserEntity userEntity = hostHolder.get();
-        List<UserEntity> userEntities = userService.selectAttention(userEntity.getUsername());
-        return processData(()->userEntities,this::processException);
-    }
-
-    @Resource
-    AttentionMapper attentionMapper;
-
-    @ApiOperation(value = "关注/取关 保存到mysql")
-    @PostMapping("/attentionNew")
-    public ResponseEntity<OR<String>> attentionNew(long attentionId) {
-        if(attentionId==currentUser()){
-            throw new RuntimeException("自己不能关注自己");
-        }
-        QueryWrapper<AttentionEntity> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("attention_id", attentionId);
-        AttentionEntity existAttention = attentionMapper.selectOne(queryWrapper);
-        if(null==existAttention){
-            AttentionEntity attention=new AttentionEntity();
-            attention.setAttentionId(attentionId);
-            attention.setUserId(currentUser());
-            attention.setAttentionTime(new Date());
-            attentionMapper.insert(attention);
-            return processData(()->"关注成功",this::processException);
-        }else{
-            attentionMapper.deleteById(existAttention.getId());
-            return processData(()->"取关成功",this::processException);
-        }
-    }
 }

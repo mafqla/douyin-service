@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 
 /**
@@ -21,24 +18,32 @@ import javax.validation.constraints.Size;
 public class updateUserRO {
 
     /**
+     * 用户id
+     */
+    @ApiModelProperty(name = "id",
+            value = "用户id",
+            example = "1")
+    @Nullable
+    private Integer id;
+    /**
      * 用户名，长度不超过50个字符
      */
     @ApiModelProperty(name = "username",
             value = "用户名，长度不超过50个字符",
             example = "JohnDoe")
-    @Size(max = 50, message = "用户名长度不能超过50个字符")
     @Nullable
+    @Size(max = 50, message = "用户名长度不能超过50个字符")
     private String username;
 
     /**
      * 用户邮箱，必填且需符合Email格式
      */
-    @ApiModelProperty(name = "email",
-            value = "用户邮箱，必填且需符合Email格式",
-            example = "john.doe@example.com")
-    @NotBlank(message = "邮箱不能为空")
-    @Email(message = "邮箱格式不正确")
-    private String email;
+//    @ApiModelProperty(name = "email",
+//            value = "用户邮箱，必填且需符合Email格式",
+//            example = "john.doe@example.com")
+//    @NotBlank(message = "邮箱不能为空")
+//    @Email(message = "邮箱格式不正确")
+//    private String email;
 
     /**
      * 用户编号，可为空，长度不超过20个字符
@@ -56,8 +61,8 @@ public class updateUserRO {
     @ApiModelProperty(name = "phone",
             value = "用户手机号，可为空，需符合手机号格式",
             example = "13812345678")
-    @Pattern(regexp = "^1[0-9]{10}$", message = "手机号格式不正确")
     @Nullable
+    @Pattern(regexp = "^1[0-9]{10}$", message = "手机号格式不正确")
     private String phone;
 
     /**
@@ -66,8 +71,8 @@ public class updateUserRO {
     @ApiModelProperty(name = "gender",
             value = "用户性别，可为空，取值为\"男\"或\"女\"",
             example = "男")
-    @Pattern(regexp = "^男|女$", message = "性别取值不正确")
     @Nullable
+    @Pattern(regexp = "^男|女$", message = "性别取值不正确")
     private String gender;
 
     /**
@@ -76,8 +81,8 @@ public class updateUserRO {
     @ApiModelProperty(name = "birthdate",
             value = "用户生日，可为空，格式为\"yyyy-MM-dd\"",
             example = "1990-01-01")
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "生日格式不正确（应为yyyy-MM-dd）")
     @Nullable
+    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "生日格式不正确（应为yyyy-MM-dd）")
     private String birthdate;
 
     /**

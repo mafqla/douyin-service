@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +40,8 @@ public class CollectController extends BaseController {
      */
     @ApiOperation(value = "根据用户id分页获取收藏列表")
     @GetMapping("/list")
-    public ResponseEntity<OR<List<CollectionEntity>>> getCollectList(int user_id, Integer page, Integer size) {
-        if (user_id == 0) {
+    public ResponseEntity<OR<List<CollectionEntity>>> getCollectList(Integer user_id, Integer page, Integer size) {
+        if (user_id == null || user_id == 0) {
             user_id = currentUser();
         }
         int finalUser_id = user_id;
@@ -54,10 +55,10 @@ public class CollectController extends BaseController {
      * @param video_id 视频id
      */
     @ApiOperation(value = "添加收藏或取消收藏")
-    @GetMapping("/addOrCancel")
+    @PostMapping("/addOrCancel")
     @RequireLogin
-    public ResponseEntity<OR<Void>> addOrCancelCollect(int user_id, int video_id) {
-        if (user_id == 0) {
+    public ResponseEntity<OR<Void>> addOrCancelCollect(Integer user_id, int video_id) {
+        if (user_id == null || user_id == 0) {
             user_id = currentUser();
         }
         int finalUser_id = user_id;

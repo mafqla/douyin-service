@@ -42,18 +42,23 @@ public class CollectServiceImpl implements CollectService {
     public List<CollectionEntity> getCollectList(int user_id, Integer page, Integer size) {
         page = (page - 1) * size;
         try {
+            //先判断是否存在收藏
+            long count = collectRepository.countbyUserId(user_id);
+            if (count == 0) {
+                throw new MyException("404", "暂无内容");
+            }
 
             List<CollectionEntity> collectionList = collectRepository.findByUserId(user_id, page, size);
-            if (collectionList.size() == 0) {
-                throw new MyException("404", "没有更多数据了");
+            if (collectionList.isEmpty()) {
+                throw new MyException("204", "没有更多数据了");
             }
             return collectionList;
 
         } catch (MyException e) {
-            throw new MyException(e.getMessage(), e.getCode());
+            throw new MyException(e.getCode(), e.getMessage());
         } catch (Exception e) {
             log.error("获取收藏列表失败", e);
-            throw new MyException("获取收藏列表失败", "500");
+            throw new MyException("500","获取收藏列表失败");
         }
     }
 
@@ -74,10 +79,10 @@ public class CollectServiceImpl implements CollectService {
             Optional<VideosEntity> isExist = videosRepository.findById((long) video_id);
 
 
-            if (isCollected.size() != 0) {
+            if (!isCollected.isEmpty()) {
                 // 如果已经收藏了，则执行取消收藏操作
                 collectRepository.deleteById(user_id, video_id);
-                ;
+
 
             } else {
                 CollectionEntity collect = new CollectionEntity();

@@ -73,14 +73,14 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public FileUploadVO imageUpload(MultipartFile file) {
         if (file.isEmpty()) {
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，请选择文件");
         }
         // 转换类型
 
         String fileName = file.getOriginalFilename();
         assert fileName != null;
         if (!imageSuffix.contains(fileName.substring(fileName.lastIndexOf(".") + 1))) {
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件格式不正确");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，文件格式不正确");
         }
         // 文件上传后的路径,文件重命名，防止重复
         fileName = UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
@@ -103,7 +103,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             return fileUploadVO;
         } catch (IOException e) {
             log.error("上传失败", e);
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件写入失败");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，文件写入失败");
         }
     }
 
@@ -117,7 +117,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     public FileUploadVO urlUpload(MultipartFile file, String urlPath) throws IOException {
         // 判断文件和路径是否为空
         if (file == null && StringUtils.isBlank(urlPath)) {
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件或者输入链接");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，请选择文件或者输入链接");
         }
 
         String fileName = "";
@@ -129,7 +129,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             fileName = file.getOriginalFilename();
             assert fileName != null;
             if (!imageSuffix.contains(fileName.substring(fileName.lastIndexOf(".") + 1))) {
-                throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件格式不正确");
+                throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，文件格式不正确");
             }
             inputStream = file.getInputStream();
         } else {
@@ -140,7 +140,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                 fromUrl = true;
             } catch (IOException e) {
                 log.error("下载失败", e);
-                throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "下载失败");
+                throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "下载失败");
             }
         }
 
@@ -167,7 +167,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             return fileUploadVO;
         } catch (IOException e) {
             log.error("上传失败", e);
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件写入失败");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，文件写入失败");
         }
     }
 
@@ -198,7 +198,7 @@ public class FileUploadServiceImpl implements FileUploadService {
             }
         } catch (Exception e) {
             log.error("获取图片地址失败", e);
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "获取图片地址失败");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "获取图片地址失败");
         }
     }
 
@@ -217,13 +217,13 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public Void videoUpload(MultipartFile videos, VideosRo videosRo) {
         if (videos.isEmpty()) {
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，请选择文件");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，请选择文件");
         }
         String fileName = videos.getOriginalFilename();
         System.out.println(fileName);
         assert fileName != null;
         if (!videoSuffix.contains(fileName.substring(fileName.lastIndexOf(".") + 1))) {
-            throw new MyException(HttpStatus.FAILED_DEPENDENCY.toString(), "上传失败，文件格式不正确");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "上传失败，文件格式不正确");
         }
         // 文件上传后的路径,文件重命名，防止重复
         fileName = UUID.randomUUID() + fileName.substring(fileName.lastIndexOf("."));
@@ -294,7 +294,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
         } catch (Exception e) {
             log.error("服务器错误", e);
-            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY), "服务器错误");
+            throw new MyException(String.valueOf(HttpStatus.FAILED_DEPENDENCY.value()), "服务器错误");
         }
         return null;
     }

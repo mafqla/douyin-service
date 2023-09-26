@@ -56,13 +56,12 @@ public interface CollectRepository extends JpaRepository<CollectionEntity, Strin
     @Query(value = "select count(*) from collection where user_id = ?1", nativeQuery = true)
     long countbyUserId(int userId);
 
-//    /**
-//     * 根据用户id和视频id添加收藏
-//     * @param user_id 用户id
-//     * @param video_id 视频id
-//     */
-//    @Modifying
-//    @Query(value = "INSERT INTO collection (user_id, video_id) values (?1, ?2)", nativeQuery = true)
-//    void addCollect(int user_id, int video_id);
+
+    /**
+     * 根据视频id查询收藏数量
+     * @param videoId 视频id
+     */
+    @Query(value = "select count(*) from collection where video_id = ?1", nativeQuery = true)
+    long countbyVideoId(long videoId);
 
 }

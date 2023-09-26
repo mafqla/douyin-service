@@ -4,6 +4,7 @@ import com.yali.vilivili.model.entity.UserEntity;
 import com.yali.vilivili.model.entity.VideosEntity;
 import com.yali.vilivili.model.entity.VideosInfoEntity;
 import com.yali.vilivili.model.vo.VideosInfoVO;
+import com.yali.vilivili.repository.CollectRepository;
 import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.repository.VideosInfoRepository;
 import com.yali.vilivili.repository.VideosRepository;
@@ -71,7 +72,7 @@ public class VideosInfoServiceImpl implements VideosInfoService {
             }
             return address;
         } catch (UnknownHostException e) {
-            throw new MyException("获取本机ip失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取本机ip失败");
         }
     }
 
@@ -87,13 +88,18 @@ public class VideosInfoServiceImpl implements VideosInfoService {
     public List<VideosInfoEntity> getVideosInfoListByUserId(Integer userId, Integer page, Integer size) {
         page = (page - 1) * size;
         try {
-            List<VideosInfoEntity> videosInfoList = videosInfoRepository.findAllByUserId(userId, page, size);
+            //先判断是否存在视频
+            long count = videosInfoRepository.countbyUserId(userId);
+            if (count == 0) {
+                throw new MyException("404", "暂无内容");
+            }
+            List<VideosInfoEntity> videosInfoList = videosInfoRepository.findPaginatedAllByUserId(userId, page, size);
             if (videosInfoList.isEmpty()) {
-                throw new MyException("404", "没有更多数据了");
+                throw new MyException("204", "没有更多数据了");
             }
             return videosInfoList;
         } catch (MyException e) {
-            throw new MyException(e.getMessage(), e.getCode());
+            throw new MyException(e.getCode(),e.getMessage() );
         } catch (Exception e) {
             log.error("获取作品列表失败", e);
             throw new MyException("500", "获取作品列表失败");
@@ -107,6 +113,9 @@ public class VideosInfoServiceImpl implements VideosInfoService {
      * @param user_id 用户id
      * @return video 视频详情
      */
+
+    @Resource
+    private CollectRepository collectRepository;
     @Override
     public VideosInfoVO getVideosInfoById(Long id, Integer user_id) {
         try {
@@ -125,6 +134,8 @@ public class VideosInfoServiceImpl implements VideosInfoService {
             UserEntity userInfo = userRepository.findUserById(userId);
             String avatarUrl = fileUploadService.getImageUrl(userInfo.getUserAvatar());
 
+            //统治视频收藏量
+            long collectCount = collectRepository.countbyVideoId(id);
 
             VideosInfoVO videosInfoVO = new VideosInfoVO();
             videosInfoVO.setId(videosEntity.getId());
@@ -140,13 +151,15 @@ public class VideosInfoServiceImpl implements VideosInfoService {
             videosInfoVO.setCommentCount(videosEntity.getCommentCount());
             videosInfoVO.setStatus(videosEntity.getStatus());
             videosInfoVO.setIsTop(videosEntity.getIsTop());
+            videosInfoVO.setUserId(userInfo.getId());
             videosInfoVO.setUserName(userInfo.getUsername());
             videosInfoVO.setUserAvatar(avatarUrl);
+            videosInfoVO.setCollectCount(collectCount);
 
             if (user_id != null) {
                 Boolean isLike = likeService.isLike(user_id, id);
                 Boolean isCollect = collectService.isCollect(user_id, id);
-                Boolean isFollow = attentionService.isAttention(user_id, userId);
+                Integer isFollow = attentionService.isAttention(user_id, userId);
                 videosInfoVO.setIsLike(isLike);
                 videosInfoVO.setIsCollect(isCollect);
                 videosInfoVO.setIsAttention(isFollow);

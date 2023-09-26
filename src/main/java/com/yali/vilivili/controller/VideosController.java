@@ -162,7 +162,7 @@ public class VideosController extends BaseController {
         videosInfoEntities.forEach(videosInfoEntity -> {
             videoIdList.add(videosInfoEntity.getVideoId());
         });
-        if (videoIdList.size() == 0) {
+        if (videoIdList.isEmpty()) {
             return processData(() -> videosEntityVOS, "没有该分类视频", this::processException);
         }
         Page<VideosEntity> page = new Page<>(ro.getCurrentPage(), ro.getPageSize());
@@ -324,14 +324,14 @@ public class VideosController extends BaseController {
         QueryWrapper<AttentionEntity> attentionEntityQueryWrapper = new QueryWrapper<>();
         attentionEntityQueryWrapper.eq("user_id", currentUser());
         List<AttentionEntity> attentionEntities = attentionMapper.selectList(attentionEntityQueryWrapper);
-        if (attentionEntities.size() == 0) {
+        if (attentionEntities.isEmpty()) {
             throw new RuntimeException("你还没有关注的人");
         }
         List<Long> attentionIdList = attentionEntities.stream().map(AttentionEntity::getAttentionId).toList();
         QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
         videosInfoEntityQueryWrapper.in("user_id", attentionIdList);
         List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
-        if (videosInfoEntities.size() == 0) {
+        if (videosInfoEntities.isEmpty()) {
             throw new RuntimeException("你关注的人都没有过发布视频");
         }
         String url = "";
@@ -354,7 +354,7 @@ public class VideosController extends BaseController {
             BeanUtils.copyProperties(videosEntity, videosEntityVO);
             videosEntityVO.setVideosAddress(finalUrl + videosEntity.getVideosAddress());
             videosEntityVO.setVideosCover(finalUrl + videosEntity.getVideosCover());
-            if (commentEntities.size() != 0) {
+            if (!commentEntities.isEmpty()) {
                 List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
                 videosEntityVO.setCommentList(commentInfoList);
                 videosEntityVO.setCommentCount(commentInfoList.size());

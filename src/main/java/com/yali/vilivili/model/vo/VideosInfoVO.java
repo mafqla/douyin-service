@@ -47,6 +47,9 @@ public class VideosInfoVO {
     @ApiModelProperty(name = "dislikeCount", value = "点踩量")
     private long dislikeCount;
 
+    @ApiModelProperty(name = "collectCount", value = "收藏量")
+    private Long collectCount;
+
     @ApiModelProperty(name = "commentCount", value = "评论量")
     private Long commentCount;
 
@@ -56,8 +59,8 @@ public class VideosInfoVO {
     @ApiModelProperty(name = "isTop", value = "是否置顶")
     private Boolean isTop;
 
-    @ApiModelProperty(name = "isAttention", value = "是否关注")
-    private Boolean isAttention;
+    @ApiModelProperty(name = "isAttention", value = "是否关注 0-自己 1-已关注 2-未关注 3-互相关注")
+    private Integer isAttention;
 
     @ApiModelProperty(name = "isLike", value = "是否点赞")
     private Boolean isLike;
@@ -68,6 +71,9 @@ public class VideosInfoVO {
     @ApiModelProperty(name = "isCollect", value = "是否收藏")
     private Boolean isCollect;
 
+    //用户id
+    @ApiModelProperty(name = "userId", value = "用户id")
+    private Integer userId;
     @ApiModelProperty(name = "userName", value = "用户名")
     private String userName;
 

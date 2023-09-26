@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface VideosInfoRepository extends JpaRepository<VideosInfoEntity, Integer> {
 
+    List<VideosInfoEntity> findAllByUserId(long userId);
     /**
      * 根据视频id查询用户id
      */
@@ -26,7 +27,7 @@ public interface VideosInfoRepository extends JpaRepository<VideosInfoEntity, In
      */
 
     @Query(value = "select * from videos_info where user_id = ?1 order by video_id desc limit ?2,?3", nativeQuery = true)
-    List<VideosInfoEntity> findAllByUserId(int userId, Integer page, Integer size);
+    List<VideosInfoEntity> findPaginatedAllByUserId(int userId, Integer page, Integer size);
 
     /**
      * 根据用户id查询视频信息数量

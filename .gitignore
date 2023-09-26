@@ -116,3 +116,6 @@ src/main/resources/static/videos/018297b8-097d-446f-a330-81bbd0f67bd1.mp4
 /src/main/resources/static/videos/cover/f2ff9d14-ab17-4ac2-9a87-ac391ac05323.png
 /src/main/resources/static/videos/cover/f6513f2a-bd6e-4593-b750-af2bb60a540d.png
 /src/main/resources/static/videos/
+
+# 禁止提交avatar
+/src/main/resources/static/avatar/

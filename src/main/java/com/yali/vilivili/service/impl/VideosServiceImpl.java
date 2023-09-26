@@ -103,7 +103,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             return videosList;
 
         } catch (Exception e) {
-            throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取视频列表失败");
         }
     }
 
@@ -126,7 +126,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             if (videosListId.isEmpty())
             //返回空数值的状态码
             {
-                throw new MyException("没有更多数据了", String.valueOf(HttpStatus.NO_CONTENT.value()));
+                throw new MyException(String.valueOf(HttpStatus.NO_CONTENT.value()),"没有更多数据了");
             }
             videosListId.forEach(videoId -> {
                 VideosInfoVO videosInfoVO = videosInfoService.getVideosInfoById(videoId, user_id);
@@ -137,9 +137,9 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
 
         }//返回空数值的状态码
         catch (MyException e) {
-            throw new MyException(e.getMessage(), e.getCode());
+            throw new MyException(e.getCode(),e.getMessage() );
         } catch (Exception e) {
-            throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取视频列表失败");
         }
     }
 
@@ -167,10 +167,10 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 }
             }
 
-            if (videosList.size() == 0)
+            if (videosList.isEmpty())
             //返回空数值的状态码
             {
-                throw new MyException("没有更多数据了", String.valueOf(HttpStatus.NO_CONTENT.value()));
+                throw new MyException(String.valueOf(HttpStatus.NO_CONTENT.value()),"没有更多数据了");
             }
             // 返回视频列表
             List<VideosEntityVO> videosEntityVOS = new ArrayList<>();
@@ -181,7 +181,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 VideosEntityVO videosEntityVO = new VideosEntityVO();
                 BeanUtils.copyProperties(videosEntity, videosEntityVO);
 
-                if (commentEntities.size() != 0) {
+                if (!commentEntities.isEmpty()) {
                     List<String> commentInfoList = commentEntities.stream().map(CommentEntity::getCommentInfo).toList();
                     videosEntityVO.setCommentList(commentInfoList);
                     videosEntityVO.setCommentCount(commentInfoList.size());
@@ -193,7 +193,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
                 QueryWrapper<VideosInfoEntity> videosInfoEntityQueryWrapper = new QueryWrapper<>();
                 videosInfoEntityQueryWrapper.eq("video_id", videosEntity.getId());
                 List<VideosInfoEntity> videosInfoEntities = videosInfoEntityMapper.selectList(videosInfoEntityQueryWrapper);
-                if (videosInfoEntities.size() != 0) {
+                if (!videosInfoEntities.isEmpty()) {
                     long userId = videosInfoEntities.get(0).getUserId();
                     UserEntity user = userEntityMapper.selectById(userId);
                     String avatarUrl = fileUploadService.getImageUrl(user.getUserAvatar());
@@ -209,9 +209,9 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
 
         }//返回空数值的状态码
         catch (MyException e) {
-            throw new MyException(e.getMessage(), e.getCode());
+            throw new MyException(e.getCode(),e.getMessage());
         } catch (Exception e) {
-            throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取视频列表失败" );
         }
     }
 
@@ -230,7 +230,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             }
             return address;
         } catch (UnknownHostException e) {
-            throw new MyException("获取本机ip失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取本机ip失败");
         }
     }
 
@@ -242,6 +242,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
      * @param size
      * @return
      */
+
     @Override
     public VideosParamsVO getVideosListByParam(String showTab, int user_id, Integer page, Integer size) {
         try {
@@ -271,7 +272,7 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             } else if (Objects.equals(showTab, "record")) {
                 // Handle 'record' case if needed
             } else {
-                throw new MyException("参数错误", String.valueOf(HttpStatus.BAD_REQUEST.value()));
+                throw new MyException(String.valueOf(HttpStatus.BAD_REQUEST.value()),"参数错误");
             }
 
             if (videoIds != null) {
@@ -296,9 +297,9 @@ public class VideosServiceImpl extends ServiceImpl<VideosEntityMapper, VideosEnt
             videosParamsVO.setVideosList(videosList);
             return videosParamsVO;
         } catch (MyException e) {
-            throw new MyException(e.getMessage(), e.getCode());
+            throw new MyException(e.getCode(),e.getMessage() );
         } catch (Exception e) {
-            throw new MyException("获取视频列表失败", String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+            throw new MyException(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),"获取视频列表失败");
         }
     }
 

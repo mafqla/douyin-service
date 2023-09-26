@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @Description 用户信息
@@ -117,6 +116,19 @@ public class UserEntity {
      */
     @Column(name = "type")
     private byte type;
+
+    /**
+     * 用户认证
+     */
+    @Column(name = "user_authentications")
+    private String userAuth;
+
+    /**
+     * 用户认证类型
+     * 0，艺人认证，1，机构认证，2，其他认证
+     */
+    @Column(name = "user_authentications_type")
+    private String userAuthType;
 
     /**
      * 创建时间
