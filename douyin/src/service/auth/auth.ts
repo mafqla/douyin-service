@@ -1,5 +1,10 @@
 import apiRequest from '../index'
-import type { ILogin, ILoginResult } from './AuthType'
+import type {
+  ILogin,
+  ILoginResult,
+  IUserInfoResult,
+  IEditUserInfo
+} from './AuthType'
 import type { IDataType } from '../types'
 enum AuthApi {
   //登录
@@ -12,10 +17,38 @@ enum AuthApi {
   AuthSendCode = '/auth/sendCode',
   //重置密码
   AuthResetPassword = '/auth/resetPassword',
-  //修改头像
-  AuthUpdateAvatar = '/auth/updateAvatar'
+
+  //获取用户信息
+  AuthUserInfo = '/user/userInfo',
+  //修改用户信息
+  AuthEditUser = '/user/updateUser'
 }
 
+/**
+ * 修改用户信息
+ */
+export function AuthEditUserInfo(params: IEditUserInfo) {
+  return apiRequest.post<IDataType>({
+    url: AuthApi.AuthEditUser,
+    data: params,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+/**
+ * 获取用户信息
+ * @returns userId
+ */
+export function AuthUserInfo(userId?: number) {
+  return apiRequest.get<IDataType<IUserInfoResult>>({
+    url: AuthApi.AuthUserInfo,
+    params: {
+      userId
+    }
+  })
+}
 /**
  * 登录
  * @param ILogin
@@ -43,7 +76,7 @@ export const PostAuthSendCode = (email: string) => {
 /**
  * 邮箱验证码登录
  */
-export const PostAuthLogin = (email: string, code: string) => { 
+export const PostAuthLogin = (email: string, code: string) => {
   return apiRequest.post<IDataType>({
     url: AuthApi.AuthLogin,
     data: {

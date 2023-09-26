@@ -13,7 +13,7 @@ const store = userStore()
 watchEffect(() => {
   // console.log(store.isLogin())
   isLogin.value = store.isLogin()
-  src.value = store.userInfo.userAvatar
+  src.value = store.userInfo.avatar
 })
 const { toggleTheme } = useTheme()
 </script>
@@ -40,7 +40,7 @@ const { toggleTheme } = useTheme()
                     <li class="content-center-item">
                       <svg-icon class="icon" icon="zuopin" />
                       <p class="content-center-num">
-                        {{ videoStore().postCount }}
+                        {{ store.userInfo.uploadVideosCount }}
                       </p>
                       <p class="content-center-subtitle">我的作品</p>
                     </li>
@@ -55,7 +55,7 @@ const { toggleTheme } = useTheme()
                     <li class="content-center-item">
                       <svg-icon class="icon" icon="like" />
                       <p class="content-center-num">
-                        {{ videoStore().likeCount }}
+                        {{ store.userInfo.likeVideosCount }}
                       </p>
                       <p class="content-center-subtitle">我的喜欢</p>
                     </li>
@@ -70,7 +70,7 @@ const { toggleTheme } = useTheme()
                     <li class="content-center-item">
                       <svg-icon class="icon" icon="my-collect" />
                       <p class="content-center-num">
-                        {{ videoStore().collectCount }}
+                        {{ store.userInfo.collectVideosCount }}
                       </p>
                       <p class="content-center-subtitle">我的收藏</p>
                     </li>

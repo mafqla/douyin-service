@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --mode dev",
+    "build:dev": "vite build --mode dev",
     "build:prod": "run-p type-check && vite build --mode prod  ",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
@@ -20,7 +21,7 @@
     "qs": "^6.11.0",
     "sass": "^1.57.1",
     "uuid": "^9.0.0",
-    "vue": "^3.2.45",
+    "vue": "^3.3.4",
     "vue-router": "^4.1.6",
     "xgplayer": "^3.0.8"
   },

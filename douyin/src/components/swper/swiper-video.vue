@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { videosCtrolStore } from '@/stores/videos-control'
 import type { IVideoList } from '@/service/videos/videosType'
-import {
-  watchEffect,
-  type PropType,
-  ref,
-  onMounted,
-  onUnmounted,
-  watch,
-  computed
-} from 'vue'
-import { useDebounceFn, useElementSize, useThrottleFn } from '@vueuse/core'
+import { watchEffect, type PropType, ref, onMounted, computed } from 'vue'
+import { useElementSize, useThrottleFn } from '@vueuse/core'
 import { useKeyboardNavigation } from '@/hooks'
 
 defineProps({
@@ -25,7 +17,8 @@ const isShowItem = computed(() => {
   if (currentIndex === 0) {
     return (index: number) => index >= 0 && index <= 2
   } else {
-    return (index: number) => index >= currentIndex - 1 && index <= currentIndex + 1
+    return (index: number) =>
+      index >= currentIndex - 1 && index <= currentIndex + 1
   }
 })
 const isActiveIndex = (index: number) =>
@@ -97,6 +90,7 @@ useKeyboardNavigation()
         <template v-if="isShowItem(index)">
           <swiper-player
             :id="item.id"
+            :userId="item.userId"
             :username="item.userName"
             :uploadTime="item.uploadTime"
             :description="item.description"
@@ -105,6 +99,7 @@ useKeyboardNavigation()
             :img="item.userAvatar"
             :dianzan="item.likeCount"
             :comment="item.commentCount"
+            :shoucang="item.collectCount"
             :isLike="item.isLike"
             :isCollect="item.isCollect"
             :isAttention="item.isAttention"

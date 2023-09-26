@@ -11,7 +11,7 @@ const store = userStore()
 
 watchEffect(() => {
   isLogin.value = store.isLogin()
-  avatar.value = store.userInfo.userAvatar
+  avatar.value = store.userInfo.avatar
 })
 
 //编辑资料
@@ -24,17 +24,29 @@ const userInfo = ref({
 const edit = () => {
   open.value = true
   userInfo.value.username = store.userInfo.username
-  userInfo.value.signature = store.userInfo.signature
-  userInfo.value.avatar = store.userInfo.userAvatar
+  userInfo.value.signature = store.userInfo.userSignature
+  userInfo.value.avatar = store.userInfo.avatar
+}
+
+//预览头像
+const isOpenAvatar = ref(false)
+const openAvatar = () => {
+  isOpenAvatar.value = true
+  userInfo.value.avatar = store.userInfo.avatar
 }
 </script>
 
 <template>
   <div class="user-detail-header">
-    <div class="user-avatar">
+    <div class="user-avatar" @click="openAvatar">
       <el-avatar v-if="isLogin" :size="112" :src="avatar" />
       <svg-icon v-if="!isLogin" class="icon" icon="user-avatar" />
     </div>
+    <img-modal
+      :open="isOpenAvatar"
+      :avatar="userInfo.avatar"
+      @close="isOpenAvatar = false"
+    />
     <div class="user-info">
       <div class="user-name">
         <h1 class="user-name-noin" v-if="!isLogin">未登录</h1>
@@ -50,7 +62,7 @@ const edit = () => {
           </template>
           <template v-else>
             <div class="user-info-text">关注</div>
-            <div class="user-number">0</div>
+            <div class="user-number">{{ store.userInfo.attentionCount }}</div>
           </template>
         </div>
         <div class="user-item">
@@ -60,7 +72,7 @@ const edit = () => {
           </template>
           <template v-else>
             <div class="user-info-text">粉丝</div>
-            <div class="user-number">0</div>
+            <div class="user-number">{{ store.userInfo.fansCount }}</div>
           </template>
         </div>
         <div class="user-item">
@@ -70,7 +82,7 @@ const edit = () => {
           </template>
           <template v-else>
             <div class="user-info-text">获赞</div>
-            <div class="user-number">0</div>
+            <div class="user-number">{{ store.userInfo.likeCount }}</div>
           </template>
         </div>
       </div>
@@ -80,7 +92,7 @@ const edit = () => {
         </span>
         <!-- 作者页面显示 -->
         <span class="user-account-addr"
-          >ip属地: {{ store.userInfo.ipLocation }}</span
+          >ip属地: {{ store.userInfo.ipAddress }}</span
         >
         <template v-if="store.userInfo.gender !== null">
           <span class="user-account-info">
@@ -94,10 +106,10 @@ const edit = () => {
               icon="small-man"
               class="user-account-icon"
             />
-            <span v-if="store.userInfo.birthdate !== null"
+            <span v-if="store.userInfo.birthday !== null"
               >{{
                 Math.ceil(
-                  (Date.now() - new Date(store.userInfo.birthdate).getTime()) /
+                  (Date.now() - new Date(store.userInfo.birthday).getTime()) /
                     31557600000
                 )
               }}岁</span
@@ -105,8 +117,8 @@ const edit = () => {
           </span>
         </template>
 
-        <template v-if="store.userInfo.location !== null">
-          <span class="user-account-info">{{ store.userInfo.location }}</span>
+        <template v-if="store.userInfo.address !== null">
+          <span class="user-account-info">{{ store.userInfo.address }}</span>
         </template>
         <template v-if="store.userInfo.school !== null">
           <span class="user-account-info">{{ store.userInfo.school }}</span>
@@ -114,7 +126,7 @@ const edit = () => {
       </p>
 
       <div v-if="isLogin" class="user-signature">
-        <span> {{ store.userInfo.signature }}</span>
+        <span> {{ store.userInfo.userSignature }}</span>
       </div>
     </div>
 

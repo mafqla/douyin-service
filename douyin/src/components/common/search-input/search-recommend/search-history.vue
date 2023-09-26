@@ -154,7 +154,7 @@ html.dark .search-history-box:hover {
 }
 .search-history-box {
   // background-color: #e4e4e6;
-  background-color: var(--color-bg-toast);
+  background-color: var(--color-bg-b3);
   border-radius: 4px;
   // color: #161823;
   color: var(--color-text-t1);
@@ -189,7 +189,7 @@ html.dark .search-history-box:hover {
       color: #2f3035;
 
       circle {
-        fill: var(--color-bg-toast);
+        fill: var(--color-bg-b3);
       }
     }
     &:hover .close-icon {

@@ -14,6 +14,7 @@ export interface IVideoList {
   uploadTime: string
   playCount: 0
   likeCount: 0
+  collectCount: 0
   dislikeCount: 0
   commentCount: 0
   status: 0
@@ -23,6 +24,7 @@ export interface IVideoList {
   isLike: boolean
   isDislike: boolean
   isCollect: boolean
+  userId: number
   userName: string
   userAvatar: string
 }

@@ -54,15 +54,6 @@ export const videoStore = defineStore('videos', {
     likeCount: 0,
     collectCount: 0
   }),
-
-  getters: {
-    isEmptys: (state) => {
-      state.isEmpty.post = state.userPostVideos.length === 0
-      state.isEmpty.like = state.userLikeVideos.length === 0
-      state.isEmpty.collect = state.userCollectVideos.length === 0
-      state.isEmpty.record = state.userRecordVideos.length === 0
-    }
-  },
   actions: {
     // 根据参数获取视频
     async getVideoDataByParams(params: IVideoParams) {
@@ -70,15 +61,18 @@ export const videoStore = defineStore('videos', {
         const res = await getVideoByParams(params)
         const userVideos = res.data
 
+        this.isEmpty = {
+          post: params.showTab === 'post' && res.code === '404',
+          like: params.showTab === 'like' && res.code === '404',
+          collect:
+            params.showTab === 'favorite_collection' && res.code === '404',
+          record: params.showTab === 'record' && res.code === '404'
+        }
+
         this.loading = false
         this.postCount = userVideos.publishCount
         this.likeCount = userVideos.likeCount
         this.collectCount = userVideos.collectCount
-
-        // ElMessage({
-        //   message: res.msg,
-        //   type: 'success'
-        // })
 
         this.bottomLoading = false
 

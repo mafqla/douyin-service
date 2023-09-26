@@ -182,7 +182,7 @@ const toggleComments = (id: any) => {
         @toggleComments="toggleComments(props.id)"
       >
         <div class="switch-control">
-          <SwiperControl />
+          <swiper-control-modal />
         </div>
       </video-action>
     </div>

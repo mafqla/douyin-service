@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, watchEffect } from 'vue'
-import { LoginCode, UserTab, UserFooter } from '@/components/my'
+import { onBeforeUnmount, onMounted, ref, toRef, watchEffect } from 'vue'
+import { UserTab, UserFooter } from '@/components/my'
 import { userStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { videoStore } from '@/stores/videos'
@@ -9,6 +9,8 @@ import { videoStore } from '@/stores/videos'
 import backgroundurlLightURL from '@/assets/personal_light.png'
 import backgroundurlDarkURL from '@/assets/personal_dark.png'
 import { useInfiniteScroll, useScroll } from '@vueuse/core'
+import { AuthUserInfo } from '@/service/auth/auth'
+import { settingStore } from '@/stores/setting'
 
 const background = ref(`url('${backgroundurlLightURL}')`)
 
@@ -17,20 +19,20 @@ const router = useRouter()
 
 const video = videoStore()
 
-const store = userStore()
-const isLogin = ref(false)
 const isDataLoaded = ref(false)
 const query = ref(router.currentRoute.value.query.showTab) as any
+const userId = ref(Number(router.currentRoute.value.params.id))
 const page = ref(1)
 const size = ref(10)
 const allowScroll = ref(true)
-
-const fetchVideoData = async (page: number, size: number) => {
+const userInfo = ref({}) as any
+const fetchVideoData = async (page: number, size: number, userId?: number) => {
   if (query.value === null || query.value === undefined) {
     // console.log(query.value)
     return
   }
   const data = await video.getVideoDataByParams({
+    userId,
     showTab: query.value,
     page,
     size
@@ -52,20 +54,33 @@ const fetchVideoData = async (page: number, size: number) => {
   allowScroll.value = data && ((data.length > 0) as any)
 }
 
-onMounted(() => {
-  if (localStorage.getItem('theme') === 'dark') {
-    background.value = `url('${backgroundurlDarkURL}')`
-  } else {
-    background.value = `url('${backgroundurlLightURL}')`
-  }
-
-  isLogin.value = store.isLogin()
-  if (!isDataLoaded.value && isLogin.value) {
-    fetchVideoData(page.value, size.value)
+onMounted(async () => {
+  router.push({
+    query: {
+      showTab: 'post'
+    }
+  })
+  if (!isDataLoaded.value) {
+    fetchVideoData(page.value, size.value, userId.value)
     isDataLoaded.value = true
   }
-})
 
+  try {
+    const res = await AuthUserInfo(userId.value)
+    // console.log(res)
+    if (res) {
+      userInfo.value = res.data
+      document.title = userInfo.value.userAuth
+        ? `${userInfo.value.username}的主页 - ${userInfo.value.userAuth} - 抖音`
+        : `${userInfo.value.username}的主页 - 抖音`
+    }
+  } catch (e) {
+    console.log(e)
+  }
+})
+onBeforeUnmount(() => {
+  document.title = '抖音-记录美好生活'
+})
 // 滚动监听
 const { y } = useScroll(window)
 
@@ -81,8 +96,13 @@ const load = () => {
 }
 
 // console.log(page.value)
-
+const theme = toRef(settingStore(), 'theme')
 watchEffect(() => {
+  if (theme.value === 'dark') {
+    background.value = `url('${backgroundurlDarkURL}')`
+  } else {
+    background.value = `url('${backgroundurlLightURL}')`
+  }
   // console.log(y.value)
   if (y.value > 60) {
     isDisplay.value = true
@@ -96,9 +116,9 @@ watchEffect(() => {
       .querySelector('.el-tabs__header')
       ?.classList.remove('header-scroll')
   }
-  if (!isDataLoaded.value && isLogin.value) {
+  if (!isDataLoaded.value) {
     isDataLoaded.value = true
-    fetchVideoData(page.value, size.value)
+    fetchVideoData(page.value, size.value, userId.value)
   }
 
   //如果query改变，清空数据
@@ -113,7 +133,7 @@ watchEffect(() => {
     video.userCollectVideos = []
     video.userRecordVideos = []
     // 调用API
-    fetchVideoData(page.value, size.value)
+    fetchVideoData(page.value, size.value, userId.value)
   }
 })
 const el = ref()
@@ -127,8 +147,8 @@ useInfiniteScroll(window, load, {
     <div class="user-detail" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content max">
         <div class="user-header-background"></div>
-        <user-header-other />
-        <user-tab />
+        <user-header-other :userInfo="userInfo" />
+        <user-tab-other />
       </div>
     </div>
     <user-footer />

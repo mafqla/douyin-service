@@ -10,7 +10,7 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
 }
 
-const selectOption = (option) => {
+const selectOption = (option: string) => {
   selectedOption.value = option
   isDropdownOpen.value = false
 }
@@ -89,7 +89,6 @@ const selectOption = (option) => {
     width: 120px;
     right: -14px;
     z-index: 10;
-
 
     .select-option {
       cursor: pointer;

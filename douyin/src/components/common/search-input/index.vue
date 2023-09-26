@@ -35,7 +35,7 @@ const handleBlur = () => {
 }
 
 watchEffect(() => {
-  console.log(searchQuery.value)
+  // console.log(searchQuery.value)
   if (searchQuery.value !== '') {
     isResult.value = true
   } else {
@@ -112,7 +112,6 @@ const handleClickOutside = (event: Event) => {
 </template>
 
 <style lang="scss" scoped>
-
 .search {
   border-radius: 12px;
   background-color: var(--color-bg-b0);
@@ -218,15 +217,23 @@ const handleClickOutside = (event: Event) => {
       position: relative;
 
       .icon-search {
-        color: var(--color-const-text-black);
+        color: var(--color-const-text-white);
       }
       .btn-title {
-        color: var(--color-const-text-black);
+        color: var(--color-const-text-white);
       }
     }
   }
 }
 
+html.dark .search {
+  &:hover {
+    .btn-title,
+    .icon-search {
+      color: #000 !important;
+    }
+  }
+}
 .main.user {
   .search {
     border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
@@ -285,10 +292,10 @@ const handleClickOutside = (event: Event) => {
           background-color: var(--color-text-t0) !important;
 
           .icon-search {
-            color: var(--color-const-text-black) !important;
+            color: var(--color-const-text-white) !important;
           }
           .btn-title {
-            color: var(--color-const-text-black) !important;
+            color: var(--color-const-text-white) !important;
           }
         }
       }

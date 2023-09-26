@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, toRef, watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted, ref, toRef, watchEffect } from 'vue'
 import { UserHeaderMy, LoginCode, UserTab, UserFooter } from '@/components/my'
 import { userStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
@@ -54,6 +54,13 @@ const fetchVideoData = async (page: number, size: number) => {
   allowScroll.value = data && ((data.length > 0) as any)
 }
 
+//设置浏览器标题
+document.title = store.userInfo.userAuth
+  ? `${store.userInfo.username}的主页 - ${store.userInfo.userAuth} - 抖音`
+  : `${store.userInfo.username}的主页 - 抖音`
+onBeforeUnmount(() => {
+  document.title = '抖音短视频'
+})
 onMounted(() => {
   isLogin.value = store.isLogin()
   if (!isDataLoaded.value && isLogin.value) {
@@ -79,7 +86,7 @@ const load = () => {
 // console.log(page.value)
 const theme = toRef(settingStore(), 'theme')
 watchEffect(() => {
-  console.log(theme.value)
+  // console.log(theme.value)
   if (theme.value === 'dark') {
     background.value = `url('${backgroundurlDarkURL}')`
   } else {

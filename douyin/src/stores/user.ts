@@ -1,28 +1,19 @@
-import { AuthLogin, PostAuthLogin, PostAuthSendCode } from '@/service/auth/auth'
+import {
+  AuthLogin,
+  AuthUserInfo,
+  PostAuthLogin,
+  PostAuthSendCode
+} from '@/service/auth/auth'
 import { ElMessage } from 'element-plus'
 import { defineStore } from 'pinia'
 import { videoStore } from './videos'
+import type { IUserInfoResult } from '@/service/auth/AuthType'
 
 export const userStore = defineStore('user', {
   state: () => ({
     token: localStorage.getItem('token') || '',
     routerKey: 'updated',
-    userInfo: {
-      userId: 0,
-      username: '',
-      type: '',
-      userAvatar: '',
-      email: '',
-      phone: '',
-      userNum: '',
-      ipLocation: '',
-      gender: '',
-      birthdate: '',
-      school: '',
-      location: '',
-      signature: '',
-      createTime: ''
-    }
+    userInfo: {} as IUserInfoResult
   }),
 
   actions: {
@@ -30,18 +21,19 @@ export const userStore = defineStore('user', {
     async login(userInfo: any) {
       try {
         const data = await AuthLogin(userInfo)
-        const { token, ...userData } = data.data
-
-        // 存储到 state
-        this.userInfo = Object.assign(this.userInfo, userData)
+        const { token } = data.data
 
         // 存储到 localStorage
         localStorage.setItem('token', token)
         this.token = token
+
+        //
         ElMessage({
           message: data.msg,
           type: 'success'
         })
+        //获取用户信息
+        this.getUserInfo()
         // window.location.reload()
         this.routerKey = 'update'
       } catch (e: any) {
@@ -50,6 +42,12 @@ export const userStore = defineStore('user', {
           type: 'error'
         })
       }
+    },
+
+    // 获取用户信息
+    async getUserInfo() {
+      const data = await AuthUserInfo()
+      this.userInfo = data.data
     },
 
     //判断是否登录

@@ -45,7 +45,7 @@ const handleModal = (item: IVideoList) => {
   modalData.img = item.userAvatar
   modalData.dianzan = item.likeCount
   modalData.comment = item.commentCount
-  // modalData.shoucang = item.collectCount
+  modalData.shoucang = item.collectCount
 
   modalData.isLike = item.isLike
   modalData.isCollect = item.isCollect

@@ -1,68 +1,86 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
-import { userStore } from '@/stores/user'
+import type { IUserInfoResult } from '@/service/auth/AuthType'
+import { type PropType, computed, ref } from 'vue'
+import { attention } from '@/service/attention/index'
 
-const isLogin = ref(false)
-
-const avatar = ref('../assets/icons/user-avatar.svg')
-
-const store = userStore()
-
-watchEffect(() => {
-  isLogin.value = store.isLogin()
-  avatar.value = store.userInfo.userAvatar
+const props = defineProps({
+  userInfo: {
+    type: Object as PropType<IUserInfoResult>,
+    default: () => ({})
+  }
 })
+
+const isAttention = computed({
+  get() {
+    return props.userInfo.isAttention
+  },
+  set(val) {
+    props.userInfo.isAttention = val
+  }
+})
+
+// console.log(isAttention.value)
+const handleAttention = async (id: number) => {
+  await attention(id)
+  isAttention.value = !isAttention.value
+}
+//预览头像
+const isOpenAvatar = ref(false)
+const openAvatar = () => {
+  isOpenAvatar.value = true
+}
 </script>
 
 <template>
   <div class="user-detail-header">
-    <div class="user-avatar">
-      <el-avatar :size="112" :src="avatar" />
+    <div class="user-avatar" @click="openAvatar">
+      <el-avatar :size="112" :src="userInfo.avatar" />
     </div>
+    <img-modal
+      :open="isOpenAvatar"
+      :avatar="userInfo.avatar"
+      @close="isOpenAvatar = false"
+    />
     <div class="user-info">
       <div class="user-name">
         <h1 class="user-name-login">
-          <span>{{ store.userInfo.username }}</span>
+          <span>{{ userInfo.username }}</span>
         </h1>
       </div>
       <div class="user-info-detail">
         <div class="user-item">
           <div class="user-info-text">关注</div>
-          <div class="user-number">0</div>
+          <div class="user-number">{{ userInfo.attentionCount }}</div>
         </div>
         <div class="user-item">
           <div class="user-info-text">粉丝</div>
-          <div class="user-number">0</div>
+          <div class="user-number">{{ userInfo.fansCount }}</div>
         </div>
         <div class="user-item">
           <div class="user-info-text">获赞</div>
-          <div class="user-number">0</div>
+          <div class="user-number">{{ userInfo.likeCount }}</div>
         </div>
       </div>
-      <p v-if="isLogin" class="user-account">
-        <span class="user-account-num">
-          抖音号：{{ store.userInfo.userNum }}
-        </span>
+      <p class="user-account">
+        <span class="user-account-num"> 抖音号：{{ userInfo.userNum }} </span>
         <!-- 作者页面显示 -->
-        <span class="user-account-addr"
-          >ip属地: {{ store.userInfo.ipLocation }}</span
-        >
-        <template v-if="store.userInfo.gender !== null">
+        <span class="user-account-addr">ip属地: {{ userInfo.ipAddress }}</span>
+        <template v-if="userInfo.gender !== null">
           <span class="user-account-info">
             <svg-icon
-              v-if="store.userInfo.gender === '女'"
+              v-if="userInfo.gender === '女'"
               icon="small-woman"
               class="user-account-icon"
             />
             <svg-icon
-              v-if="store.userInfo.gender === '男'"
+              v-if="userInfo.gender === '男'"
               icon="small-man"
               class="user-account-icon"
             />
-            <span v-if="store.userInfo.birthdate !== null"
+            <span v-if="userInfo.birthday !== null"
               >{{
                 Math.ceil(
-                  (Date.now() - new Date(store.userInfo.birthdate).getTime()) /
+                  (Date.now() - new Date(userInfo.birthday).getTime()) /
                     31557600000
                 )
               }}岁</span
@@ -70,22 +88,29 @@ watchEffect(() => {
           </span>
         </template>
 
-        <template v-if="store.userInfo.location !== null">
-          <span class="user-account-info">{{ store.userInfo.location }}</span>
+        <template v-if="userInfo.address !== null">
+          <span class="user-account-info">{{ userInfo.address }}</span>
         </template>
-        <template v-if="store.userInfo.school !== null">
-          <span class="user-account-info">{{ store.userInfo.school }}</span>
+        <template v-if="userInfo.school !== null">
+          <span class="user-account-info">{{ userInfo.school }}</span>
         </template>
       </p>
 
-      <div v-if="isLogin" class="user-signature">
-        <span> {{ store.userInfo.signature }}</span>
+      <div class="user-signature">
+        <span> {{ userInfo.userSignature }}</span>
       </div>
     </div>
 
     <div class="action">
       <download-btn style="margin: unset" class="other" />
-      <button class="content-btn follow">关注</button>
+      <button
+        class="content-btn"
+        :class="{ follow: !isAttention }"
+        @click="handleAttention(userInfo.id)"
+      >
+        {{ isAttention ? '已关注' : '关注' }}
+      </button>
+
       <button class="content-btn">私信</button>
       <button class="content-btn more">
         <svg-icon icon="more" class="icon" />

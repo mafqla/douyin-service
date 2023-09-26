@@ -30,6 +30,10 @@ const props = defineProps({
     type: Number,
     required: true
   },
+  userId: {
+    type: Number,
+    required: true
+  },
   username: {
     type: String,
     required: true
@@ -84,7 +88,7 @@ const props = defineProps({
     required: false
   },
   isAttention: {
-    type: Boolean,
+    type: Number,
     required: false
   }
 })
@@ -298,12 +302,15 @@ const toggleComments = (id: any) => {
             :description="props.description"
           />
           <video-action
+            :id="props.id"
+            :userId="props.userId"
             :avatar="props.img"
             :dianzan="props.dianzan"
             :comment="props.comment"
             :shoucang="props.shoucang"
             :isLike="props.isLike"
             :isCollect="props.isCollect"
+            :isAttention="props.isAttention"
             @toggleComments="toggleComments(props.id)"
           >
           </video-action>

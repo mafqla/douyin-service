@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { AuthEditUserInfo } from '@/service/auth/auth'
+import { userStore } from '@/stores/user'
+import { reactive, ref, watchEffect } from 'vue'
 
 const props = defineProps({
   open: Boolean,
@@ -14,8 +16,6 @@ const props = defineProps({
     }
   }
 })
-
-
 
 const isEdited = ref(false)
 // 记录初始的用户名和个性签名
@@ -33,9 +33,7 @@ watchEffect(() => {
   } else {
     isEdited.value = false
   }
-  console.log(open)
   if (props.open) {
-    console.log('open')
     document.body.style.overflow = 'hidden'
   } else {
     //移除样式属性
@@ -44,9 +42,23 @@ watchEffect(() => {
 })
 
 const emit = defineEmits(['close'])
-const saveProfile = () => {
-  //获取用户信息
-  console.log(props.userInfo.username, props.userInfo.signature)
+const params = reactive({
+  username: '',
+  signature: '',
+  avatar: '' as any
+})
+const saveProfile = async () => {
+  params.username = props.userInfo.username
+  params.signature = props.userInfo.signature
+  console.log(params)
+  //调用接口
+  try {
+    await AuthEditUserInfo(params)
+    await userStore().getUserInfo()
+  } catch (e) {
+    console.log(e)
+  }
+
   //关闭
   emit('close')
 }
@@ -67,6 +79,7 @@ const uploadAvatar = () => {
     avatarInput.value.onchange = (e: any) => {
       const file = e.target.files[0]
       console.log(file)
+      params.avatar = file
       const reader = new FileReader()
       reader.readAsDataURL(file)
       reader.onload = () => {
@@ -158,13 +171,14 @@ const uploadAvatar = () => {
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
+  // background: rgba(0, 0, 0, 0.6);
+  background: var(--color-mask-m1);
   display: flex;
   justify-content: center;
   align-items: center;
 
   .content {
-    background: #fff;
+    background: var(--color-bg-b1);
     border-radius: 4px;
     height: 588px;
     left: 50%;
@@ -180,8 +194,8 @@ const uploadAvatar = () => {
     position: relative;
 
     .title {
-      // color: var(--color-text-t1);
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
+      // color: rgba(22, 24, 35, 1);
       font-size: 18px;
     }
     .close {
@@ -191,7 +205,7 @@ const uploadAvatar = () => {
       top: -32px;
 
       svg path {
-        fill: rgba(22, 24, 35, 0.75);
+        fill: var(--color-text-t2);
       }
     }
   }
@@ -234,7 +248,7 @@ const uploadAvatar = () => {
     }
 
     .upload-text {
-      color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
       font-size: 12px;
       margin-top: 4px;
     }
@@ -245,7 +259,7 @@ const uploadAvatar = () => {
     width: 100%;
 
     .title {
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
       font-size: 14px;
     }
     .input-box {
@@ -255,14 +269,14 @@ const uploadAvatar = () => {
 
       input {
         // background: #f2f2f4;
-        // background: var(--color-bg-b2);
-        background: rgba(242, 242, 243, 1);
+        background: var(--color-bg-b2);
+        // background: rgba(242, 242, 243, 1);
         border: none;
         border-radius: 4px;
-        caret-color: rgba(22, 24, 35, 0.75);
-        // caret-color: var(--color-text-t2);
-        color: rgba(22, 24, 35, 0.75);
-        // color: var(--color-text-t2);
+        // caret-color: rgba(22, 24, 35, 0.75);
+        caret-color: var(--color-text-t2);
+        // color: rgba(22, 24, 35, 0.75);
+        color: var(--color-text-t2);
         font-size: 14px;
         height: 32px;
         line-height: 32px;
@@ -272,7 +286,7 @@ const uploadAvatar = () => {
       }
 
       .size {
-        color: rgba(22, 24, 35, 0.34);
+        color: var(--color-text-t4);
         font-size: 12px;
         line-height: 32px;
         position: absolute;
@@ -286,7 +300,7 @@ const uploadAvatar = () => {
     width: 100%;
 
     .title {
-      color: rgba(22, 24, 35, 1);
+      color: var(--color-text-t1);
       font-size: 14px;
     }
 
@@ -300,14 +314,14 @@ const uploadAvatar = () => {
         border: none !important;
 
         .el-textarea__inner {
-          background: rgba(242, 242, 243, 1);
+          background: var(--color-bg-b2);
           border: none;
           box-shadow: none;
           border-radius: 4px;
-          caret-color: rgba(22, 24, 35, 0.75);
-          // caret-color: var(--color-text-t2);
-          color: rgba(22, 24, 35, 0.75);
-          // color: var(--color-text-t2);
+          // caret-color: rgba(22, 24, 35, 0.75);
+          caret-color: var(--color-text-t2);
+          // color: rgba(22, 24, 35, 0.75);
+          color: var(--color-text-t2);
           font-size: 14px;
           max-height: 300px;
           height: 128px;
@@ -326,7 +340,8 @@ const uploadAvatar = () => {
           font-size: 14px;
           font-weight: 400;
           line-height: 22px;
-          color: #9197a3;
+          // color: #9197a3;
+          color: var(--color-bg-b2);
         }
       }
     }
@@ -355,27 +370,28 @@ const uploadAvatar = () => {
       position: relative;
     }
     .save {
-      background-color: #fe2c55;
-      // background-color: var(--color-primary);
-      color: #fff;
-      // color: var(--color-const-text-white);
+      // background-color: #fe2c55;
+      background-color: var(--color-primary);
+      // color: #fff;
+      color: var(--color-const-text-white);
       margin: 0 !important;
 
       &:hover {
-        background-color: #d21b46;
+        // background-color: #d21b46;
+        background-color: var(--color-primary-hover);
       }
       &:disabled {
-        background-color: #ffc2c6;
-        // background-color: var(--color-primary-disable);
+        // background-color: #ffc2c6;
+        background-color: var(--color-primary-disable);
         cursor: not-allowed;
       }
     }
 
     .cancel {
-      background-color: #ebedef;
-      // background-color: var(--secondary-bg-color);
-      color: rgba(22, 24, 35, 0.6);
-      // color: var(--color-text-t3);
+      // background-color: #ebedef;
+      background-color: var(--secondary-bg-color);
+      // color: rgba(22, 24, 35, 0.6);
+      color: var(--color-text-t3);
 
       margin-left: 16px;
     }

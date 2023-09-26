@@ -17,6 +17,7 @@ export default defineConfig(({ command, mode }) => {
     server: {
       host: '127.0.0.1',
       port: 3000,
+      open: true,
       proxy: {
         '/api': {
           target: env.VITE_BASE_URL,
@@ -31,7 +32,11 @@ export default defineConfig(({ command, mode }) => {
       AutoImport({
         // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
         imports: ['vue', 'vue-router', 'pinia'],
-        resolvers: [ElementPlusResolver()]
+        resolvers: [ElementPlusResolver()],
+        eslintrc: {
+          enabled: true, // 是否自动生成 eslint 规则，建议生成之后设置 false
+          filepath: './.eslintrc-auto-import.json' // 指定自动导入函数 eslint 规则的文件
+        }
       }),
       Components({
         resolvers: [ElementPlusResolver()]
@@ -55,6 +60,16 @@ export default defineConfig(({ command, mode }) => {
           javascriptEnabled: true
         }
       }
+    },
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      sourcemap: false,
+      minify: 'esbuild'
+    },
+    esbuild: {
+      drop: ['console', 'debugger'],
+      format: 'esm'
     }
   }
 })
