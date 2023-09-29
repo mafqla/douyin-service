@@ -31,7 +31,8 @@ export default defineConfig(({ command, mode }) => {
       ElementPlus(),
       AutoImport({
         // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
-        imports: ['vue', 'vue-router', 'pinia'],
+        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
+        dirs: ['src'],
         resolvers: [ElementPlusResolver()],
         eslintrc: {
           enabled: true, // 是否自动生成 eslint 规则，建议生成之后设置 false

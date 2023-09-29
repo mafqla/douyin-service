@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import switchButton from './switch-button.vue'
 import { userStore } from '@/stores/user'
+import { attention } from '@/service/attention'
 
 const isLogin = ref(false)
 
@@ -34,6 +35,14 @@ const openAvatar = () => {
   isOpenAvatar.value = true
   userInfo.value.avatar = store.userInfo.avatar
 }
+
+//打开粉丝列表或关注列表
+const isOpenConnect = ref(false)
+const connect = ref('fans')
+const openConnectionsPopup = (name: string) => {
+  isOpenConnect.value = true
+  connect.value = name
+}
 </script>
 
 <template>
@@ -42,11 +51,14 @@ const openAvatar = () => {
       <el-avatar v-if="isLogin" :size="112" :src="avatar" />
       <svg-icon v-if="!isLogin" class="icon" icon="user-avatar" />
     </div>
-    <img-modal
+    <!-- <img-modal
       :open="isOpenAvatar"
       :avatar="userInfo.avatar"
       @close="isOpenAvatar = false"
-    />
+    /> -->
+    <modal :open="isOpenAvatar" @close="isOpenAvatar = false">
+      <img :src="userInfo.avatar" alt="" width="280" height="280" />
+    </modal>
     <div class="user-info">
       <div class="user-name">
         <h1 class="user-name-noin" v-if="!isLogin">未登录</h1>
@@ -55,7 +67,7 @@ const openAvatar = () => {
         </h1>
       </div>
       <div class="user-info-detail">
-        <div class="user-item">
+        <div class="user-item" @click="openConnectionsPopup('attent')">
           <template v-if="!isLogin">
             <p class="user-text">关注</p>
             <p class="user-line">-</p>
@@ -65,7 +77,7 @@ const openAvatar = () => {
             <div class="user-number">{{ store.userInfo.attentionCount }}</div>
           </template>
         </div>
-        <div class="user-item">
+        <div class="user-item" @click="openConnectionsPopup('fans')">
           <template v-if="!isLogin">
             <p class="user-text">粉丝</p>
             <p class="user-line">-</p>
@@ -75,6 +87,12 @@ const openAvatar = () => {
             <div class="user-number">{{ store.userInfo.fansCount }}</div>
           </template>
         </div>
+        <modal :open="isOpenConnect">
+          <user-connections-popup
+            :connect="connect"
+            @close="isOpenConnect = false"
+          />
+        </modal>
         <div class="user-item">
           <template v-if="!isLogin">
             <p class="user-text">获赞</p>

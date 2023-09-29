@@ -60,8 +60,8 @@ const selectOption = (option: string) => {
   position: relative;
 
   .cur-filter {
-    color: rgba(22, 24, 35, 0.6);
-    // color: var(--color-text-t3);
+    // color: rgba(22, 24, 35, 0.6);
+    color: var(--color-text-t3);
     cursor: pointer;
     display: flex;
     flex-shrink: 0;

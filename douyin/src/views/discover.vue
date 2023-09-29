@@ -392,7 +392,7 @@ const modalData = reactive({
 
   isLike: false,
   isCollect: false,
-  isAttention: false
+  isAttention: 0
 })
 const handleModal = (item: IVideoList) => {
   modalData.id = item.id

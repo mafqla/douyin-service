@@ -18,6 +18,7 @@ const visible = ref(false)
 // 点击获取数据
 const modalData = reactive({
   id: 0,
+  userId: 0,
   username: '',
   uploadTime: '',
   description: '',
@@ -32,10 +33,11 @@ const modalData = reactive({
 
   isLike: false,
   isCollect: false,
-  isAttention: false
+  isAttention: 0
 })
 const handleModal = (item: IVideoList) => {
   modalData.id = item.id
+  modalData.userId = item.userId
   modalData.username = item.userName
   modalData.uploadTime = item.uploadTime
   modalData.description = item.description

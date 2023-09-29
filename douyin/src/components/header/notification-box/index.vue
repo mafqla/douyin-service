@@ -4,7 +4,7 @@ import NoticeList from './notice-list.vue'
 import { ref } from 'vue'
 </script>
 <template>
-  <pop-up :title="'通知'">
+  <pop-up :title="'互动消息'">
     <template #icon>
       <notice-list />
     </template>

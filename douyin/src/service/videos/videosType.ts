@@ -20,7 +20,7 @@ export interface IVideoList {
   status: 0
 
   isTop: boolean
-  isAttention: boolean
+  isAttention: number
   isLike: boolean
   isDislike: boolean
   isCollect: boolean

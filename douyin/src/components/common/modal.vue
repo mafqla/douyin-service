@@ -1,41 +1,40 @@
 <script setup lang="ts">
-import type { IVideoList } from '@/service/videos/videosType'
-import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-// 点击获取数据
-const modalData = reactive({
-  id: 0,
-  username: '',
-  uploadTime: '',
-  description: '',
-  url: '',
-  poster: '',
-  isPlay: false,
-  img: '',
-  dianzan: 0,
-  comment: 0,
-  shoucang: 0,
-  globalVolume: 0,
-
-  isLike: false,
-  isCollect: false,
-  isAttention: false
+import { watchEffect } from 'vue'
+const props = defineProps({
+  open: Boolean
 })
 
-//关闭modal
-const handleClose = () => {
-  //去除路由参数
-  router.push({
-    query: {
-      ...router.currentRoute.value.query,
-      modal_id: undefined
-    }
-  })
-}
+watchEffect(() => {
+  if (props.open) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    //移除样式属性
+    document.body.style.removeProperty('overflow')
+  }
+})
+
+const emit = defineEmits(['close'])
 </script>
 <template>
-  <model-player v-bind="modalData" @closeBtn="handleClose" />
+  <Teleport to="body">
+    <div class="modal" v-if="open" @click="$emit('close')">
+      <slot />
+    </div>
+  </Teleport>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.modal {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  // background: rgba(0, 0, 0, 0.6);
+  background: var(--color-mask-m1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

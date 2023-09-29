@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  onMounted,
-  ref,
-  watchEffect,
-  type Ref,
-  onUpdated,
-  nextTick
-} from 'vue'
+import { ref } from 'vue'
 import TitleBox from './title-box.vue'
 import DiscoverVideo from './discover-video.vue'
 import { useElementSize } from '@vueuse/core'
@@ -20,7 +12,7 @@ const props = defineProps({
   like: Number,
   title: String,
   author: String,
-  fellow: Boolean,
+  fellow: Number,
   comment: Number,
   collect: Number,
   postTime: String,
