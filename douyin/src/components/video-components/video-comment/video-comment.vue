@@ -79,8 +79,6 @@ async function submitComment() {
               @click="submitComment"
             >
               <svg-icon icon="submit" class="submit-icon" />
-              <span v-if="!loading">发送</span>
-              <span v-else>发送中...</span>
             </span>
           </div>
         </div>
@@ -93,7 +91,7 @@ async function submitComment() {
 .video-comment {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100% - 46px);
 
   .video-comment-header {
     padding: 0 16px;

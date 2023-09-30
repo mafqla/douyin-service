@@ -23,6 +23,15 @@ export default defineConfig(({ command, mode }) => {
           target: env.VITE_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
+        },
+        '/douyin': {
+          target: 'https://www.douyin.com',
+          changeOrigin: true,
+          headers: {
+            referer: 'https://www.douyin.com/',
+            origin: 'https://www.douyin.com/'
+          },
+          rewrite: (path) => path.replace(/^\/douyin/, '')
         }
       }
     },

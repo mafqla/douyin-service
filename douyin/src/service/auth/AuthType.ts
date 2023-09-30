@@ -31,7 +31,7 @@ export interface IUserInfoResult {
   fansCount: number
   gender: string
   ipAddress: string
-  isAttention: boolean
+  isAttention: number
   likeCount: number
   likeVideosCount: number
   school: string
@@ -45,7 +45,7 @@ export interface IUserInfoResult {
 }
 
 //修改用户信息请求参数
-export interface IEditUserInfo { 
+export interface IEditUserInfo {
   id?: number //用户id
   username?: string //用户名
   userNum?: string //用户学号
@@ -56,5 +56,4 @@ export interface IEditUserInfo {
   location?: string //地址
   signature?: string //个性签名
   avatar?: File //头像
-
 }

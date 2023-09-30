@@ -184,9 +184,7 @@ const toggleComments = (id: any) => {
         :isCollect="props.isCollect"
         @toggleComments="toggleComments(props.id)"
       >
-        <div class="switch-control">
-          <swiper-control-modal />
-        </div>
+        <swiper-control-modal />
       </video-action>
     </div>
 
@@ -217,14 +215,7 @@ const toggleComments = (id: any) => {
     height: 100%;
     z-index: 2;
 
-    .switch-control {
-      position: absolute;
-      // right: 13px;
-      right: 8px;
-      transform: translateY(calc(-50% - 30px));
-      z-index: 20;
-    }
-
+  
     .close-btn {
       position: fixed;
       top: 20px;

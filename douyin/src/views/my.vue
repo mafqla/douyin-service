@@ -59,7 +59,7 @@ document.title = store.userInfo.userAuth
   ? `${store.userInfo.username}的主页 - ${store.userInfo.userAuth} - 抖音`
   : `${store.userInfo.username}的主页 - 抖音`
 onBeforeUnmount(() => {
-  document.title = '抖音短视频'
+  document.title = '抖音-记录美好生活'
 })
 onMounted(() => {
   isLogin.value = store.isLogin()

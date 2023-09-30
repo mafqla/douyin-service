@@ -279,99 +279,6 @@ onBeforeUnmount(() => {
 })
 //组件卸载前清除数据
 
-//置顶数据
-const topData = {
-  id: 1,
-  title: '本轮强降雨接下来会影响哪'
-}
-//列表数据
-const listData = [
-  {
-    id: 1,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_boom'
-  },
-  {
-    id: 2,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_hot'
-  },
-  {
-    id: 3,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_exclusive'
-  },
-  {
-    id: 4,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-
-  {
-    id: 5,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 6,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 7,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 8,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 9,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 10,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 11,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 12,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 13,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  },
-  {
-    id: 14,
-    title: '本轮强降雨接下来会影响哪些地区？',
-    hotNum: 100,
-    imgType: 'hot_first'
-  }
-]
 
 const router = useRouter()
 const visible = ref(false)
@@ -446,8 +353,6 @@ const handleClose = () => {
         <template v-for="(item, index) in list" :key="item.id">
           <template v-if="index === numItems - 1">
             <hot-item
-              :topData="topData"
-              :listData="listData"
               :style="{
                 width: `${itemWidth}px`,
                 transform: `translate(${translateXValues[numItems - 1]}px, ${

@@ -1,58 +1,32 @@
 <script setup lang="ts">
-import { ref, type PropType, computed } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 
 import hot_boom from '@/assets/hot/hot_boom.png'
 import hot_first from '@/assets/hot/hot_first.png'
 import hot_hot from '@/assets/hot/hot_hot.png'
 import hot_exclusive from '@/assets/hot/hot_exclusive.png'
+import hot_new from '@/assets/hot/hot_new.png'
 
+import hotup from '@/assets/hot/up.png'
 import hot_top1 from '@/assets/hot/hot_top1.png'
 import hot_top2 from '@/assets/hot/hot_top2.png'
 import hot_top3 from '@/assets/hot/hot_top3.png'
 import { useElementSize } from '@vueuse/core'
 import { discoverStore } from '@/stores/discover'
 
-interface ITopData {
-  id: number
-  title: string
-}
+import { hot, entertainment, society, challenge } from '@/service/test/hot'
 
-interface IListData {
-  id: number
-  title: string
-  hotNum: number
-  imgType?: string
+const listData = ref([]) as any
+const imgTypeToSrc: { [key: number]: string } = {
+  4: hot_boom,
+  5: hot_first,
+  3: hot_hot,
+  8: hot_exclusive,
+  1: hot_new
 }
-const props = defineProps({
-  titleItems: {
-    type: Array,
-    default: () => ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
-  },
-  topData: {
-    type: Object as PropType<ITopData>,
-    required: true
-  },
-  listData: {
-    type: Array<IListData>,
-    required: true
-  }
-})
-
-const imgTypeToSrc = {
-  hot_boom: hot_boom,
-  hot_first: hot_first,
-  hot_hot: hot_hot,
-  hot_exclusive: hot_exclusive
+const getTagSrc = (id: number) => {
+  return imgTypeToSrc[id]
 }
-
-//使用计算属性，处理图片路径
-const list = computed(() => {
-  return props.listData.map((item) => {
-    //@ts-ignore
-    item.imgType = imgTypeToSrc[item.imgType]
-    return item
-  })
-})
 
 //处理1-3名的图片路径
 const getImgSrc = (id: number) => {
@@ -65,12 +39,26 @@ const getImgSrc = (id: number) => {
   }
 }
 
-// const titleItems = ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
+const titleItems = ['抖音热榜', '娱乐榜', '社会榜', '挑战榜']
 const selectedIndex = ref(0)
 
 const selectItem = (index: number) => {
   selectedIndex.value = index
 }
+
+watchEffect(async () => {
+  if (selectedIndex.value === 0) {
+    listData.value = (await hot()).data.word_list
+  } else if (selectedIndex.value === 1) {
+    listData.value = (await entertainment()).data.word_list
+  } else if (selectedIndex.value === 2) {
+    listData.value = (await society()).data.word_list
+  } else if (selectedIndex.value === 3) {
+    listData.value = (await challenge()).data.word_list
+  }
+
+  // console.log(listData.value)
+})
 
 const el = ref(null)
 const { height } = useElementSize(el)
@@ -102,51 +90,45 @@ setTimeout(() => {
 
         <div class="hot-item-list">
           <ul class="hot-item-list-content hotChangableList">
-            <li class="hot-item-list-content-item">
-              <div class="hot-item-list-content-text listStyle">
-                <img src="../../../assets/hot/up.png" alt="" />
-              </div>
-              <div class="hot-item-list-content-item-title-content">
-                <div class="custom-link">
-                  <RouterLink
-                    :to="{ name: 'discover', query: { modal_id: topData.id } }"
-                    class="custom-title active"
-                  >
-                    <h3>{{ topData.title }}</h3>
-                  </RouterLink>
-                </div>
-              </div>
-            </li>
-
-            <template v-for="item in list" :key="item.id">
+            <template v-for="item in listData" :key="item.position">
               <li class="hot-item-list-content-item">
                 <div class="hot-item-list-content-text listStyle">
-                  <img :src="getImgSrc(item.id)" alt="" v-if="item.id <= 3" />
+                  <img :src="hotup" alt="" v-if="item.hot_value === 0" />
+                  <img
+                    :src="getImgSrc(item.position)"
+                    alt=""
+                    v-if="item.position <= 3"
+                  />
 
                   <svg-icon
-                    :icon="`icon-${parseInt(item.id.toString()[0], 10)}`"
+                    :icon="`icon-${parseInt(item.position.toString()[0], 10)}`"
                     class="icon"
-                    v-if="item.id > 3"
+                    v-if="item.position > 3"
                   />
                   <svg-icon
-                    :icon="`icon-${parseInt(item.id.toString()[1], 10)}`"
+                    :icon="`icon-${parseInt(item.position.toString()[1], 10)}`"
                     class="icon"
-                    v-if="item.id >= 10"
+                    v-if="item.position >= 10"
                   />
                 </div>
                 <div class="hot-item-list-content-item-title-content">
                   <div class="custom-link">
-                    <RouterLink
-                      :to="{ name: 'discover', query: { modal_id: item.id } }"
+                    <a
+                      :href="`https://www.douyin.com/hot/${item.sentence_id}`"
                       class="custom-title active"
+                      target="_blank"
                     >
-                      <h3>{{ item.title }}</h3>
-                    </RouterLink>
-                    <img :src="item.imgType" alt="" />
+                      <h3>{{ item.word }}</h3>
+                    </a>
+                    <img :src="getTagSrc(item.label)" alt="" />
                   </div>
 
-                  <div class="hot-du">
-                    <span class="hot-num">{{ item.hotNum }}</span>
+                  <div class="hot-du" v-show="item.hot_value !== 0">
+                    <span class="hot-num">{{
+                      item.hot_value >= 10000
+                        ? (item.hot_value / 10000).toFixed(1) + '万'
+                        : item.hot_value
+                    }}</span>
                     <span>热度</span>
                   </div>
                 </div>
@@ -155,7 +137,7 @@ setTimeout(() => {
                   class="hot-item-content-show"
                   style="text-align: center; width: 202px"
                 >
-                  {{ item.title }}
+                  {{ item.word }}
                 </div>
               </li>
             </template>

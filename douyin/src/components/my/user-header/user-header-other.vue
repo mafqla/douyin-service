@@ -22,7 +22,11 @@ const isAttention = computed({
 // console.log(isAttention.value)
 const handleAttention = async (id: number) => {
   await attention(id)
-  isAttention.value = !isAttention.value
+  if (isAttention.value === 1 || isAttention.value === 3) {
+    isAttention.value = 2
+  } else {
+    isAttention.value = 1
+  }
 }
 //预览头像
 const isOpenAvatar = ref(false)
@@ -105,10 +109,10 @@ const openAvatar = () => {
       <download-btn style="margin: unset" class="other" />
       <button
         class="content-btn"
-        :class="{ follow: !isAttention }"
+        :class="{ follow: isAttention === 2 }"
         @click="handleAttention(userInfo.id)"
       >
-        {{ isAttention ? '已关注' : '关注' }}
+        {{ isAttention === 1 ? '已关注' : '关注' }}
       </button>
 
       <button class="content-btn">私信</button>

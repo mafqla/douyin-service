@@ -3,117 +3,60 @@ import { videosCtrolStore } from '@/stores/videos-control'
 </script>
 
 <template>
-  <div class="carousel-controls">
-    <div class="carousel-controls-switch">
-      <div
-        class="carousel-controls-switch-up"
-        :class="{ disabled: videosCtrolStore().activeVideoIndex === 0 }"
-        @click="videosCtrolStore().handlePrev()"
-      >
-        <svg-icon class="icon" icon="video-switch-prev-arrow" />
-      </div>
-      <div
-        class="carousel-controls-switch-down"
-        :class="{
-          disabled: videosCtrolStore().stopScroll
-        }"
-        @click="
-          videosCtrolStore().stopScroll === true
-            ? null
-            : videosCtrolStore().handleNext()
-        "
-      >
-        <svg-icon class="icon" icon="video-switch-next-arrow" />
+  <div class="xgplayer-playswitch">
+    <div class="modal-controls">
+      <div class="modal-controls-switch">
+        <div
+          class="modal-controls-switch-up"
+          :class="{ disabled: videosCtrolStore().activeVideoIndex === 0 }"
+          @click="videosCtrolStore().handlePrev()"
+        >
+          <svg-icon class="icon" icon="video-switch-prev-arrow" />
+        </div>
+        <div
+          class="modal-controls-switch-down"
+          :class="{
+            disabled: videosCtrolStore().stopScroll
+          }"
+          @click="
+            videosCtrolStore().stopScroll === true
+              ? null
+              : videosCtrolStore().handleNext()
+          "
+        >
+          <svg-icon class="icon" icon="video-switch-next-arrow" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.carousel-controls {
-  width: 100%;
-  height: 100%;
-
-  .carousel-controls-switch {
-    // background-color: rgb(50, 52, 66);
-    // background-color: rgba(242, 242, 243, 1);
-    background-color: rgba(0, 0, 0, 0.18);
-    height: 88px;
-    opacity: 0.7;
-    position: relative;
-    width: 38px;
-    border-radius: 18px;
-    border: 0.5px solid hsla(0, 0%, 100%, 0.15);
-    &:hover {
-      opacity: 0.9;
-    }
-    .carousel-controls-switch-up {
-      height: 40px;
-      position: absolute;
-      top: 0px;
-      width: 35px;
-      cursor: pointer;
-      opacity: 0.7;
-
-      .icon {
-        left: 5px;
-        // left: 9px;
-        position: relative;
-        top: 7px;
-        height: 26px !important;
-        width: 26px !important;
-        color: #fff;
-        // color: rgba(22, 24, 35, 0.6);
-      }
-    }
-    .carousel-controls-switch-up.disabled {
-      cursor: not-allowed;
-      opacity: 0.3;
-    }
-    .carousel-controls-switch-down.disabled {
-      cursor: not-allowed;
-      opacity: 0.3;
-    }
-
-    .carousel-controls-switch-down {
-      bottom: 0px;
-      height: 40px;
-      opacity: 0.7;
-      position: absolute;
-      width: 36px;
-      cursor: pointer;
-
-      .icon {
-        left: 5px;
-        // left: 9px;
-        position: relative;
-        top: 7px;
-        height: 26px !important;
-        width: 26px !important;
-        color: #fff;
-        // color: rgba(22, 24, 35, 0.6);
-      }
-    }
-  }
+.xgplayer-playswitch {
+  flex-shrink: 0;
+  width: 35px;
 }
-.carousel-controls {
-  width: 100%;
-  height: 100%;
+.modal-controls {
+  border: 1px solid hsla(0, 0%, 100%, 0.15);
+  border-radius: 18px;
+  box-sizing: content-box;
 
-  .carousel-controls-switch {
-    // background-color: rgb(50, 52, 66);
-    // background-color: rgba(242, 242, 243, 1);
+  .modal-controls-switch {
+    -webkit-backdrop-filter: unset;
+    backdrop-filter: unset;
     background-color: rgba(0, 0, 0, 0.18);
-    height: 88px;
-    opacity: 0.7;
-    position: relative;
-    width: 38px;
+    opacity: 1;
     border-radius: 18px;
+    width: 35px;
+    height: 80px;
+
+    background: rgba(0, 0, 0, 0.18);
     border: 0.5px solid hsla(0, 0%, 100%, 0.15);
+    position: relative;
     &:hover {
       opacity: 0.9;
     }
-    .carousel-controls-switch-up {
+    .modal-controls-switch-up {
       height: 40px;
       position: absolute;
       top: 0px;
@@ -132,16 +75,16 @@ import { videosCtrolStore } from '@/stores/videos-control'
         // color: rgba(22, 24, 35, 0.6);
       }
     }
-    .carousel-controls-switch-up.disabled {
+    .modal-controls-switch-up.disabled {
       cursor: not-allowed;
       opacity: 0.3;
     }
-    .carousel-controls-switch-down.disabled {
+    .modal-controls-switch-down.disabled {
       cursor: not-allowed;
       opacity: 0.3;
     }
 
-    .carousel-controls-switch-down {
+    .modal-controls-switch-down {
       bottom: 0px;
       height: 40px;
       opacity: 0.7;
