@@ -12,6 +12,7 @@ import com.yali.vilivili.repository.UserRepository;
 import com.yali.vilivili.service.AuthService;
 import com.yali.vilivili.service.UserService;
 import com.yali.vilivili.utils.AESUtil;
+import com.yali.vilivili.utils.IpUtils;
 import com.yali.vilivili.utils.JwtUtils;
 import com.yali.vilivili.utils.MyException;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +26,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static com.yali.vilivili.utils.IpUtils.getIpAddress;
 import static com.yali.vilivili.utils.IpUtils.getIpSource;
 
 /**
@@ -55,6 +58,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     private FileUploadServiceImpl fileUploadService;
+    @Resource
+    private HttpServletRequest request;
 
     @Override
     public LoginVO login(LoginRO ro) {
@@ -82,6 +87,9 @@ public class AuthServiceImpl implements AuthService {
             LoginVO loginVO = new LoginVO();
 
             loginVO.setToken(token);
+            String ipAddress = IpUtils.getIpAddress(request);
+            user.setUIp(ipAddress);
+            userRepository.save(user);
             return loginVO ;
         } catch (MyException e) {
             throw new MyException(e.getCode(), e.getMessage());
