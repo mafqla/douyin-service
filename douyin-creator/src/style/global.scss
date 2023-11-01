@@ -1,0 +1,61 @@
+@import 'nprogress/nprogress.css';
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  min-width: 1200px;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol;
+  background-color: var(--color-bg-1);
+}
+
+html {
+  --min-width: 1200px;
+  --max-width: 1300px;
+  --header-height: 84px;
+}
+.chart-wrapper {
+  .bizcharts-tooltip {
+    background: linear-gradient(
+      304.17deg,
+      rgb(253 254 255 / 60%) -6.04%,
+      rgb(244 247 252 / 60%) 85.2%
+    ) !important;
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+    padding: 8px !important;
+    width: 180px !important;
+    opacity: 1 !important;
+  }
+}
+
+body[arco-theme='dark'] {
+  .chart-wrapper {
+    .bizcharts-tooltip {
+      background: linear-gradient(
+        304.17deg,
+        rgba(90, 92, 95, 0.6) -6.04%,
+        rgba(87, 87, 87, 0.6) 85.2%
+      ) !important;
+      backdrop-filter: blur(10px);
+      border-radius: 6px;
+      box-shadow: none !important;
+    }
+  }
+}
