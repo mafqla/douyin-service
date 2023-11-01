@@ -148,36 +148,45 @@ const openConnectionsPopup = (name: string) => {
       </div>
     </div>
 
-    <div class="trust-login-switch" v-if="isLogin">
-      <div class="trust-login-tips-left">
-        <div class="trust-login-tips-icon">
-          <svg
-            width="15"
-            height="16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class=""
-            viewBox="0 0 15 16"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.5 15.473a7.5 7.5 0 100-15 7.5 7.5 0 000 15zm.034-12c-.956 0-1.842.367-2.45 1.076-.076.089-.162.22-.243.36-.209.357-.056.805.308.999l.027.014c.396.211.842-.003 1.114-.36.3-.393.715-.588 1.244-.588.787 0 1.338.327 1.338.992 0 .536-.427.94-.91 1.371l-.03.028c-.517.469-1.05.953-1.277 1.857-.01.04-.02.088-.028.14-.077.464.31.86.779.86.423 0 .753-.33.858-.74a.984.984 0 01.027-.092c.185-.512.535-.848.885-1.152.676-.6 1.324-1.227 1.324-2.272 0-1.619-1.366-2.493-2.966-2.493zm-.034 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
-              fill="#2F3035"
-              fill-opacity="0.4"
-            ></path>
-          </svg>
-          <!-- <div class="trust-login-tips-info trust-login-tips-info-bottom">
+    <div class="edit">
+      <div class="edit-switch">
+        <div class="trust-login-switch" v-if="isLogin">
+          <div class="trust-login-tips-left">
+            <div class="trust-login-tips-icon">
+              <svg
+                width="15"
+                height="16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class=""
+                viewBox="0 0 15 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.5 15.473a7.5 7.5 0 100-15 7.5 7.5 0 000 15zm.034-12c-.956 0-1.842.367-2.45 1.076-.076.089-.162.22-.243.36-.209.357-.056.805.308.999l.027.014c.396.211.842-.003 1.114-.36.3-.393.715-.588 1.244-.588.787 0 1.338.327 1.338.992 0 .536-.427.94-.91 1.371l-.03.028c-.517.469-1.05.953-1.277 1.857-.01.04-.02.088-.028.14-.077.464.31.86.779.86.423 0 .753-.33.858-.74a.984.984 0 01.027-.092c.185-.512.535-.848.885-1.152.676-.6 1.324-1.227 1.324-2.272 0-1.619-1.366-2.493-2.966-2.493zm-.034 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
+                  fill="#2F3035"
+                  fill-opacity="0.4"
+                ></path>
+              </svg>
+              <!-- <div class="trust-login-tips-info trust-login-tips-info-bottom">
                         保存登录信息，下次登录免验证
                       </div> -->
+            </div>
+          </div>
+          <switch-button />
         </div>
       </div>
-      <switch-button />
-    </div>
 
-    <div class="edit">
-      <download-btn style="margin: unset" />
-      <button class="content-btn" @click="edit">编辑资料</button>
+      <div class="edit-content-small">
+        <button class="edit-content-btn" @click="edit">编辑资料</button>
+      </div>
+      <div class="edit-btn-collect">
+        <div class="edit-content">
+          <button class="edit-content-btn" @click="edit">编辑资料</button>
+        </div>
+        <download-btn class="new-ui" />
+      </div>
     </div>
     <user-modal :open="open" :userInfo="userInfo" @close="open = false" />
   </div>
@@ -186,10 +195,13 @@ const openConnectionsPopup = (name: string) => {
 <style lang="scss" scoped>
 .user-detail-header {
   display: flex;
-  margin-bottom: 24px;
-  margin-top: 32px;
+  // margin-bottom: 24px;
+  // margin-top: 32px;
+  margin: 28px auto 21px;
+  max-width: 1208px;
   position: relative;
   width: 100%;
+  margin-top: -142px;
 
   .user-avatar {
     .icon {
@@ -360,49 +372,61 @@ const openConnectionsPopup = (name: string) => {
     }
   }
 
-  .trust-login-switch {
-    align-items: center;
-    display: inline-flex;
-    position: relative !important;
-    height: 100%;
-
-    .trust-login-tips-left {
-      display: inline-block;
-      left: -12px;
-      top: 2px;
-      .trust-login-tips-icon {
-        cursor: pointer;
-        height: 16px;
-        width: 16px;
-
-        svg path {
-          fill: var(--color-text-t4);
-        }
-      }
-    }
-  }
-
   .edit {
-    bottom: 0;
+    align-content: space-between;
+    align-items: center;
+    bottom: 8px;
+    flex-wrap: wrap;
+    height: 112px;
     display: flex;
     position: absolute;
-    right: 0;
+    right: 0px;
 
     :deep(.content-text) {
       width: 208px;
     }
 
-    .content-btn {
+    .edit-switch {
+      display: flex;
+      flex-direction: row-reverse;
+      width: 100%;
+
+      .trust-login-switch {
+        align-items: center;
+        display: inline-flex;
+        position: relative !important;
+        height: 100%;
+
+        .trust-login-tips-left {
+          display: inline-block;
+          left: -12px;
+          top: 2px;
+          .trust-login-tips-icon {
+            cursor: pointer;
+            height: 16px;
+            width: 16px;
+
+            svg path {
+              fill: var(--color-text-t4);
+            }
+          }
+        }
+      }
+    }
+    .edit-content-small {
+      display: none;
+    }
+    .edit-content-btn {
       // background: #e4e4e6 !important;
-      background: var(--color-bg-b3) !important;
+      background: var(--bgbg-input) !important;
       // background: rgba(228, 228, 230, 1) !important;
       border: none;
       // color: #161823 !important;
-      color: var(--color-text-t1) !important;
+      color: var(--btn-color) !important;
       // color: rgba(22, 24, 35, 1) !important;
       font-size: 13px;
       font-weight: 400;
-      margin: 0 0 0 8px;
+      margin: 0;
 
       align-items: center;
       border: 0;
@@ -413,13 +437,27 @@ const openConnectionsPopup = (name: string) => {
       outline: none;
       padding: 0 16px;
       position: relative;
-      border-radius: 4px;
+      border-radius: 12px;
       font-family: PingFang SC, DFPKingGothicGB-Medium, sans-serif;
       // font-size: 14px;
       // font-weight: 500;
-      height: 36px;
+      // height: 36px;
+      height: 33px;
       line-height: 22px;
       min-width: 88px;
+    }
+    .edit-btn-collect {
+      display: flex;
+      margin-left: auto;
+      .edit-content {
+        display: flex;
+      }
+
+      .new-ui {
+        border-radius: 12px;
+        height: 33px;
+        margin: 0 0 0 8px !important;
+      }
     }
   }
 }
@@ -437,10 +475,21 @@ const openConnectionsPopup = (name: string) => {
 
 @media (max-width: 1180px) {
   .user-detail-header {
-    padding-bottom: 68px;
+    padding-bottom: 0px;
     .edit {
-      bottom: 0;
-      left: 0;
+      bottom: 8px;
+      left: auto;
+      max-width: 280px;
+      right: 0px;
+
+      .edit-content-small {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+      }
+      .edit-content {
+        display: none !important;
+      }
     }
   }
 }
@@ -450,9 +499,23 @@ const openConnectionsPopup = (name: string) => {
     padding-bottom: 68px;
 
     .edit {
-      bottom: 0;
-      left: 0;
+      bottom: 8px;
+      left: auto;
+      right: 0px;
     }
+  }
+}
+
+@media (max-width: 1475px) {
+  .user-detail-header {
+    max-width: none;
+    width: calc(100% - 120px);
+  }
+}
+@media (max-width: 1328px) {
+  .user-detail-header {
+    max-width: none;
+    width: calc(100% - 120px);
   }
 }
 </style>

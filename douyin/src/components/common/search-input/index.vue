@@ -114,7 +114,7 @@ const handleClickOutside = (event: Event) => {
 <style lang="scss" scoped>
 .search {
   border-radius: 12px;
-  background-color: var(--color-bg-b0);
+  // background-color: var(--color-bg-b0);
   border: 2px solid var(--input-border);
   align-items: center;
   box-sizing: border-box;
@@ -235,37 +235,37 @@ html.dark .search {
   }
 }
 .main.user {
-  .search {
-    border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
-    background-color: transparent !important;
-    .header-search-input {
-      &::placeholder {
-        color: rgba(255, 255, 255, 1) !important ;
-      }
-    }
+  // .search {
+  //   border: 2px solid hsla(0, 0%, 100%, 0.3) !important;
+  //   background-color: transparent !important;
+  //   .header-search-input {
+  //     &::placeholder {
+  //       color: rgba(255, 255, 255, 1) !important ;
+  //     }
+  //   }
 
-    button {
-      // background-color: hsla(0, 0%, 100%, 0.3) !important;
-      .icon-search {
-        color: #fff;
-      }
-      .btn-title {
-        color: #fff !important;
-      }
-    }
+  //   button {
+  //     // background-color: hsla(0, 0%, 100%, 0.3) !important;
+  //     .icon-search {
+  //       color: #fff;
+  //     }
+  //     .btn-title {
+  //       color: #fff !important;
+  //     }
+  //   }
 
-    &:hover {
-      button {
-        background-color: hsla(0, 0%, 100%, 0.3) !important;
-        .icon-search {
-          color: #fff;
-        }
-        .btn-title {
-          color: #fff;
-        }
-      }
-    }
-  }
+  //   &:hover {
+  //     button {
+  //       background-color: hsla(0, 0%, 100%, 0.3) !important;
+  //       .icon-search {
+  //         color: #fff;
+  //       }
+  //       .btn-title {
+  //         color: #fff;
+  //       }
+  //     }
+  //   }
+  // }
 
   .header.scrolled {
     .search {

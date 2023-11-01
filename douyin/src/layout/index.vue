@@ -40,11 +40,11 @@ watchEffect(() => {
     <aside-bar />
 
     <div class="right-container min">
-      <el-affix class="affix">
-        <div class="header-conent" :class="{ none: backgroundColor }">
+      <div class="douyin-header" :class="{ scrolled: isScrolled }">
+        <div class="douyin-header-content" :class="{ none: backgroundColor }">
           <header-nav :class="{ scrolled: isScrolled }" />
         </div>
-      </el-affix>
+      </div>
 
       <router-view v-slot="{ Component, route }" :key="userStore().routerKey">
         <!-- <keep-alive> -->
@@ -68,21 +68,31 @@ watchEffect(() => {
   &.user {
     height: auto;
 
-    .bg {
-      display: none;
-    }
-    :deep(.aside .aside-bar) {
-      background: transparent !important;
-    }
-    .affix {
-      background: unset !important;
-    }
+    // .bg {
+    //   // display: none;
+    // }
+    // :deep(.aside .aside-bar) {
+    //   background: transparent !important;
+    // }
+    // .affix {
+    //   background: unset !important;
+    // }
   }
   .bg {
     background: no-repeat url(@/assets/test.png) var(--color-bg-b0);
     height: 100vh;
     position: fixed;
     width: 100vw;
+  }
+}
+.douyin-header.scrolled {
+  background: no-repeat url(@/assets/test.png) var(--color-bg-b0);
+  background-position-x: -72px;
+}
+
+@media (min-width: 1240px) {
+  .douyin-header.scrolled {
+    background-position-x: calc(var(--navigation-expend-width) * -1);
   }
 }
 .right-container {
@@ -99,18 +109,31 @@ watchEffect(() => {
     min-height: 450px;
   }
 }
-.header-conent {
+.douyin-header-content {
   // height: 60px;
-  height: 68px;
-  position: sticky;
-  z-index: 1;
-  padding: 0;
-  background-color: var(--color-bg-b0);
-  width: calc(100% - 72px);
+  height: var(--header-height);
+  min-width: 628px;
+  width: 100%;
 
   &.none {
     background-color: transparent;
   }
+}
+.douyin-header {
+  background-position-x: -72px;
+
+  position: fixed;
+  width: calc(100% - 72px);
+
+  height: var(--header-height);
+  transition: height 0.4s ease 0s;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  // height: var(--header-height);
+  // position: relative;
+  // width: 100%;
+  z-index: 502;
 }
 .affix {
   background: no-repeat url(@/assets/test.png) var(--color-bg-b0);
@@ -121,8 +144,10 @@ watchEffect(() => {
 }
 
 @media (min-width: 1240px) {
-  .affix {
-    background-position-x: calc(160px * -1);
+  .douyin-header {
+    background-position-x: calc(var(--navigation-expend-width) * -1);
+    position: fixed;
+    width: calc(100% - var(--navigation-expend-width));
   }
 }
 </style>

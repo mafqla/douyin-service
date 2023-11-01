@@ -14,6 +14,11 @@ import { settingStore } from '@/stores/setting'
 
 const background = ref(`url('${backgroundurlLightURL}')`)
 
+//用户背景图
+const backgroundurl = ref(
+  'https://p9-pc-sign.douyinpic.com/obj/c84d0007ec6c02d356d6?x-expires=1698926400&x-signature=90nGwZ9Rbb2I8pbeCFifHXP1rmo%3D&from=2480802190'
+)
+
 const isDisplay = ref(false)
 const router = useRouter()
 
@@ -135,7 +140,20 @@ useInfiniteScroll(window, load, {
   <div class="my" ref="el">
     <div class="user-detail" :class="{ scrolled: isDisplay }">
       <div class="user-detail-content max">
-        <div class="user-header-background"></div>
+        <div class="user-header-background">
+          <div class="header-img-content">
+            <div
+              class="header-img"
+              :style="{
+                backgroundImage: `url(${backgroundurl})`
+              }"
+            ></div>
+          </div>
+          <div class="header-down-bg"></div>
+          <div class="header-down-bg-1"></div>
+          <div class="header-down-bg-2"></div>
+          <div class="header-down-bg-3"></div>
+        </div>
         <user-header-my />
         <user-tab />
         <login-code v-if="!isLogin" />
@@ -146,6 +164,30 @@ useInfiniteScroll(window, load, {
 </template>
 
 <style lang="scss" scoped>
+html.dark {
+  .header-img {
+    opacity: 1 !important;
+  }
+  .header-down-bg-1 {
+    background-image: linear-gradient(
+      180deg,
+      rgba(29, 29, 36, 0),
+      #161823
+    ) !important;
+    top: auto !important;
+  }
+  .header-down-bg-2 {
+    background-image: linear-gradient(
+      0deg,
+      rgba(25, 26, 36, 0) 27.08%,
+      #161823 104.06%
+    ) !important;
+  }
+
+  .header-down-bg-3 {
+    background-image: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.5));
+  }
+}
 .scrolled::before {
   opacity: 0; // 滚动后使背景图片消失
 }
@@ -179,30 +221,93 @@ useInfiniteScroll(window, load, {
     //   transition: opacity 0.3s ease-in-out;
     // }
     .user-header-background {
-      background-image: v-bind(background);
-      background-position: 0 0;
-      background-size: 100% 140%;
-      height: 300px;
-      pointer-events: none;
-      width: 100vw;
+      // background-image: v-bind(background);
+      // background-position: 0 0;
+      // background-size: 100% 140%;
+      // height: 300px;
+      // pointer-events: none;
+      // width: 100vw;
 
-      // background-position: 50%;
-      // background-repeat: no-repeat;
-      // background-size: 1920px 172px;
-      // height: 172px;
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
+      // // background-position: 50%;
+      // // background-repeat: no-repeat;
+      // // background-size: 1920px 172px;
+      // // height: 172px;
+      // left: 0;
+      // position: absolute;
+      // right: 0;
+      // top: 0;
+      height: 233px;
+      // margin-top: -68px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+
+      .header-img-content {
+        height: 281px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 672px;
+
+        .header-img {
+          background-repeat: no-repeat;
+          background-size: cover;
+          height: 377px;
+          margin-top: -48px;
+          opacity: 0.15;
+          width: 672px;
+        }
+      }
+
+      .header-down-bg {
+        background-image: var(--down-bg-color);
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+      }
+      .header-down-bg-1 {
+        background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0), #fff);
+        bottom: -48px;
+        height: 126px;
+        top: 110px;
+      }
+      .header-down-bg-2 {
+        background-image: linear-gradient(0deg, hsla(0, 0%, 100%, 0), #fff);
+        height: 244px;
+        top: 0;
+      }
+      .header-down-bg-1,
+      .header-down-bg-2 {
+        position: absolute;
+        right: 0;
+        width: calc(50% + 494px);
+      }
+      .header-down-3 {
+        background-image: linear-gradient(
+          90deg,
+          hsla(0, 0%, 100%, 0),
+          hsla(0, 0%, 100%, 0.3)
+        );
+        height: 240px;
+        right: 0;
+        width: 281px;
+      }
     }
     .user-detail-content {
       margin: 0 auto;
       max-width: none;
-      width: calc(100% - 120px);
-      max-width: 1208px;
+      // width: calc(100% - 120px);
+      width: 100%;
+      // max-width: 1208px;
       min-height: calc(100vh - 60px);
-      // min-width: 682px;
-      min-width: 760px;
+      min-width: 682px;
+      // min-width: 760px;
+    }
+    .user-detail-content.max {
+      max-width: none !important;
+      width: 100% !important;
     }
   }
 }
@@ -220,6 +325,10 @@ useInfiniteScroll(window, load, {
       max-width: none;
       width: calc(100% - 120px);
     }
+  }
+  .header-down-bg-1,
+  .header-down-bg-2 {
+    width: calc(100% - 230px) !important;
   }
 }
 

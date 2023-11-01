@@ -140,7 +140,8 @@ const toggleModal = (event: any) => {
     color: inherit;
     text-decoration: none;
     .video-item-content {
-      border-radius: 4px;
+      // border-radius: 4px;
+      border-radius: 12px;
       overflow: hidden;
       position: relative;
       transition-duration: 0.35s;

@@ -2,10 +2,29 @@
 import {} from 'vue'
 </script>
 <template>
-  <div class="download-btn btnCommon" >
+  <div class="download-btn btnCommon">
     <div class="content">
-      <div class="content-text  ">下载客户端，随时接收消息</div>
-      <a href="" download="" class="content-btn hoverRed"><span>下载</span> </a>
+      <div class="content-text">下载客户端，随时接收消息</div>
+      <a href="" download="" class="content-btn hoverRed">
+        <svg
+          width="14"
+          height="14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="down-btn-svg"
+          viewBox="0 0 14 14"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M10.646 7.146L8 9.793V2.5H7v7.293L4.354 7.146l-.708.708 3.5 3.5.354.353.354-.353 3.5-3.5-.708-.708zM3 12.5v1h9v-1H3z"
+            fill="#fff"
+            stroke="#fff"
+            stroke-width="0.5"
+          ></path>
+        </svg>
+        <span>下载</span>
+      </a>
     </div>
     <div class="wdgWdzI8"></div>
   </div>
@@ -26,7 +45,25 @@ import {} from 'vue'
     .hoverRed {
       // background: #ff2c55 !important;
       background: var(--color-primary-default) !important;
-      color: #fff;
+      color: #fff !important;
+      .down-btn-svg {
+        path {
+          fill: #fff !important;
+          stroke: #fff !important;
+        }
+      }
+    }
+  }
+
+  &.new-ui {
+    .content {
+      background-color: var(--bgbg-input);
+      color: var(--btn-color);
+      .content-btn {
+        background-color: var(--down-input);
+        color: var(--down-text-color);
+        padding: 6px 12px;
+      }
     }
   }
   .content {
@@ -44,7 +81,7 @@ import {} from 'vue'
     overflow: hidden;
 
     .content-text {
-      padding: 8px 0 8px 12px;
+      padding: 6px 0 6px 12px;
       white-space: nowrap;
     }
     .content-btn {
@@ -63,6 +100,13 @@ import {} from 'vue'
         font-family: PingFang SC, DFPKingGothicGB-Regular, sans-serif;
         font-weight: 400;
         font-weight: 600;
+      }
+
+      .down-btn-svg {
+        path {
+          fill: var(--down-text-color);
+          stroke: var(--down-text-color);
+        }
       }
     }
   }

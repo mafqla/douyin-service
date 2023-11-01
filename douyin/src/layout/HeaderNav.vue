@@ -201,13 +201,22 @@ const handlePost = () => {
         width: 333px;
       }
 
+      @media (min-width: 1320px) {
+        .header-left {
+          left: calc(
+            50vw - var(--navigation-expend-width) / 2 - 34px -
+              (100% + 32px + var(--navigation-expend-width)) * 0.278 / 2
+          );
+          width: calc((100% + 32px + var(--navigation-expend-width)) * 0.278);
+        }
+      }
       @media (min-width: 1240px) {
         .header-left {
           left: unset;
-          padding: 0;
           position: absolute;
           right: 400px;
-          width: calc((100% + 32px + $sidebar-width) * 0.278);
+          width: calc((100% + 32px + var(--navigation-expend-width)) * 0.278);
+          padding: 0px;
         }
       }
       @media (min-width: 1197px) {
@@ -271,7 +280,7 @@ const handlePost = () => {
               user-select: none;
             }
             .icon {
-              opacity: 0.6;
+              // opacity: 0.6;
               path {
                 fill: var(--color-text-t3);
               }
@@ -296,6 +305,9 @@ const handlePost = () => {
               }
               .icon {
                 opacity: 1;
+                path {
+                  fill: var(--color-text-t0) !important;
+                }
               }
             }
           }
@@ -328,18 +340,17 @@ const handlePost = () => {
 .main.user {
   .header-right-item {
     .icon {
-      color: rgba(255, 255, 255, 0.75);
+      color: var(--color-text-t2);
       fill-opacity: 1;
-    }
-    p {
-      color: rgba(255, 255, 255, 0.75) !important;
     }
 
     &:hover {
+      .icon,
       p {
-        color: rgba(255, 255, 255, 1) !important;
+        color: var(--color-text-t0) !important;
       }
     }
+    // }
   }
 
   .header.scrolled {
