@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.yali.api.config.RequestIdRelayConfiguration, \
+  com.yali.api.config.RoleCacheConfig, \
+  com.yali.api.config.FallbackConfig

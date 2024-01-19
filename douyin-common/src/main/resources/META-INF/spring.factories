@@ -1,0 +1,9 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ com.yali.common.autoconfigure.mq.MqConfig,\
+ com.yali.common.autoconfigure.mvc.JsonConfig,\
+ com.yali.common.autoconfigure.mvc.MvcConfig,\
+ com.yali.common.autoconfigure.mvc.ParamCheckerConfig,\
+ com.yali.common.autoconfigure.mybatis.MybatisConfig,\
+ com.yali.common.autoconfigure.redisson.RedissonConfig,\
+ com.yali.common.autoconfigure.swagger.Knife4jConfiguration, \
+ com.yali.common.autoconfigure.xxljob.XxlJobConfig

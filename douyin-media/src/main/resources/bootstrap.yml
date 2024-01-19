@@ -1,0 +1,79 @@
+server:
+  port: 18084  #端口
+  tomcat:
+    uri-encoding: UTF-8   #服务编码
+spring:
+  profiles:
+    active: dev
+  application:
+    name: media-service
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        shared-configs: # 共享配置
+          - data-id: shared-spring.yaml # 共享spring配置
+            refresh: false
+          - data-id: shared-redis-dy.yaml # 共享redis配置
+            refresh: false
+          - data-id: shared-logs.yaml # 共享日志配置
+            refresh: false
+          - data-id: shared-mybatis-dy.yaml # 共享mybatis配置
+            refresh: false
+          - data-id: shared-feign.yaml # 共享feign配置
+            refresh: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+dy:
+  swagger:
+    enable: true
+    package-path: com.yali.media.controller
+    title: douyin - 媒资中心接口文档
+    description: 该服务包含图片管理、媒资管理等
+    contact-name: yali
+    contact-url: https://yalisky.eu.org/
+    contact-email: yalisky@outlook.com
+    version: v1.0
+    enableResponseWrap: true
+  auth:
+    resource:
+      enable: true
+      excludeLoginPaths:
+        - /medias/signature/play
+        - /medias/**
+        - /files/**
+        - /upload/**
+  jdbc:
+    database: dy_media
+  platform:
+    file: MinIO
+    media: MinIO
+    image: MinIO
+  tencent:
+    appId: 1312394356
+    secretId: AKIDDG3arrZ0B42sXzEOM8h182jDVbVDiAPS
+    secretKey: uc7RaXIqDPOAk9MAnAG5duvf8LHvIODl
+    vod:
+      enable: true
+      vodValidSeconds: 7776000
+      region: "ap-shanghai"
+      procedure: "wisehub-base"
+      urlKey: "HZFlxjPYoOm5AfShupOx"
+      pfcg: "basicDrmPreset"
+    cos:
+      enable: true
+      region: "ap-shanghai"
+      bucket: wisehub
+      multipartUploadThreshold: 5242880 # 5mb，触发分片上传的阈值
+      minimumUploadPartSize: 1048576 # 1mb，分片的最小大小
+
+  minio:
+    endpoint: http://127.0.0.1:9000
+    port: 9090
+    accessKey: lQ3W1NYGEwtyf4JySVUO
+    secretKey: JRToVYKmVjMPpGoaggnay7r3ZJtt3TYHlKh6bRzA
+    file-bucket: file
+    media-bucket: media
+    image-bucket: img

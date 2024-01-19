@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yali.user.mapper.UserDetailMapper">
+    <update id="updateIpById">
+        UPDATE user_detail
+        SET ipv4 = #{ipv4}
+        WHERE id = #{id}
+    </update>
+
+    <select id="queryById" resultType="com.yali.user.domain.po.UserDetail">
+        SELECT u.cell_phone,
+               u.status,
+               u.create_time,
+               u.update_time,
+               u.creater,
+               u.updater,
+               u.id,
+               u.nickname,
+               u.unique_id,
+               ud.verification_type,
+               ud.custom_verify,
+               ud.enterprise_verify_reason,
+               ud.gender,
+               ud.avatar_thumb,
+               ud.email,
+               ud.qq,
+               ud.birthday,
+               ud.school,
+               ud.ipv4,
+               ud.country,
+               ud.province,
+               ud.city,
+               ud.district,
+               ud.signature,
+               ud.cover_url,
+               ud.role_id
+        FROM `user` u
+                 LEFT JOIN user_detail ud ON u.id = ud.id
+        WHERE u.id = #{userId}
+    </select>
+    <select id="queryByIds" resultType="com.yali.user.domain.po.UserDetail">
+        SELECT u.cell_phone, u.status, u.create_time, u.update_time, u.creater, u.updater,
+        u.id, u.nickname, u.unique_id, ud.verification_type,ud.custom_verify,ud.enterprise_verify_reason, ud.gender,
+        ud.avatar_thumb, ud.email, ud.qq, ud.birthday, ud.school, ud.ipv4,
+        ud.country, ud.province, ud.city, ud.district, ud.signature, ud.cover_url, ud.role_id
+        FROM `user` u
+        LEFT JOIN user_detail ud ON u.id = ud.id
+        WHERE u.id
+        <foreach collection="ids" separator="," item="id" open="in (" close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="queryByPage" resultType="com.yali.user.domain.po.UserDetail">
+        SELECT u.cell_phone,
+               u.status,
+               u.create_time,
+               u.update_time,
+               u.creater,
+               u.updater,
+               u.id,
+               u.nickname,
+               u.unique_id,
+               ud.verification_type,
+               ud.custom_verify,
+               ud.enterprise_verify_reason,
+               ud.gender,
+               ud.avatar_thumb,
+               ud.email,
+               ud.qq,
+               ud.birthday,
+               ud.school,
+               ud.ipv4,
+               ud.country,
+               ud.province,
+               ud.city,
+               ud.district,
+               ud.signature,
+               ud.cover_url,
+               ud.role_id
+        FROM `user` u
+                 LEFT JOIN user_detail ud ON u.id = ud.id
+            ${ew.customSqlSegment}
+    </select>
+</mapper>

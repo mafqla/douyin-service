@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 # nacos注册中心
+      discovery:
+        namespace: 745dee35-b1bf-4ea0-907d-475ff84fc5a5 # nacos命名空间
+        group: DEFAULT_GROUP
+        ip: 127.0.0.1
+  elasticsearch:
+    uris: http://127.0.0.1:9200
+logging:
+  level:
+    com.yali: debug

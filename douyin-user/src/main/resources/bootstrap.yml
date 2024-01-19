@@ -1,0 +1,48 @@
+server:
+  port: 18082  #端口
+  tomcat:
+    uri-encoding: UTF-8   #服务编码
+spring:
+  profiles:
+    active: dev
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        shared-configs: # 共享配置
+          - data-id: shared-spring.yaml # 共享spring配置
+            refresh: false
+          - data-id: shared-redis-dy.yaml # 共享redis配置
+            refresh: false
+          - data-id: shared-mybatis-dy.yaml # 共享mybatis配置
+            refresh: false
+          - data-id: shared-logs.yaml # 共享日志配置
+            refresh: false
+          - data-id: shared-feign.yaml # 共享feign配置
+            refresh: false
+dy:
+  swagger:
+    enable: true
+    enableResponseWrap: true
+    package-path: com.yali.user.controller
+    title: 抖音 - 用户中心接口文档
+    description: 该服务用户管理、用户信息管理
+    contact-name: yali
+    contact-url: https://yalisky.eu.org/
+    contact-email: yalisky@outlook.com
+    version: v1.0
+  auth:
+    resource:
+      enable: true
+      excludeLoginPaths:
+        - /code/send
+        - /users/register
+        - /users/detail
+        - /users/list
+        - GET:/users/{id}
+        - /users/{id}/type
+
+  jdbc:
+    database: dy_user
